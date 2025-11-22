@@ -1,3 +1,7 @@
+# Hrenpack v2.0.0
+# Copyright (c) 2024-2025, Маг Ильяс DOMA (MagIlyasDOMA)
+# Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
+
 import os, ctypes, shutil, getpass, platform, random, string, subprocess, filetype
 from datetime import datetime
 from hrenpack.listwork import split_list

@@ -1,3 +1,7 @@
+# Hrenpack v2.0.0
+# Copyright (c) 2024-2025, Маг Ильяс DOMA (MagIlyasDOMA)
+# Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
+
 import os
 from typing import Union, Optional, Literal
 from hrenpack.classes import range_plus

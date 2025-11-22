@@ -1,3 +1,7 @@
+# Hrenpack v2.0.0
+# Copyright (c) 2024-2025, Маг Ильяс DOMA (MagIlyasDOMA)
+# Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
+
 from abc import ABC, ABCMeta, abstractmethod
 from typing import Literal
 from kivy.uix.widget import WidgetMetaclass

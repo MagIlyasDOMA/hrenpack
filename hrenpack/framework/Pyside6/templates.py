@@ -1,3 +1,7 @@
+# Hrenpack v2.0.0
+# Copyright (c) 2024-2025, Маг Ильяс DOMA (MagIlyasDOMA)
+# Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
+
 import ui
 from PySide6.QtWidgets import QDialog
 from PySide6.QtGui import QIcon
