@@ -1,12 +1,13 @@
-import re
-from typing import Union, Literal, Optional
+﻿import re
+from typing import Union, Literal, Optional, Iterable
 from hrenpack.boolwork import Fand
+from hrenpack.hidden_types import dict_items
 
 tuplist = Union[tuple, list]
 tdl = Union[tuple, dict, list]
 
 
-def IS_TUPLE(input: Union[tuple, list], is_tuple: bool) -> Union[tuple, list]:
+def _is_tuple(input: Iterable, is_tuple: bool) -> Union[tuple, list]:
     return tuple(input) if is_tuple else list(input)
 
 
@@ -101,7 +102,7 @@ def dict_to_list(input: dict, is_tuple: bool):
     for key in input:
         value = input[key]
         output.append(value)
-    return IS_TUPLE(output, is_tuple)
+    return _is_tuple(output, is_tuple)
 
 
 def multi_pop(input: list, *indexes: int):
@@ -218,7 +219,7 @@ def remove_all(input: list, value, is_tuple: bool = False):
     count = input.count(value)
     for i in range(count):
         input.remove(value)
-    return IS_TUPLE(input, is_tuple)
+    return _is_tuple(input, is_tuple)
 
 
 def remove_multi(input: list, *values, _remove_all: bool = False, is_tuple: bool = False):
@@ -228,7 +229,7 @@ def remove_multi(input: list, *values, _remove_all: bool = False, is_tuple: bool
     else:
         for value in values:
             input.remove(value)
-    return IS_TUPLE(input, is_tuple)
+    return _is_tuple(input, is_tuple)
 
 
 def list_to_list(input: list, index: Optional[int] = None, element=None, is_tuple: bool = True) -> tuplist:
@@ -239,7 +240,7 @@ def list_to_list(input: list, index: Optional[int] = None, element=None, is_tupl
     in2 = input[index:-1]
     in2.pop(0)
     in2.append(input[-1])
-    return IS_TUPLE((input[0:index], in2), is_tuple)
+    return _is_tuple((input[0:index], in2), is_tuple)
 
 
 def list_tuple_to_str(input) -> str:
@@ -269,14 +270,14 @@ def split_quotes(text: str, is_tuple: bool = False) -> tuplist:
             )
         """
     tokens = re.findall(pattern, text, re.VERBOSE)
-    return IS_TUPLE(tokens, is_tuple)
+    return _is_tuple(tokens, is_tuple)
 
 
 def get_values_by_keys(input: dict, *keys, is_tuple: bool = False) -> tuplist:
     output = list()
     for key in keys:
         output.append(input[key])
-    return IS_TUPLE(output, is_tuple)
+    return _is_tuple(output, is_tuple)
 
 
 def del_keys(input: dict, *keys) -> None:
@@ -296,4 +297,110 @@ def strlist(input: tuplist, is_tuple: bool = False):
     input = list(input)
     for i in range(len(input)):
         input[i] = str(input[i])
-    return IS_TUPLE(input, is_tuple)
+    return _is_tuple(input, is_tuple)
+
+
+def keys_dict_equals(*dicts: dict) -> bool:
+    dicts = list(dicts)
+    first = tuple(dicts.pop(0).keys())
+    for d in dicts:
+        if first != tuple(d.keys()):
+            return False
+    return True
+
+
+def equals_keys(*dicts: dict) -> tuple:
+    if keys_dict_equals(*dicts):
+        return tuple(dicts[0].keys())
+
+
+def del_none(*args, is_tuple: bool = False) -> tuplist:
+    args = list(args)
+    for i, arg in enumerate(args):
+        if arg is None:
+            args.pop(i)
+    return _is_tuple(args, is_tuple)
+
+
+def del_none_from_dict(*dicts, **kwargs) -> dict:
+    kwargs = merging_dictionaries(*dicts, kwargs)
+    output = kwargs.copy()
+    for key, value in kwargs.items():
+        if value is None:
+            output.pop(key)
+    return output
+
+
+def enum_tuple(iterable):
+    return enumerate(tuple(iterable))
+
+
+def split_list_to_lists(input: tuplist, *indexes: int, is_tuple: bool = False,
+                        in_start: bool = True, in_end: bool = False) -> list:
+    input = list(input)
+    output = list()
+    for i in range(len(indexes)):
+        cur = indexes[i]
+        past = indexes[i - 1] if i > 0 else 0
+        if not in_start and past > 0:
+            past -= 1
+        if in_end:
+            cur += 1
+        sl = input[:cur] if past == 0 else input[past:cur]
+        output.append(sl)
+    return _is_tuple(output, is_tuple)
+
+
+def get_from_dict(input: dict, *keys, only_values: bool = False, is_tuple: bool = False, default=None,
+                  pop_mode: bool = False) -> tdl:
+    output = dict()
+    for key in keys:
+        value = input.pop(key, default)
+        output[key] = value
+        if not pop_mode:
+            input[key] = value
+    if only_values:
+        return _is_tuple(output.values(), is_tuple)
+    return output
+
+
+def replace_fragment_from_args(old_frag: str, new_frag: str, *args: str, is_tuple: bool = False) -> tuplist:
+    output = list()
+    for arg in args:
+        output.append(arg.replace(old_frag, new_frag))
+    return _is_tuple(output, is_tuple)
+
+
+class dict_enumerate:
+    def __init__(self, items: Union[dict, dict_items]):
+        self.items = items.items() if isinstance(items, dict) else items
+
+    def __iter__(self):
+        output = list()
+        for i, kv in enumerate(self.items):
+            output.append((i, *kv))
+        return iter(output)
+
+
+def selective_slice(input, *keys, only_values: bool = False, is_tuple: bool = False) -> tdl:
+    output = dict()
+    for key in keys:
+        output[key] = input[key]
+    if only_values:
+        return _is_tuple(output.values(), is_tuple)
+    return output
+
+
+def dict_get(dct: dict, key, default=None):
+    output = dct.get(key)
+    if output and output is not False:
+        return default
+    return output
+
+
+def mislist(input: tuplist, *args, is_tuple: bool = False) -> tuplist:
+    output = list()
+    for arg in args:
+        if arg not in input:
+            output.append(arg)
+    return _is_tuple(output, is_tuple)

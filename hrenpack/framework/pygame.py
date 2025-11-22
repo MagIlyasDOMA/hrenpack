@@ -1,4 +1,4 @@
-import pygame
+import pygame, sys
 from dataclasses import dataclass
 
 
@@ -30,6 +30,39 @@ class Keyboard:
     X = pygame.K_x
     Y = pygame.K_y
     Z = pygame.K_z
-
     SPACE = pygame.K_SPACE
+
+
+class Image:
+    def __init__(self, path):
+        self.image = pygame.image.load(path)
+
+    def __call__(self):
+        return self.image
+
+    def resize(self, width, height):
+        self.image = pygame.transform.scale(self.image, (width, height))
+        return self.image
+
+    def resize_and_convert_alpha(self, width, height):
+        self.image = self.resize(width, height).convert_alpha()
+        return self.image
+
+    @classmethod
+    def quick_resize(cls, path, width, height):
+        return cls(path).resize(width, height)
+
+    @classmethod
+    def quick_resize_and_convert_alpha(cls, path, width, height):
+        return cls(path).resize_and_convert_alpha(width, height)
+
+
+def quit():
+    pygame.quit()
+    sys.exit()
+
+
+def quit_if_quit(event):
+    if event.type == pygame.QUIT:
+        quit()
 

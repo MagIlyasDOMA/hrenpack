@@ -256,3 +256,13 @@ def zero_len(number: float, length: int) -> str:
     integer, fl = number.split('.')
     integer = '0' * (length - len(integer)) + integer
     return '.'.join([integer, fl])
+
+
+def module(number: float):
+    return number if number >= 0 else -number
+
+
+def round_and_delete(number: int, digits: int):
+    d = int('1' + '0' * digits)
+    number = round(number, -digits)
+    return number // d

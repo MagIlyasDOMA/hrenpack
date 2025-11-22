@@ -2,7 +2,6 @@ import time, datetime
 from datetime import datetime as dt
 from dataclasses import dataclass
 from typing import Union, Optional, Literal
-from hrenpack.simplevalue import one_return
 from hrenpack.listwork import intlist, strlist
 
 
@@ -393,3 +392,8 @@ def datetime_to_str(input: dt, mode: Literal['date', 'time', 'datetime'] = 'date
         case _:
             raise ValueError
 
+
+def now_to_str(mode: Literal['date', 'time', 'datetime'] = 'datetime',
+               date_separator: str = '.', time_separator: str = ':', without_seconds: bool = False,
+               date_order: Literal['dmy', 'dym', 'mdy', 'myd', 'ydm', 'ymd'] = 'dmy'):
+    return datetime_to_str(dt.now(), mode, date_separator, time_separator, without_seconds, date_order)

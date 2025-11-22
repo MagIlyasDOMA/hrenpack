@@ -2,21 +2,22 @@ from typing import Union, Literal
 
 stb = Union[str, bool]
 tdl = Union[tuple, list, dict]
+_any, _all = any, all
 
 
 def booltest(bull: stb) -> None:
-    if bull == 'True' or bull == 'False' or bull is True or bull is False:
+    if bull.lower() == 'true' or bull.lower() == 'false' or bull is True or bull is False:
         pass
     else:
         raise TypeError("Данная функция может работать только с булевыми значениями")
 
 
 def str_to_bool(input: stb) -> bool:
-    if input is True or input is False:
+    if type(input) is bool:
         return input
-    elif input == 'True' or input == 'true' or int(input) == 1:
+    elif input.lower() == 'true' or int(input) == 1:
         return True
-    elif input == 'False' or input == 'false' or int(input) == 0:
+    elif input.lower() == 'false' or int(input) == 0:
         return False
     else:
         raise TypeError("Данная функция может работать только с булевыми значениями")
@@ -89,3 +90,20 @@ def for_in(variable, mode: Literal['in', '==', 'is'], *values) -> bool:
                 output = True
                 break
     return output
+
+
+def equals_all(*args) -> bool:
+    args = list(args)
+    first = args.pop(0)
+    for arg in args:
+        if first != arg:
+            return False
+    return True
+
+
+def any(*args):
+    return _any(args)
+
+
+def all(*args):
+    return _all(args)

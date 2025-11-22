@@ -1,45 +1,11 @@
-import os, ctypes, shutil, getpass
-import platform
+import os, ctypes, shutil, getpass, platform, random, string, subprocess, filetype
 from datetime import datetime
 from hrenpack.listwork import split_list
-from typing import Union
+from typing import Union, List, Type
 from dataclasses import dataclass
+from pathlib import Path
 
-
-# def return_filename(path: str, mode: str) -> Union[str, list]:
-#     # fn - возвращает имя файла без расширения
-#     # fr - возвращает имя файла с расширением
-#     # pl - возвращает полный путь файла как список
-#     # rs - возвращает расширение файла
-#     if os.path.isfile(path):
-#         pass
-#     else:
-#         raise FileNotFoundError('No such file or directory: ' + path)
-#
-#     if '/' in path:
-#         path_list = path.split('/')
-#     elif '\\' in path:
-#         path_list = path.split('\\')
-#     else:
-#         path_list = path
-#     filename = path_list[-1]
-#     filename_list = filename.split('.')
-#     for i in range(len(filename_list) - 2):
-#         if i == 0:
-#             filename_without_rs = filename_list[0]
-#         else:
-#             filename_without_rs = filename_without_rs + '.' + filename_list[i]
-#
-#     if mode == 'fn':
-#         return filename_without_rs
-#     elif mode == 'fr':
-#         return filename
-#     elif mode == 'pl':
-#         return filename_list
-#     elif mode == 'rs':
-#         return filename_list[-1]
-#     else:
-#         raise ValueError('invalid mode: ' + mode)
+PathType = Union[str, Path]
 
 
 def get_filename(path: str, raise_error: bool = True) -> str:
@@ -226,3 +192,111 @@ class AndroidPath:
         if platform.system() == 'Windows':
             return path
         return f'data/data/{self.domain}.{self.name}/files/app/{path}'
+
+
+def get_files_startswith(directory: str, start: str, full_path: bool = True) -> List[str]:
+    files = os.listdir(directory)
+    filtered_files = [f for f in files if f.startswith(start)]
+    if full_path:
+        output = list()
+        for file in filtered_files:
+            output.append(os.path.join(directory, file))
+    else:
+        output = filtered_files
+    return output
+
+
+def all_files_and_dirs(directory):
+    output = []
+    for root, dirs, files in os.walk(directory):
+        output.extend([os.path.join(root, name) for name in files])
+        output.extend([os.path.join(root, name) for name in dirs])
+    return output
+
+
+def all_files(directory, full_path: bool = True) -> List[str]:
+    path = Path(directory)
+    if not full_path:
+        return [get_filename(str(file)) for file in path.rglob('*') if file.is_file()]
+    return [str(file) for file in path.rglob('*') if file.is_file()]
+
+
+def generate_random_filename(length: int = 10, extension: str = '') -> str:
+    letters_and_digits = string.ascii_letters + string.digits
+    random_name = ''.join(random.choice(letters_and_digits) for _ in range(length))
+    if extension:
+        extension = '.' + extension
+    return random_name + extension
+
+
+def compare_versions(version1, version2):
+    version1_parts = list(map(int, version1.split('.')))
+    version2_parts = list(map(int, version2.split('.')))
+
+    # Сравниваем по частям
+    for v1, v2 in zip(version1_parts, version2_parts):
+        if v1 > v2:
+            return 1
+        elif v1 < v2:
+            return -1
+    return 0
+
+
+def uninstall_program(program_name):
+    try:
+        # Выполняем команду для деинсталляции программы
+        subprocess.run(['wmic', 'product', 'where', f'name="{program_name}"', 'call', 'uninstall'], check=True)
+        print(f'Программа "{program_name}" успешно деинсталлирована.')
+    except subprocess.CalledProcessError as e:
+        print(f'Ошибка при деинсталляции программы: {e}')
+
+
+def get_mime_type(path: str):
+    kind = filetype.guess(path)
+    if kind is None:
+        if get_extension(path) == 'txt':
+            return 'text/plain'
+        return 'text/' + get_extension(path)
+    return kind.mime
+
+
+def admin_required(func):
+    def wrapper(*args, **kwargs):
+        if is_admin():
+            return func(*args, **kwargs)
+        raise OSError("Отказано в доступе")
+    return wrapper
+
+
+def package_is_debug(file: Path, tree_level: int = 1):
+    if not file.is_file() or not file.exists() or get_extension(str(file)) != 'py':
+        raise FileNotFoundError
+    for level in range(tree_level + 1):
+        file = file.parent
+    if not file.is_dir():
+        raise NotADirectoryError
+    return file.name != 'site-packages'
+
+
+class PackageIsDebug:
+    def __init__(self, file: Union[Path, str], tree_level: int = 1):
+        file = file if isinstance(file, Path) else Path(file)
+        if not file.is_file() or not file.exists() or get_extension(str(file)) != 'py':
+            raise FileNotFoundError
+        self.file = file
+        self.tree_level = tree_level
+
+    def get_directory(self):
+        file = self.file
+        for level in range(self.tree_level + 1):
+            file = file.parent
+        if not file.is_dir():
+            raise NotADirectoryError
+        return file
+
+    def is_debug(self):
+        return self.get_directory().name != 'site-packages'
+
+    def chdir(self):
+        os.chdir(self.get_directory())
+

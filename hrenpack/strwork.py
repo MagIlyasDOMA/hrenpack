@@ -1,6 +1,9 @@
+import string, re
 from typing import Union
-from random import randint
-from hrenpack.listwork import split_list, ab_reverse, tuplist
+from random import randint, choice as randchoice
+from hrenpack.listwork import split_list, ab_reverse, tuplist, _is_tuple
+
+PYTHONNAME_LETTERS = string.ascii_lowercase + string.digits + '_'
 
 
 def tuple_to_str(*args, letter: str = ',') -> str:
@@ -152,3 +155,36 @@ def index_edit_join(string: str, indexes: tuplist, values: Union[tuplist, str]) 
                 raise ValueError('Values must be strings')
             string = index_edit(string, indexes[i], values[i])
         return string
+
+
+def generate_rand_string(length: int = 25):
+    return ''.join(randchoice(string.ascii_letters + string.digits) for _ in range(length))
+
+
+def unspace(input: str):
+    return input.replace(' ', '')
+
+
+def unspace_multi(*strs: str) -> tuple:
+    return tuple(unspace(s) for s in strs)
+
+
+def remove_extra_spaces(text):
+    # Заменяем несколько пробелов подряд на один
+    return re.sub(r'\s+', ' ', text).strip()
+
+
+def words_to_letters(*words: str, is_tuple: bool) -> tuplist:
+    return _is_tuple(tuple(''.join(words)), is_tuple)
+
+
+def only_this_letters(text: str, *letters: str) -> bool:
+    letters = words_to_letters(*letters)
+    for letter in text:
+        if letter not in letters:
+            return False
+    return True
+
+
+def only_pythonname(text: str) -> bool:
+    return only_this_letters(text, PYTHONNAME_LETTERS)

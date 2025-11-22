@@ -1,9 +1,9 @@
-import os, json
-from typing import Union, Literal, Any
+import os, json, csv
+from typing import Union, Literal, Any, List
+from hrenpack import one_return
 from hrenpack.cmd import get_filename, get_extension, create_file, delete_file, FileNameInfo
-from hrenpack.simplevalue import one_return
-from hrenpack.listwork import split_list, IS_TUPLE, list_add, split_list_enter, split_list_space, key_in_dict
-from hrenpack.boolwork import str_to_bool
+from hrenpack.listwork import (split_list, _is_tuple, list_add, split_list_enter, split_list_space, key_in_dict,
+                               equals_keys)
 from hrenpack.strwork import search_and_edit
 from hrenpack.decorators import confirm
 from configparser import ConfigParser
@@ -43,25 +43,31 @@ def create_file_if_not_exists(path: Union[str, FileNameInfo]) -> None:
 
 
 class TextFile:
+    comment_letter = ''
+
     def __init__(self, path: Union[str, FileNameInfo], encoding: Union[str, int] = 'utf-8', **kwargs):
         self.path = path if type(path) is str else path.path
         self.get_filename = lambda: get_filename(self.path)
         self.get_extension = lambda: get_extension(self.path)
         self.encoding = str(encoding)
         self.search_and_delete = lambda input: self.search_and_edit(input, '')
+        self._comments = list()
         if key_in_dict(kwargs, 'extension'):
             extension_check(path, kwargs['extension'])
         elif key_in_dict(kwargs, 'extensions'):
             extension_check(path, *kwargs['extensions'])
         create_file_if_not_exists(self.path)
 
-    def read(self) -> str:
-        file = open(self.path, encoding=self.encoding)
-        data = file.read()
-        file.close()
-        return data
+    @staticmethod
+    def comment_decorator(func):
+        def wrapper(self, *args, **kwargs):
+            if self.comment_letter == '':
+                raise AttributeError(
+                    f"AttributeError: '{self.__class__.__name__}' object has no attribute 'add_comment'")
+            return func(self, *args, **kwargs)
+        return wrapper
 
-    def read_part(self, letters: int) -> str:
+    def read(self, letters: int = -1) -> str:
         file = open(self.path, encoding=self.encoding)
         data = file.read(letters)
         file.close()
@@ -77,6 +83,12 @@ class TextFile:
         file.write(separator)
         file.write(data)
         file.close()
+
+    @comment_decorator
+    def add_comment(self, comment: str):
+        if '\n' in comment:
+            raise ValueError('\\n in comment')
+        self.add_data('{} {}'.format(self.comment_letter, comment))
 
     def copy(self, new_path: str):
         if not os.path.isfile(new_path):
@@ -129,12 +141,12 @@ class TextFile:
         else:
             raise FileIsNotEmptyError("Для использования этой функции файл должен быть пустым")
 
-    def read_lines(self, is_tuple: bool = False, without_n: bool = False):
+    def read_lines(self, is_tuple: bool = False, without_n: bool = True) -> Union[list[str], tuple[str]]:
         output = self.read().split('\n')
         if not without_n:
             for el in output:
                 el += '\n'
-        return IS_TUPLE(output, is_tuple)
+        return _is_tuple(output, is_tuple)
 
     def __copy__(self, new_path: str):
         self.copy(new_path)
@@ -156,6 +168,15 @@ class TextFile:
 
     def __bool__(self):
         return self.is_empty()
+
+    def open(self,
+             mode: Literal[
+                 "r+", "+r", "rt+", "r+t", "+rt", "tr+", "t+r", "+tr", "w+", "+w", "wt+", "w+t", "+wt", "tw+", "t+w", "+tw", "a+", "+a", "at+", "a+t", "+at", "ta+", "t+a", "+ta", "x+", "+x", "xt+", "x+t", "+xt", "tx+", "t+x", "+tx", "w", "wt", "tw", "a", "at", "ta", "x", "xt", "tx", "r", "rt", "tr", "U", "rU", "Ur", "rtU", "rUt", "Urt", "trU", "tUr", "Utr"] = "r",
+             buffering: int = -1,
+             errors: str | None = None,
+             newline: str | None = None,
+             closefd: bool = True):
+        return open(self.path, mode, buffering, self.encoding, errors, newline, closefd)
 
 
 # Важно! Для использования класса файл SRT должен быть написан по всем правилам (между разными типами данных должен быть
@@ -196,6 +217,8 @@ class SRTSubtitleFile(TextFile):
 
 
 class ConfigurationFile(TextFile):
+    comment_letter = ';'
+
     class Converter:
         def __init__(self, config: ConfigParser, get_value):
             self.config = config
@@ -423,3 +446,28 @@ def write_file_if_not_exists(path: str, text: str = ''):
         create_file(path)
         file = TextFile(path)
         file.rewrite(text)
+
+
+class CommaSeparatedValuesFile(TextFile):
+    def __init__(self, path: str, encoding: Union[str, int] = 'utf-8'):
+        super().__init__(path, encoding)
+
+    def read_data(self):
+        with self.open() as file:
+            return csv.DictReader(file)
+
+    def write_data(self, data: List[dict[str, Any]]):
+        with self.open('w', newline='') as file:
+            fields = equals_keys(*data)
+            if fields is None:
+                raise ValueError
+            writer = csv.DictWriter(file, fieldnames=fields)
+            writer.writeheader()
+            writer.writerows(data)
+
+# class CascadeStyleSheetsFile(TextFile):
+#     def __init__(self, path: str, encoding: Union[str, int] = 'utf-8'):
+#         super().__init__(path, encoding)
+#
+#     def save(self):
+#

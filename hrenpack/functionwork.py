@@ -10,3 +10,7 @@ def function_if(condition: bool, true, false=null, is_lambda: bool = False):
 
 def lambda_generator(func, *args, **kwargs):
     return lambda: func(*args, **kwargs)
+
+
+def callable_object(arg):
+    return lambda: arg
