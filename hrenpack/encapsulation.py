@@ -3,7 +3,7 @@
 # Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
 
 import functools, inspect
-from abc import ABC, abstractmethod as am
+from abc import ABC, abstractmethod, abstractproperty, abstractclassmethod, abstractstaticmethod
 from hrenpack.listwork import get_from_dict, _is_tuple
 
 
@@ -48,10 +48,6 @@ class AbstractClass(ABC):
 #     class _Class(cls, AbstractClass):
 #         pass
 #     return _Class
-
-
-def abstractmethod(method):
-    return am(method)
 
 
 # class ClassMethodMeta(type):

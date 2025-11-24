@@ -173,3 +173,4 @@ cython_debug/
 # Compile scripts
 mit.py
 comment.py
+pypi_requirements.txt

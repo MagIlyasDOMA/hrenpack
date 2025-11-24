@@ -13,6 +13,12 @@ def literal_add(base, *args):
     return Union[base, Literal[*args]]
 
 
+def credits():
+    print("Hrenpack")
+    print("(c) Mag Ilyas DOMA, 2024-2025.")
+    print("Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)")
+
+
 si = Union[int, str]
 IntStr = si
 NullStr = Optional[str]
@@ -22,13 +28,9 @@ FivePointScale = Literal[*range_plus(5)]
 TenPointScale = Literal[*range_plus(10)]
 ZeroFivePointScale = literal_add(FivePointScale, 0)
 ZeroTenPointScale = literal_add(TenPointScale, 0)
-PRINT_MESSAGE = True
 
-if PRINT_MESSAGE:
-    print("Hrenpack")
-    print("(c) Mag Ilyas DOMA, 2024. Distributed under a BSD license. Распостраняется с лицензией BSD.")
 
-__version__ = '1.3.0'
+__version__ = '2.0.0'
 
 
 def print_message_set(value: bool = False):

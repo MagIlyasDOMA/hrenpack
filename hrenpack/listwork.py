@@ -408,3 +408,13 @@ def mislist(input: tuplist, *args, is_tuple: bool = False) -> tuplist:
         if arg not in input:
             output.append(arg)
     return _is_tuple(output, is_tuple)
+
+
+def dict_slice(input: dict, *keys, only_values: bool = False, is_tuple: bool = False, all_required: bool = False) -> tdl:
+    output = dict()
+    for key in keys:
+        if key in input:
+            output[key] = input[key]
+        elif all_required:
+            raise KeyError(key)
+    return _is_tuple(output.values(), is_tuple) if only_values else output

@@ -12,9 +12,9 @@ setup(
     name='hrenpack',
     version='2.0.0',
     author_email='magilyas.doma.09@list.ru',
-    author='Маг Ильяс DOMA (MagIlyas_DOMA)',
+    author='Маг Ильяс DOMA (MagIlyasDOMA)',
     description=desc,
-    license='BSD 3-Clause License',
+    license='MIT',
     url='https://github.com/MagIlyas-DOMA/hrenpack',
     packages=find_packages(),
     classifiers=[
