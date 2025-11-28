@@ -1,4 +1,4 @@
-# Hrenpack v2.0.0
+# Hrenpack v2.1.2
 # Copyright (c) 2024-2025, Маг Ильяс DOMA (MagIlyasDOMA)
 # Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
 
@@ -10,7 +10,7 @@ req = open('requirements.txt').read().split('\n')
 
 setup(
     name='hrenpack',
-    version='2.1.0',
+    version='2.1.2',
     author_email='magilyas.doma.09@list.ru',
     author='Маг Ильяс DOMA (MagIlyasDOMA)',
     description=desc,
@@ -18,7 +18,7 @@ setup(
     url='https://github.com/MagIlyas-DOMA/hrenpack',
     packages=find_packages(),
     classifiers=[
-        'License :: OSI Approved :: MIT License'
+        'License :: OSI Approved :: MIT License',
         'Operating System :: Microsoft :: Windows :: Windows 10',
         'Operating System :: Microsoft :: Windows :: Windows 11',
         'Development Status :: 5 - Production/Stable',
@@ -47,6 +47,10 @@ setup(
         "Windows 11",
         "Windows Server 2019+",
     ],
+    project_urls=dict(
+        Source="https://github.com/MagIlyas-DOMA/hrenpack",
+        Documentation="https://magilyasdoma.github.io/hrenpack/documentation.html",
+    ),
     python_requires='>=3.10',
     install_requires=req,
     package_data={'hrenpack': ['hrenpack/resources/*']},
