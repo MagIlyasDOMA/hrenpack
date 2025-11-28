@@ -174,3 +174,7 @@ cython_debug/
 mit.py
 comment.py
 pypi_requirements.txt
+
+# indev files
+/indev/
+/archive/

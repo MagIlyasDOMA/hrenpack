@@ -2,7 +2,7 @@
 # Copyright (c) 2024-2025, Маг Ильяс DOMA (MagIlyasDOMA)
 # Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
 
-import os, tempfile, uuid
+import os, tempfile, uuid, requests
 from urllib.parse import urlencode
 from tqdm import tqdm
 from hrenpack import NullStr
@@ -10,12 +10,6 @@ from hrenpack import NullStr
 
 class NetworkError(Exception):
     pass
-
-
-try:
-    import requests
-except ImportError:
-    raise NetworkError("Requests module not installed")
 
 
 def connection_check():
@@ -44,20 +38,6 @@ def connect_to_site(url: str, **kwargs) -> bool:
         return response.status_code == 200
     else:
         return False
-
-
-def translate_text(text: str, input_language: str = 'auto', output_language: str = 'en', server: str = 'google') -> str:
-    from translators import translate_text as translate
-    MAX = 3900
-    length = text.__len__()
-    if length < MAX:
-        return translate(text, )
-    else:
-        output = ''
-        l = length if length % MAX == 0 else length + MAX
-        for i in range(0, l, MAX):
-            output += translate(text[i:i + MAX], server, input_language, output_language)
-        return output
 
 
 class TestResponse:

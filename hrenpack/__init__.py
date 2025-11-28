@@ -3,14 +3,10 @@
 # Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
 
 import os
-from typing import Union, Optional, Literal
 from hrenpack.classes import range_plus
 from hrenpack.strwork import randstr
 from hrenpack.listwork import split_list
-
-
-def literal_add(base, *args):
-    return Union[base, Literal[*args]]
+from hrenpack.typings import *
 
 
 def credits():
@@ -19,18 +15,7 @@ def credits():
     print("Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)")
 
 
-si = Union[int, str]
-IntStr = si
-NullStr = Optional[str]
-integer, string, boolean = int, str, bool
-ColorTyping = Union[tuple[int, int, int], list[int, int, int], tuple[int, int, int, float], list[int, int, int, float]]
-FivePointScale = Literal[*range_plus(5)]
-TenPointScale = Literal[*range_plus(10)]
-ZeroFivePointScale = literal_add(FivePointScale, 0)
-ZeroTenPointScale = literal_add(TenPointScale, 0)
-
-
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 
 def print_message_set(value: bool = False):

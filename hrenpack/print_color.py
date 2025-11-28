@@ -66,10 +66,3 @@ def warning_format(*values, separator: str = ' ', end: str = '') -> str:
 
 def info_format(*values, separator: str = ' ', end: str = '') -> str:
     return color_format(*values, color='blue', separator=separator, end=end)
-
-
-if __name__ == '__main__':
-    print_error("Ошибка")
-    print_warning("Предупреждение")
-    print_success("Готовность №1")
-    print_info("Информация")

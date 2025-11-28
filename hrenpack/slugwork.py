@@ -5,7 +5,7 @@
 from hrenpack.listwork import split_list as join
 
 translit_db = {
-	"latvian": {
+	"latin": {
 		"а": "a",
 		"б": "b",
 		"в": "v",
@@ -74,12 +74,12 @@ translit_db = {
 def translit(data: str, lat_to_cyr: bool = False, translit_no_letters: bool = True) -> str:
     data = list(data)
     cyrillic = translit_db['cyrillic']
-    latvian = translit_db['latvian']
+    latin = translit_db['latin']
     if translit_no_letters:
-        latvian["ъ"] = "-"
-        latvian["ь"] = "-"
-    dictionary = cyrillic if lat_to_cyr else latvian
-    del cyrillic, latvian
+        latin["ъ"] = "-"
+        latin["ь"] = "-"
+    dictionary = cyrillic if lat_to_cyr else latin
+    del cyrillic, latin
     for i in range(len(data)):
         letter = data[i]
         for key in dictionary:
