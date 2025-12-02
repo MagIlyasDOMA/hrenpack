@@ -1,3 +1,7 @@
+# Hrenpack v2.2.0
+# Copyright (c) 2024-2025, Маг Ильяс DOMA (MagIlyasDOMA)
+# Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
+
 import os
 from flask import Blueprint, send_from_directory
 from jinja2 import FileSystemLoader, ChoiceLoader
