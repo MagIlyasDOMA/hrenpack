@@ -19,6 +19,8 @@ BASE_REQUIREMENTS = [
     'psutil'
 ]
 
+IMAGE_REQUIREMENTS = ['Pillow']
+
 FLASK_REQUIREMENTS = [
     'flask>=3.1.2',
     'flask-sqlalchemy>=3.1.1',
@@ -29,13 +31,14 @@ FLASK_REQUIREMENTS = [
 
 REQUIREMENTS = {
     'base': BASE_REQUIREMENTS,
+    'image': BASE_REQUIREMENTS + IMAGE_REQUIREMENTS,
     'flask': BASE_REQUIREMENTS + FLASK_REQUIREMENTS,
-    'all': BASE_REQUIREMENTS + FLASK_REQUIREMENTS
+    'all': BASE_REQUIREMENTS + FLASK_REQUIREMENTS + IMAGE_REQUIREMENTS
 }
 
 setup(
     name='hrenpack',
-    version='2.2.0',
+    version='2.2.1',
     author_email='magilyas.doma.09@list.ru',
     author='Маг Ильяс DOMA (MagIlyasDOMA)',
     description=desc,

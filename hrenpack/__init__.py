@@ -1,4 +1,4 @@
-# Hrenpack v2.2.0
+# Hrenpack v2.2.1
 # Copyright (c) 2024-2025, Маг Ильяс DOMA (MagIlyasDOMA)
 # Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
 
@@ -15,7 +15,7 @@ def credits():
     print("Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)")
 
 
-__version__ = '2.2.0'
+__version__ = '2.2.1'
 
 
 def print_message_set(value: bool = False):

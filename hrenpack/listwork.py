@@ -1,11 +1,10 @@
-# Hrenpack v2.2.0
+# Hrenpack v2.2.1
 # Copyright (c) 2024-2025, Маг Ильяс DOMA (MagIlyasDOMA)
 # Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
 
 import re
 from typing import Union, Literal, Optional, Iterable
 from hrenpack.boolwork import Fand
-from hrenpack.hidden_types import dict_items
 
 tuplist = Union[tuple, list]
 tdl = Union[tuple, dict, list]
@@ -376,7 +375,7 @@ def replace_fragment_from_args(old_frag: str, new_frag: str, *args: str, is_tupl
 
 
 class dict_enumerate:
-    def __init__(self, items: Union[dict, dict_items]):
+    def __init__(self, items: dict):
         self.items = items.items() if isinstance(items, dict) else items
 
     def __iter__(self):
