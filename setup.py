@@ -38,7 +38,7 @@ REQUIREMENTS = {
 
 setup(
     name='hrenpack',
-    version='2.2.1',
+    version='2.2.2',
     author_email='magilyas.doma.09@list.ru',
     author='Маг Ильяс DOMA (MagIlyasDOMA)',
     description=desc,

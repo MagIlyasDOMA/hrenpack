@@ -1,4 +1,4 @@
-# Hrenpack v2.2.1
+# Hrenpack v2.2.2
 # Copyright (c) 2024-2025, Маг Ильяс DOMA (MagIlyasDOMA)
 # Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
 
@@ -18,6 +18,9 @@ class DjangoStyleFormMixin:
             else:
                 # Основной field
                 field_html = [str(field.label), f'\t{field}']
+
+                if field.type in ['BooleanField']:
+                    field_html.reverse()
 
                 # Help text
                 if hasattr(field, 'help_text') and field.help_text:
