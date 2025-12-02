@@ -148,9 +148,9 @@ def merging_dictionaries(*dicts: dict) -> dict:
     return output
 
 
-# -1 - pd to d
+# -1 - pseudo dict to dict
 # 0 - выполнять в любом случае
-# 1 - d to pd
+# 1 - dict to pseudo dict
 def pseudo_dictionary(input: tdl, not_edit_type: Literal[-1, 0, 1] = 0) -> tdl:
     if type(input) is dict and not_edit_type in (0, 1):
         output = list()

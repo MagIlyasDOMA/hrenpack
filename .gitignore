@@ -178,3 +178,4 @@ pypi_requirements.txt
 # indev files
 /indev/
 /archive/
+requirements.py

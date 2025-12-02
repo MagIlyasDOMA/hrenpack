@@ -3,6 +3,7 @@
 # Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
 
 from typing import Union, Optional, Literal
+from pathlib import Path
 from hrenpack.classes import range_plus
 
 
@@ -21,3 +22,4 @@ FivePointScale = Literal[*range_plus(5)]
 TenPointScale = Literal[*range_plus(10)]
 ZeroFivePointScale = literal_add(FivePointScale, 0)
 ZeroTenPointScale = literal_add(TenPointScale, 0)
+PathLike = Union[str, Path]

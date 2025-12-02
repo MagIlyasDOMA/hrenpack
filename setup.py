@@ -5,12 +5,37 @@
 from setuptools import setup, find_packages
 
 desc = '\n'.join(("Универсальная библиотека python для большинства задач", 'A universal python library for most tasks'))
-req = open('requirements.txt').read().split('\n')
 
+BASE_REQUIREMENTS = [
+    'filetype>=1.2.0',
+    'bs4>=0.0.2',
+    'chardet>=5.2.0',
+    'charset-normalizer>=3.4.4',
+    'requests>=2.32.5',
+    'tqdm>=4.67.1, <=5.0.0',
+    'bcrypt==5.0.0',
+    'screeninfo>=0.8.1',
+    'clipboard>=0.0.4',
+    'psutil'
+]
+
+FLASK_REQUIREMENTS = [
+    'flask>=3.1.2',
+    'flask-sqlalchemy>=3.1.1',
+    'flask-wtf>=1.2.2',
+    'jinja2>=3.1.6',
+    'markupsafe>=3.0.3',
+]
+
+REQUIREMENTS = {
+    'base': BASE_REQUIREMENTS,
+    'flask': BASE_REQUIREMENTS + FLASK_REQUIREMENTS,
+    'all': BASE_REQUIREMENTS + FLASK_REQUIREMENTS
+}
 
 setup(
     name='hrenpack',
-    version='2.1.2',
+    version='2.2.0',
     author_email='magilyas.doma.09@list.ru',
     author='Маг Ильяс DOMA (MagIlyasDOMA)',
     description=desc,
@@ -52,7 +77,8 @@ setup(
         Documentation="https://magilyasdoma.github.io/hrenpack/documentation.html",
     ),
     python_requires='>=3.10',
-    install_requires=req,
+    install_requires=BASE_REQUIREMENTS,
+    extras_require=REQUIREMENTS,
     package_data={'hrenpack': ['hrenpack/resources/*']},
     include_package_data=True
 )
