@@ -2,32 +2,13 @@
 # Copyright (c) 2024-2025, Маг Ильяс DOMA (MagIlyasDOMA)
 # Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
 
-from setuptools import setup, find_packages
+from pip_setuptools import setup, clean, find_packages, requirements, readme
 
 desc = '\n'.join(("Универсальная библиотека python для большинства задач", 'A universal python library for most tasks'))
 
-BASE_REQUIREMENTS = [
-    'filetype>=1.2.0',
-    'bs4>=0.0.2',
-    'chardet>=5.2.0',
-    'charset-normalizer>=3.4.4',
-    'requests>=2.32.5',
-    'tqdm>=4.67.1, <=5.0.0',
-    'bcrypt==5.0.0',
-    'screeninfo>=0.8.1',
-    'clipboard>=0.0.4',
-    'psutil'
-]
-
-IMAGE_REQUIREMENTS = ['Pillow']
-
-FLASK_REQUIREMENTS = [
-    'flask>=3.1.2',
-    'flask-sqlalchemy>=3.1.1',
-    'flask-wtf>=1.2.2',
-    'jinja2>=3.1.6',
-    'markupsafe>=3.0.3',
-]
+BASE_REQUIREMENTS = requirements()
+IMAGE_REQUIREMENTS = requirements('image_requirements.txt')
+FLASK_REQUIREMENTS = requirements('flask_requirements.txt')
 
 REQUIREMENTS = {
     'base': BASE_REQUIREMENTS,
@@ -36,9 +17,10 @@ REQUIREMENTS = {
     'all': BASE_REQUIREMENTS + FLASK_REQUIREMENTS + IMAGE_REQUIREMENTS
 }
 
+clean()
 setup(
     name='hrenpack',
-    version='2.2.2',
+    version='2.3.0',
     author_email='magilyas.doma.09@list.ru',
     author='Маг Ильяс DOMA (MagIlyasDOMA)',
     description=desc,
@@ -82,6 +64,5 @@ setup(
     python_requires='>=3.10',
     install_requires=BASE_REQUIREMENTS,
     extras_require=REQUIREMENTS,
-    package_data={'hrenpack': ['hrenpack/resources/*']},
     include_package_data=True
 )

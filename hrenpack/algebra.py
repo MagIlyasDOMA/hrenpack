@@ -1,6 +1,6 @@
-# Hrenpack v2.2.2
-# Copyright (c) 2024-2025, Маг Ильяс DOMA (MagIlyasDOMA)
-# Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
+from math import factorial
+from .classes import range_plus
+
 
 class ArithmeticProgression:
     def __init__(self, first: float, difference: float):
@@ -31,3 +31,15 @@ class GeometricProgression:
             return self.first
         return self.first * (self.denominator ** (n - 1))
 
+
+def subfactorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("n must be positive")
+    elif n == 0:
+        return 1
+    elif n == 1:
+        return 0
+    result = 0
+    for i in range_plus(n):
+        result += (-1 ** n) / factorial(i)
+    return factorial(n) * result

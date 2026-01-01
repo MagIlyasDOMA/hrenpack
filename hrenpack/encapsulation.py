@@ -1,7 +1,3 @@
-# Hrenpack v2.2.2
-# Copyright (c) 2024-2025, Маг Ильяс DOMA (MagIlyasDOMA)
-# Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
-
 import functools, inspect
 from abc import ABC, abstractmethod, abstractproperty, abstractclassmethod, abstractstaticmethod
 from hrenpack.listwork import get_from_dict, _is_tuple

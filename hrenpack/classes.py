@@ -1,9 +1,5 @@
-# Hrenpack v2.2.2
-# Copyright (c) 2024-2025, Маг Ильяс DOMA (MagIlyasDOMA)
-# Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
-
 import platform
-from typing import Union, Optional, Iterable
+from typing import Union, Optional, Iterable, Any
 from types import MethodType
 from dataclasses import dataclass
 from hrenpack.decorators import args_kwargs
@@ -560,4 +556,27 @@ class TransposedList:
         """Строковое представление транспонированных данных."""
         transposed = list(self)
         return str(transposed)
+
+
+class TupleDict:
+    def __init__(self, *args: tuple[Any, Any]):
+        self._data = list(args)
+
+    def to_dict(self) -> dict:
+        output = dict()
+        for key, value in self._data:
+            output[key] = value
+        return output
+
+    def __iter__(self):
+        return iter(self.to_dict())
+
+    def __getitem__(self, index):
+        return self.to_dict()[index]
+
+    def __setitem__(self, index, value):
+        self.to_dict()[index] = value
+
+    def __delitem__(self, index):
+        del self.to_dict()[index]
 

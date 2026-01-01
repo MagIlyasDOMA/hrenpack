@@ -8,3 +8,4 @@ bcrypt==5.0.0
 screeninfo>=0.8.1
 clipboard>=0.0.4
 psutil
+python-dotenv>=1.2.0

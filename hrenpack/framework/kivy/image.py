@@ -1,7 +1,3 @@
-# Hrenpack v2.2.2
-# Copyright (c) 2024-2025, Маг Ильяс DOMA (MagIlyasDOMA)
-# Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
-
 from kivy.uix.image import Image as KivyImage
 from kivy.graphics.svg import Svg
 from svglib.svglib import svg2rlg

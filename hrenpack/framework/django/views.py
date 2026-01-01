@@ -1,10 +1,7 @@
-# Hrenpack v2.2.2
-# Copyright (c) 2024-2025, Маг Ильяс DOMA (MagIlyasDOMA)
-# Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
-
 from typing import Any
 
 from django.conf import settings
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.db.models import Model
 from django.shortcuts import render, redirect
@@ -148,9 +145,18 @@ def create_logout_view(template_name: str, title: str = "Вы вышли из а
     return logout_view
 
 
+def create_logout_view_with_next():
+    def logout_view(request):
+        if request.user.is_authenticated:
+            logout(request)
+        return redirect(request.GET.get('next', '/'))
+    return logout_view
+
+
 class RegistrationView(CreateView):
     title = "Регистрация"
     model = get_user_model()
+    form_class = UserCreationForm
 
     def form_valid(self, form):
         response = super().form_valid(form)
