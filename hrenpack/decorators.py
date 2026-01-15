@@ -1,7 +1,49 @@
-import os, sys, logging
-from typing import Optional
+import os, sys, logging, warnings
+from typing import Optional, LiteralString
 from functools import wraps
 from hrenpack.listwork import key_in_dict
+
+
+if sys.version_info >= (3, 13):
+    from warnings import deprecated
+else:
+    class deprecated:
+        def __init__(self, message: LiteralString, /, *,
+                     category: type[Warning] = DeprecationWarning,
+                     stacklevel: int = 1):
+            self.message = message
+            self.category = category
+            self.stacklevel = stacklevel
+
+        def _decorate_function(self, func):
+            @wraps(func)
+            def wrapper(*args, **kwargs):
+                warnings.warn(self.message, self.category, self.stacklevel)
+                return func(*args, **kwargs)
+
+            wrapper.__deprecated__ = True
+            return wrapper
+
+        def _decorate_class(self, cls: type):
+            init = cls.__init__
+
+            @wraps(init)
+            def new_init(self, *args, **kwargs):
+                warnings.warn(self.message, self.category, self.stacklevel)
+                return init(self, *args, **kwargs)
+
+            cls.__init__ = new_init
+            cls.__deprecated__ = True
+            cls.__deprecated_message__ = self.message
+            return cls
+
+        def __call__(self, decorated):
+            if sys.version_info >= (3, 13):
+                return warnings.deprecated(self.message, category=self.category, stacklevel=self.stacklevel)(decorated)
+            elif isinstance(decorated, type):
+                return self._decorate_class(decorated)
+            else:
+                return self._decorate_function(decorated)
 
 
 def confirm(inp_text: str = "Вы уверены, что хотите выполнить эту программу?"):
@@ -83,28 +125,3 @@ def multi_decorator(*decorators):
             func = dec(func)
         return func
     return decorator
-
-
-# def super_method(*super_args, super_var_name__: Optional[str] = None, all_args__: bool = False, **super_kwargs):
-#     def decorator(func):
-#         def wrapper(*args, **kwargs):
-#             name = func.__name__
-#             code = f'super().{name}(*super_args, **super_kwargs)'
-#             if all_args__:
-#                 code = code.replace('super_', '')
-#             if super_var_name__:
-#                 code = super_var_name__ + ' = ' + code
-#             print(code)
-#             exec(code)
-#             return func(*args, **kwargs)
-#         return wrapper
-#     return decorator
-
-
-if __name__ == '__main__':
-    @confirm
-    def test():
-        print('Hello, world!')
-
-
-    test()

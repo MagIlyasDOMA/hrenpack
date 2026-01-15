@@ -1,31 +1,29 @@
-# Hrenpack v2.1.2
-# Copyright (c) 2024-2025, Маг Ильяс DOMA (MagIlyasDOMA)
-# Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)
-
-from pip_setuptools import setup, clean, find_packages, requirements, readme
+from pip_setuptools import setup, clean, find_packages, requirements
 
 desc = '\n'.join(("Универсальная библиотека python для большинства задач", 'A universal python library for most tasks'))
 
 BASE_REQUIREMENTS = requirements()
 IMAGE_REQUIREMENTS = requirements('image_requirements.txt')
 FLASK_REQUIREMENTS = requirements('flask_requirements.txt')
+FILETYPE_REQUIREMENTS = requirements('filetype_requirements.txt')
 
 REQUIREMENTS = {
     'base': BASE_REQUIREMENTS,
     'image': BASE_REQUIREMENTS + IMAGE_REQUIREMENTS,
     'flask': BASE_REQUIREMENTS + FLASK_REQUIREMENTS,
+    'filetype': BASE_REQUIREMENTS + FILETYPE_REQUIREMENTS,
     'all': BASE_REQUIREMENTS + FLASK_REQUIREMENTS + IMAGE_REQUIREMENTS
 }
 
 clean()
 setup(
     name='hrenpack',
-    version='2.3.0',
+    version='2.4.0',
     author_email='magilyas.doma.09@list.ru',
     author='Маг Ильяс DOMA (MagIlyasDOMA)',
     description=desc,
     license='MIT',
-    url='https://github.com/MagIlyas-DOMA/hrenpack',
+    url='https://github.com/MagIlyasDOMA/hrenpack',
     packages=find_packages(),
     classifiers=[
         'License :: OSI Approved :: MIT License',
@@ -58,7 +56,7 @@ setup(
         "Windows Server 2019+",
     ],
     project_urls=dict(
-        Source="https://github.com/MagIlyas-DOMA/hrenpack",
+        Source="https://github.com/MagIlyasDOMA/hrenpack",
         Documentation="https://magilyasdoma.github.io/hrenpack/documentation.html",
     ),
     python_requires='>=3.10',

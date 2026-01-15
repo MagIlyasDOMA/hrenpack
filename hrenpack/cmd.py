@@ -4,6 +4,7 @@ from hrenpack.listwork import split_list
 from typing import Union, List, Type
 from dataclasses import dataclass
 from pathlib import Path
+from .decorators import deprecated
 
 PathType = Union[str, Path]
 
@@ -117,6 +118,7 @@ def create_file_exist(path: str, space: bool = True, return_filename_and_path: b
 
     if return_filename_and_path:
         return FileNameInfo(new_path)
+    return None
 
 
 def edit_time(year: int = -1, month: int = -1, day: int = -1, hour: int = -1, minute: int = -1,
@@ -251,6 +253,7 @@ def uninstall_program(program_name):
         print(f'Ошибка при деинсталляции программы: {e}')
 
 
+@deprecated('This function has been moved to the filetype module.')
 def get_mime_type(path: str):
     kind = filetype.guess(path)
     if kind is None:
