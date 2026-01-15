@@ -1,4 +1,4 @@
-import os
+﻿import os
 from hrenpack.classes import range_plus
 from hrenpack.strwork import randstr
 from hrenpack.listwork import split_list
@@ -11,7 +11,7 @@ def credits():
     print("Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)")
 
 
-__version__ = '2.2.2'
+__version__ = '2.4.0'
 
 
 def print_message_set(value: bool = False):
