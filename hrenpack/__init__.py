@@ -7,11 +7,11 @@ from hrenpack.typings import *
 
 def credits():
     print("Hrenpack")
-    print("(c) Mag Ilyas DOMA, 2024-2025.")
+    print("(c) Mag Ilyas DOMA, 2024-2026.")
     print("Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)")
 
 
-__version__ = '2.4.0'
+__version__ = '2.4.1'
 
 
 def print_message_set(value: bool = False):
