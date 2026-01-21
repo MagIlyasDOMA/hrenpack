@@ -127,13 +127,7 @@ def if_dict_key(dct: dict, key):
 
 
 def split_list(input: Union[tuple, list], separator: str = ', '):
-    output = ''
-    for el in input:
-        if output == '':
-            output = str(el)
-        else:
-            output = f'{output}{separator}{el}'
-    return output
+    return separator.join(input)
 
 
 def merging_dictionaries(*dicts: dict) -> dict:
@@ -252,10 +246,9 @@ def list_tuple_to_str(input) -> str:
             output = f'({input[0]})'
         else:
             output = f'({input})'
-    except TypeError:
-        output = f'({input})'
-    finally:
         return output
+    except TypeError:
+        return f'({input})'
 
 
 def split_quotes(text: str, is_tuple: bool = False) -> tuplist:

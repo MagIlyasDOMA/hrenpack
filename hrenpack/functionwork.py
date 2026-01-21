@@ -14,3 +14,7 @@ def lambda_generator(func, *args, **kwargs):
 
 def callable_object(arg):
     return lambda: arg
+
+
+def empty_function(*args, **kwargs):
+    pass

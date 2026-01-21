@@ -1,5 +1,7 @@
 import functools, inspect
 from abc import ABC, abstractmethod, abstractproperty, abstractclassmethod, abstractstaticmethod
+
+from hrenpack.functionwork import empty_function
 from hrenpack.listwork import get_from_dict, _is_tuple
 
 
@@ -81,6 +83,7 @@ def inner_function():
 
 
 def protectedmethod(method):
+    @functools.wraps(method)
     def wrapper(*args, **kwargs):
         stack = inspect.stack()
         for frame in stack:
@@ -97,17 +100,26 @@ def privatemethod(method):
 
 
 def supermethod(method):
+    @functools.wraps(method)
     def wrapper(self, *args, **kwargs):
-        exec(f'super(type(self), self).{method.__name__}(*args, **kwargs)')
+        getattr(super(type(self), self), method.__name__, empty_function)(*args, **kwargs)
         return method(self, *args, **kwargs)
     return wrapper
 
 
 def supermethod_post(method):
+    @functools.wraps(method)
     def wrapper(self, *args, **kwargs):
         output = method(self, *args, **kwargs)
-        exec(f'super(type(self), self).{method.__name__}(*args, **kwargs)')
+        getattr(super(type(self), self), method.__name__, empty_function)(*args, **kwargs)
         return output
+    return wrapper
+
+
+def superonlymethod(method):
+    @functools.wraps(method)
+    def wrapper(self, *args, **kwargs):
+        return getattr(super(type(self), self), method.__name__, empty_function)(*args, **kwargs)
     return wrapper
 
 
