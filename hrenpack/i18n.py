@@ -20,9 +20,3 @@ def get_system_language() -> str:
         pass
 
     return env_lang or sys_lang or default_lang or 'en'
-
-
-
-
-
-

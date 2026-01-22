@@ -579,4 +579,3 @@ class TupleDict:
 
     def __delitem__(self, index):
         del self.to_dict()[index]
-

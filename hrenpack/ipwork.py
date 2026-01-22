@@ -47,4 +47,3 @@ def get_ipv4_addresses(exclude_localhost: bool = False) -> list:
             pass
 
     return ip_addresses
-

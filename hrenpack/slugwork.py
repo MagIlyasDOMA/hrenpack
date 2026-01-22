@@ -102,7 +102,3 @@ def slugify(data: str, translit_no_letters: bool = False) -> str:
     while data[-1] in ('-', '_'):
         data = data[:-1]
     return data
-
-
-if __name__ == '__main__':
-    print(slugify('АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ абвгдеёжзийклмнопрстуфхцчшщъыьэюя'))

@@ -302,4 +302,3 @@ class PackageIsDebug:
 
     def chdir(self):
         os.chdir(self.get_directory())
-

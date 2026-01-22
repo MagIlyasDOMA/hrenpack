@@ -1,5 +1,4 @@
-import importlib
-import pkgutil
+import importlib, pkgutil
 from importlib import import_module
 
 

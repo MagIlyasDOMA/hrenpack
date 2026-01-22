@@ -64,4 +64,3 @@ def detect_encoding(file_content):
         'ascii': 'utf-8'  # ASCII - подмножество UTF-8
     }
     return encoding_map.get(encoding, encoding)
-

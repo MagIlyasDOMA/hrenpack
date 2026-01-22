@@ -15,4 +15,3 @@ def is_process_running(process_name):
 def kill_process_if_is_running(process_name, *args, **kwargs):
     if is_process_running(process_name):
         subprocess.run(('taskkill', *args), **kwargs)
-

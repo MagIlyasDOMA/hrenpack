@@ -55,7 +55,3 @@ def get_refresh_rate():
         return win32api.EnumDisplaySettings(None, win32con.ENUM_CURRENT_SETTINGS).DisplayFrequency
     else:
         raise OSError("Данная функция работает только на Windows")
-
-
-if __name__ == '__main__':
-    print(get_refresh_rate())
