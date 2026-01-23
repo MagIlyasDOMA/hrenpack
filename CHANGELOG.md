@@ -8,7 +8,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased] / [In Development]
-
 ### Planned
 - Migration to Python 3.13+
 - Removal of deprecated functions `Fand`, `For`, `switch_For`, `get_mime_type`
@@ -16,7 +15,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## [2.5.2] - 2026-01-23
-
 ### Deprecated ⚠️
 - Functions `Fand`, `For` and `switch_For` in `boolwork.py` are now deprecated
 - Function `null` in `__init__.py` is now deprecated
@@ -27,7 +25,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## [2.5.1] - 2026-01-22
-
 ### Changed 🔧
 - Removed unnecessary line breaks in source files for better readability
 
@@ -37,7 +34,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## [2.5.0] - 2026-01-21
-
 ### Added ✨
 - New module `argparse_plus.py` with enhanced command-line argument parsing
 - Module `iterwork.py` for working with iterators and generators
@@ -56,7 +52,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## [2.4.1] - 2026-01-16
-
 ### Added ✨
 - New module `i18n.py` for internationalization and localization
 
@@ -66,7 +61,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## [2.4.0] - 2026-01-15
-
 ### Added ✨
 - Decorator `deprecated` in `decorators.py` (fully works on Python 3.13+)
 - New module `filetype.py` for file type detection
@@ -84,7 +78,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## [2.3.0] - 2026-01-01
-
 ### Changed 🔧
 - Removed copyright notices from file headers to reduce package size
 
@@ -101,33 +94,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## [2.2.2] - 2025-12-02
-
 ### Fixed 🐛
 - Removed unnecessary list reversal in `framework/flask/forms/mixins.py` in `as_p` method of `DjangoStyleFormMixin` class
 
 ---
 
 ## [2.2.1] - 2025-12-02
-
 ### Fixed 🐛
 - Fixed bug causing an error in `listwork.py`
 
 ---
 
 ## [2.2.0] - 2025-12-02
-
 ### Added ✨
 - Added `flask` package to `framework` for Flask integration
 
 ---
 
 ## [2.1.2] - 2025-11-28 🎉
-
 ### Added ✨
 First stable version of `hrenpack`!
 
 ### 📦 Package Contents
-
 #### Core Modules:
 - **Core**: `__init__`, `algebra`, `boolwork`, `charset`, `classes`
 - **System**: `clipboard_work`, `cmd`, `windows_registry`
@@ -147,7 +135,6 @@ First stable version of `hrenpack`!
   - `tkinter` - standard GUI
 
 ### ⚙️ Requirements
-
 #### Core:
 - **Python**: 3.10+
 - **Django**: 5.2+ (for `framework/django/` modules)
@@ -184,7 +171,6 @@ Use version 2.1.2 or higher for production environments.
 и проект придерживается [Семантического Версионирования](https://semver.org/).
 
 ## [Невыпущенное] / [В разработке]
-
 ### Планируется
 - Миграция на Python 3.13+
 - Удаление устаревших функций `Fand`, `For`, `switch_For`, `get_mime_type`
@@ -192,7 +178,6 @@ Use version 2.1.2 or higher for production environments.
 ---
 
 ## [2.5.2] - 2026-01-23
-
 ### Устарело ⚠️
 - Функции `Fand`, `For` и `switch_For` в `boolwork.py` объявлены устаревшими
 - Функция `null` в `__init__.py` объявлена устаревшей
@@ -203,7 +188,6 @@ Use version 2.1.2 or higher for production environments.
 ---
 
 ## [2.5.1] - 2026-01-22
-
 ### Изменено 🔧
 - Убраны лишние переносы строки в исходных файлах для улучшения читаемости
 
@@ -213,7 +197,6 @@ Use version 2.1.2 or higher for production environments.
 ---
 
 ## [2.5.0] - 2026-01-21
-
 ### Добавлено ✨
 - Новый модуль `argparse_plus.py` с расширенным парсингом аргументов командной строки
 - Модуль `iterwork.py` для работы с итераторами и генераторами
@@ -232,7 +215,6 @@ Use version 2.1.2 or higher for production environments.
 ---
 
 ## [2.4.1] - 2026-01-16
-
 ### Добавлено ✨
 - Новый модуль `i18n.py` для интернационализации и локализации
 
@@ -242,7 +224,6 @@ Use version 2.1.2 or higher for production environments.
 ---
 
 ## [2.4.0] - 2026-01-15
-
 ### Добавлено ✨
 - Декоратор `deprecated` в `decorators.py` (полностью работает на Python 3.13+)
 - Новый модуль `filetype.py` для определения типов файлов
@@ -260,7 +241,6 @@ Use version 2.1.2 or higher for production environments.
 ---
 
 ## [2.3.0] - 2026-01-01
-
 ### Изменено 🔧
 - Убраны копирайты из начала файлов для уменьшения размера пакета
 
@@ -277,33 +257,28 @@ Use version 2.1.2 or higher for production environments.
 ---
 
 ## [2.2.2] - 2025-12-02
-
 ### Исправлено 🐛
 - Убран лишний реверс списка в `framework/flask/forms/mixins.py` в методе `as_p` класса `DjangoStyleFormMixin`
 
 ---
 
 ## [2.2.1] - 2025-12-02
-
 ### Исправлено 🐛
 - Исправлен баг, вызывавший ошибку в `listwork.py`
 
 ---
 
 ## [2.2.0] - 2025-12-02
-
 ### Добавлено ✨
 - Добавлен пакет `flask` в `framework` для интеграции с Flask
 
 ---
 
 ## [2.1.2] - 2025-11-28 🎉
-
 ### Добавлено ✨
 Первая стабильная версия `hrenpack`!
 
 ### 📦 Содержание пакета
-
 #### Основные модули:
 - **Ядро**: `__init__`, `algebra`, `boolwork`, `charset`, `classes`
 - **Системные**: `clipboard_work`, `cmd`, `windows_registry`
@@ -323,7 +298,6 @@ Use version 2.1.2 or higher for production environments.
   - `tkinter` - стандартный GUI
 
 ### ⚙️ Требования
-
 #### Основные:
 - **Python**: 3.10+
 - **Django**: 5.2+ (для модулей `framework/django/`)
