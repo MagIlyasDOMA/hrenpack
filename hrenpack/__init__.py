@@ -1,5 +1,7 @@
 ﻿import os
 from hrenpack.classes import range_plus
+from hrenpack.decorators import deprecated
+from hrenpack.functionwork import empty_function
 from hrenpack.strwork import randstr
 from hrenpack.listwork import split_list
 from hrenpack.typings import *
@@ -45,11 +47,12 @@ def write(path, text):
     file.close()
 
 
+@deprecated
 def null():
     pass
 
 
-def switch(variable, case: dict, default=null):
+def switch(variable, case: dict, default=empty_function):
     for key in case:
         func = case[key]
         if variable == key:
