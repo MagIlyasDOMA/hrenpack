@@ -1,4 +1,182 @@
+<a id="clen"></a>
 # Changelog
+[Changelog на русском](#clru)
+
+All changes in this project are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/),
+and this project adheres to [Semantic Versioning](https://semver.org/).
+
+## [Unreleased] / [In Development]
+
+### Planned
+- Migration to Python 3.13+
+- Removal of deprecated functions `Fand`, `For`, `switch_For`, `get_mime_type`
+
+---
+
+## [2.5.2] - 2026-01-23
+
+### Deprecated ⚠️
+- Functions `Fand`, `For` and `switch_For` in `boolwork.py` are now deprecated
+- Function `null` in `__init__.py` is now deprecated
+
+### Fixed 🐛
+- Optimized the `non_print` decorator in `decorators.py`
+
+---
+
+## [2.5.1] - 2026-01-22
+
+### Changed 🔧
+- Removed unnecessary line breaks in source files for better readability
+
+### Dependencies 📦
+- Updated `pip-setuptools` version from `>=1.1.3` to `>=1.1.4` in dev_requirements
+
+---
+
+## [2.5.0] - 2026-01-21
+
+### Added ✨
+- New module `argparse_plus.py` with enhanced command-line argument parsing
+- Module `iterwork.py` for working with iterators and generators
+- Decorator `superonlymethod` in `encapsulation.py` for methods for false method overriding
+- Function `empty_function(*args, **kwargs)` in `functionwork.py` as a universal stub
+
+### Fixed 🐛
+- Fixed bugs in `encapsulation.py` and `listwork.py`
+- Python 3.14 compatibility issues
+
+### Dependencies 📦
+- Added development extras:
+  - `[dev]`, `[dev_base]`, `[dev_image]`, `[dev_flask]`
+  - `[dev_filetype]`, `[dev_all]`, `[dev_full]`
+
+---
+
+## [2.4.1] - 2026-01-16
+
+### Added ✨
+- New module `i18n.py` for internationalization and localization
+
+### Dependencies 📦
+- Added `python-gettext~5.0` and `pathlike-typing` to base requirements
+
+---
+
+## [2.4.0] - 2026-01-15
+
+### Added ✨
+- Decorator `deprecated` in `decorators.py` (fully works on Python 3.13+)
+- New module `filetype.py` for file type detection
+
+### Removed 🗑️
+- Constant `RGB` removed from `constants.py` module
+
+### Deprecated ⚠️
+- Function `get_mime_type` in `cmd.py` is now deprecated (use `filetype` instead)
+
+### Dependencies 📦
+- `filetype` module removed from base requirements
+- Added `[filetype]` extra for optional installation
+
+---
+
+## [2.3.0] - 2026-01-01
+
+### Changed 🔧
+- Removed copyright notices from file headers to reduce package size
+
+### Added ✨
+- Function `subfactorial` in `algebra.py` for calculating subfactorials
+- Class `TupleDict` in `classes.py` for pseudo-dictionaries (lists with two-element tuples)
+- New modules `framework/django/db.py` and `framework/django/urls.py`
+- Function `create_logout_view_with_next()` in `framework/django/views.py`
+- Module `ipwork.py` for working with IP addresses
+
+### Updated 🔄
+- Changed form class to `UserCreationForm` in `RegistrationView` (`framework/django/views.py`)
+
+---
+
+## [2.2.2] - 2025-12-02
+
+### Fixed 🐛
+- Removed unnecessary list reversal in `framework/flask/forms/mixins.py` in `as_p` method of `DjangoStyleFormMixin` class
+
+---
+
+## [2.2.1] - 2025-12-02
+
+### Fixed 🐛
+- Fixed bug causing an error in `listwork.py`
+
+---
+
+## [2.2.0] - 2025-12-02
+
+### Added ✨
+- Added `flask` package to `framework` for Flask integration
+
+---
+
+## [2.1.2] - 2025-11-28 🎉
+
+### Added ✨
+First stable version of `hrenpack`!
+
+### 📦 Package Contents
+
+#### Core Modules:
+- **Core**: `__init__`, `algebra`, `boolwork`, `charset`, `classes`
+- **System**: `clipboard_work`, `cmd`, `windows_registry`
+- **Utilities**: `constants`, `decorators`, `functionwork`, `hashwork`
+- **Data Processing**: `strwork`, `slugwork`, `listwork`, `numwork`
+- **Network & Interface**: `network`, `resolution`, `print_color`
+- **Types & Management**: `type_define`, `typings`, `taskmgr`, `encapsulation`, `kwargswork`
+
+#### Sublibraries:
+- `custom_methods` - additional methods for existing objects
+- `filework` - file and filesystem operations
+- `framework` - integrations with popular frameworks:
+  - `Pyside6` - Qt applications
+  - `Kivy` - cross-platform mobile applications
+  - `Django` - web framework
+  - `pygame` - game development
+  - `tkinter` - standard GUI
+
+### ⚙️ Requirements
+
+#### Core:
+- **Python**: 3.10+
+- **Django**: 5.2+ (for `framework/django/` modules)
+- **Flask**: 3.1.2+ (for `framework/flask/` modules)
+
+#### Installation:
+```shell
+# Basic installation
+pip install hrenpack
+
+# With additional features
+pip install hrenpack[filetype]
+pip install hrenpack[dev]
+```
+
+Full list of dependencies available in [requirements files](https://github.com/MagIlyasDOMA/hrenpack/tree/main/requirements)
+
+---
+
+## [1.0.0 - 2.1.1] - Unstable Versions
+#### Note
+These versions were unstable and are not recommended for installation.
+
+Use version 2.1.2 or higher for production environments.
+
+
+<a id="clru"></a>
+# Changelog
+[Changelog in English](#clen)
 
 Все изменения в этом проекте документируются в этом файле.
 
@@ -168,5 +346,6 @@ pip install hrenpack[dev]
 ## [1.0.0 - 2.1.1] - Нестабильные версии
 ### Примечание
 Данные версии были нестабильными и не рекомендуются к установке.
+
 Используйте версию 2.1.2 или выше для production-окружений.
 
