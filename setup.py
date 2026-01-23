@@ -38,6 +38,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: Microsoft :: Windows :: Windows 10',
         'Operating System :: Microsoft :: Windows :: Windows 11',
+        'Operating System :: OS Independent',
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'Programming Language :: Python :: 3',
@@ -63,6 +64,7 @@ setup(
         "Windows 10",
         "Windows 11",
         "Windows Server 2019+",
+        "Linux"
     ],
     project_urls=dict(
         Source="https://github.com/MagIlyasDOMA/hrenpack",
