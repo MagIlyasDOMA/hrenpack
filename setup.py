@@ -2,11 +2,11 @@ from pip_setuptools import setup, clean, find_packages, requirements
 
 desc = '\n'.join(("Универсальная библиотека python для большинства задач", 'A universal python library for most tasks'))
 
-BASE_REQUIREMENTS = requirements()
-IMAGE_REQUIREMENTS = requirements('image_requirements.txt')
-FLASK_REQUIREMENTS = requirements('flask_requirements.txt')
-FILETYPE_REQUIREMENTS = requirements('filetype_requirements.txt')
-BASE_DEV_REQUIREMENTS = BASE_REQUIREMENTS + requirements('dev_requirements.txt')
+BASE_REQUIREMENTS = requirements('requirements/requirements.txt')
+IMAGE_REQUIREMENTS = requirements('requirements/image_requirements.txt')
+FLASK_REQUIREMENTS = requirements('requirements/flask_requirements.txt')
+FILETYPE_REQUIREMENTS = requirements('requirements/filetype_requirements.txt')
+BASE_DEV_REQUIREMENTS = BASE_REQUIREMENTS + requirements('requirements/dev_requirements.txt')
 FULL_DEV_REQUIREMENTS = BASE_DEV_REQUIREMENTS + IMAGE_REQUIREMENTS + FLASK_REQUIREMENTS + FILETYPE_REQUIREMENTS
 
 REQUIREMENTS = {
