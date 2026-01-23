@@ -1,5 +1,6 @@
 import os, sys, logging, warnings
 from typing import Optional, LiteralString
+from contextlib import redirect_stdout, nullcontext
 from functools import wraps
 from hrenpack.listwork import key_in_dict
 
@@ -66,14 +67,8 @@ def confirm(inp_text: str = "Вы уверены, что хотите выпол
 def non_print(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        with open(os.devnull, 'w') as devnull:
-            old_stdout = sys.stdout
-            sys.stdout = devnull
-            try:
-                f = func(*args, **kwargs)
-            finally:
-                sys.stdout = old_stdout
-                return f
+        with redirect_stdout(nullcontext()):
+            return func(*args, **kwargs)
     return wrapper
 
 

@@ -1,4 +1,5 @@
 from typing import Union, Literal
+from hrenpack.decorators import deprecated
 
 stb = Union[str, bool]
 tdl = Union[tuple, list, dict]
@@ -43,6 +44,7 @@ def bool_list_count(input: tdl) -> dict:
     return TrueFalse
 
 
+@deprecated('This function is deprecated, use all() instead')
 def Fand(*questions: bool):
     output = True
     for b in questions:
@@ -52,6 +54,7 @@ def Fand(*questions: bool):
     return output
 
 
+@deprecated('This function is deprecated, use any() instead')
 def For(*questions: bool):
     output = False
     for b in questions:
@@ -61,6 +64,7 @@ def For(*questions: bool):
     return output
 
 
+@deprecated('This function is deprecated')
 def switch_For(variable, *values):
     return variable in values
 
