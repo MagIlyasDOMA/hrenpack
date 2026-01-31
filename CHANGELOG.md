@@ -14,6 +14,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.5.3] - 2026-01-31
+### Changed 🔧
+- Enhanced setup.py with development workflow improvements
+
+### Dependencies 📦
+- Development workflow improvements for better pip/setuptools integration
+
+---
+
 ## [2.5.2] - 2026-01-23
 ### Deprecated ⚠️
 - Functions `Fand`, `For` and `switch_For` in `boolwork.py` are now deprecated
@@ -177,6 +186,15 @@ Use version 2.1.2 or higher for production environments.
 
 ---
 
+## [2.5.3] - 2026-01-31
+### Изменено 🔧
+- Улучшен setup.py с улучшениями рабочего процесса разработки
+
+### Зависимости 📦
+- Улучшения рабочего процесса разработки для лучшей интеграции с pip/setuptools
+
+---
+
 ## [2.5.2] - 2026-01-23
 ### Устарело ⚠️
 - Функции `Fand`, `For` и `switch_For` в `boolwork.py` объявлены устаревшими
@@ -322,4 +340,3 @@ pip install hrenpack[dev]
 Данные версии были нестабильными и не рекомендуются к установке.
 
 Используйте версию 2.1.2 или выше для production-окружений.
-

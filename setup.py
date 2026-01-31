@@ -1,12 +1,25 @@
+from datetime import datetime
 from pip_setuptools import setup, clean, find_packages, requirements
+from setuptools.command.develop import develop
 
 desc = '\n'.join(reversed(('Универсальная библиотека python для большинства задач', 'A universal python library for most tasks')))
+
+
+class Develop(develop):
+    def run(self):
+        # Устанавливаем специальную версию для develop
+        self.distribution.metadata.version = self.get_dev_version()
+        super().run()
+
+    def get_dev_version(self):
+        return str(self.distribution.metadata.version) + f'-build-{datetime.now().strftime("%Y-%m-%d-%H-%M-%S")}'
 
 BASE_REQUIREMENTS = requirements('requirements/requirements.txt')
 IMAGE_REQUIREMENTS = requirements('requirements/image_requirements.txt')
 FLASK_REQUIREMENTS = requirements('requirements/flask_requirements.txt')
 FILETYPE_REQUIREMENTS = requirements('requirements/filetype_requirements.txt')
-BASE_DEV_REQUIREMENTS = BASE_REQUIREMENTS + requirements('requirements/dev_requirements.txt')
+DEV_REQUIREMENTS = requirements('requirements/dev_requirements.txt')
+BASE_DEV_REQUIREMENTS = BASE_REQUIREMENTS + BASE_REQUIREMENTS
 FULL_DEV_REQUIREMENTS = BASE_DEV_REQUIREMENTS + IMAGE_REQUIREMENTS + FLASK_REQUIREMENTS + FILETYPE_REQUIREMENTS
 
 REQUIREMENTS = dict(
@@ -27,13 +40,14 @@ REQUIREMENTS = dict(
 clean()
 setup(
     name='hrenpack',
-    version='2.5.2',
+    version='2.5.3',
     author_email='magilyas.doma.09@list.ru',
     author='Маг Ильяс DOMA (MagIlyasDOMA)',
     description=desc,
     license='MIT',
     url='https://github.com/MagIlyasDOMA/hrenpack',
     packages=find_packages(),
+    setup_requires=DEV_REQUIREMENTS,
     classifiers=[
         'License :: OSI Approved :: MIT License',
         'Operating System :: Microsoft :: Windows :: Windows 10',
@@ -74,5 +88,8 @@ setup(
     python_requires='>=3.10',
     install_requires=BASE_REQUIREMENTS,
     extras_require=REQUIREMENTS,
-    include_package_data=True
+    include_package_data=True,
+    cmdclass=dict(
+        develop=Develop,
+    ),
 )
