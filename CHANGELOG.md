@@ -21,7 +21,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Dependencies 📦
 - Development workflow improvements for better pip/setuptools integration
 
----
 
 ## [2.5.2] - 2026-01-23
 ### Deprecated ⚠️
@@ -31,7 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Fixed 🐛
 - Optimized the `non_print` decorator in `decorators.py`
 
----
 
 ## [2.5.1] - 2026-01-22
 ### Changed 🔧
@@ -40,7 +38,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Dependencies 📦
 - Updated `pip-setuptools` version from `>=1.1.3` to `>=1.1.4` in dev_requirements
 
----
 
 ## [2.5.0] - 2026-01-21
 ### Added ✨
@@ -58,7 +55,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   - `[dev]`, `[dev_base]`, `[dev_image]`, `[dev_flask]`
   - `[dev_filetype]`, `[dev_all]`, `[dev_full]`
 
----
 
 ## [2.4.1] - 2026-01-16
 ### Added ✨
@@ -67,7 +63,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Dependencies 📦
 - Added `python-gettext~5.0` and `pathlike-typing` to base requirements
 
----
 
 ## [2.4.0] - 2026-01-15
 ### Added ✨
@@ -84,7 +79,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - `filetype` module removed from base requirements
 - Added `[filetype]` extra for optional installation
 
----
 
 ## [2.3.0] - 2026-01-01
 ### Changed 🔧
@@ -100,25 +94,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Updated 🔄
 - Changed form class to `UserCreationForm` in `RegistrationView` (`framework/django/views.py`)
 
----
 
 ## [2.2.2] - 2025-12-02
 ### Fixed 🐛
 - Removed unnecessary list reversal in `framework/flask/forms/mixins.py` in `as_p` method of `DjangoStyleFormMixin` class
 
----
 
 ## [2.2.1] - 2025-12-02
 ### Fixed 🐛
 - Fixed bug causing an error in `listwork.py`
 
----
 
 ## [2.2.0] - 2025-12-02
 ### Added ✨
 - Added `flask` package to `framework` for Flask integration
 
----
 
 ## [2.1.2] - 2025-11-28 🎉
 ### Added ✨
@@ -169,6 +159,7 @@ These versions were unstable and are not recommended for installation.
 
 Use version 2.1.2 or higher for production environments.
 
+---
 
 <a id="clru"></a>
 # Changelog
@@ -193,7 +184,6 @@ Use version 2.1.2 or higher for production environments.
 ### Зависимости 📦
 - Улучшения рабочего процесса разработки для лучшей интеграции с pip/setuptools
 
----
 
 ## [2.5.2] - 2026-01-23
 ### Устарело ⚠️
@@ -203,7 +193,6 @@ Use version 2.1.2 or higher for production environments.
 ### Исправлено 🐛
 - Оптимизирован декоратор `non_print` в `decorators.py`
 
----
 
 ## [2.5.1] - 2026-01-22
 ### Изменено 🔧
@@ -212,7 +201,6 @@ Use version 2.1.2 or higher for production environments.
 ### Зависимости 📦
 - Обновлена версия `pip-setuptools` с `>=1.1.3` на `>=1.1.4` в dev_requirements
 
----
 
 ## [2.5.0] - 2026-01-21
 ### Добавлено ✨
@@ -230,7 +218,6 @@ Use version 2.1.2 or higher for production environments.
   - `[dev]`, `[dev_base]`, `[dev_image]`, `[dev_flask]`
   - `[dev_filetype]`, `[dev_all]`, `[dev_full]`
 
----
 
 ## [2.4.1] - 2026-01-16
 ### Добавлено ✨
@@ -239,7 +226,6 @@ Use version 2.1.2 or higher for production environments.
 ### Зависимости 📦
 - Добавлены `python-gettext~5.0` и `pathlike-typing` в базовые требования
 
----
 
 ## [2.4.0] - 2026-01-15
 ### Добавлено ✨
@@ -256,7 +242,6 @@ Use version 2.1.2 or higher for production environments.
 - Модуль `filetype` удален из базовых requirements
 - Добавлен экстра `[filetype]` для опциональной установки
 
----
 
 ## [2.3.0] - 2026-01-01
 ### Изменено 🔧
@@ -272,25 +257,21 @@ Use version 2.1.2 or higher for production environments.
 ### Обновлено 🔄
 - Изменен класс формы на `UserCreationForm` в представлении `RegistrationView` (`framework/django/views.py`)
 
----
 
 ## [2.2.2] - 2025-12-02
 ### Исправлено 🐛
 - Убран лишний реверс списка в `framework/flask/forms/mixins.py` в методе `as_p` класса `DjangoStyleFormMixin`
 
----
 
 ## [2.2.1] - 2025-12-02
 ### Исправлено 🐛
 - Исправлен баг, вызывавший ошибку в `listwork.py`
 
----
 
 ## [2.2.0] - 2025-12-02
 ### Добавлено ✨
 - Добавлен пакет `flask` в `framework` для интеграции с Flask
 
----
 
 ## [2.1.2] - 2025-11-28 🎉
 ### Добавлено ✨

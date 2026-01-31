@@ -14,6 +14,7 @@ class Develop(develop):
     def get_dev_version(self):
         return str(self.distribution.metadata.version) + f'-build-{datetime.now().strftime("%Y-%m-%d-%H-%M-%S")}'
 
+
 BASE_REQUIREMENTS = requirements('requirements/requirements.txt')
 IMAGE_REQUIREMENTS = requirements('requirements/image_requirements.txt')
 FLASK_REQUIREMENTS = requirements('requirements/flask_requirements.txt')
