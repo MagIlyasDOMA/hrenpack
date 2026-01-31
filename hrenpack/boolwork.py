@@ -1,5 +1,5 @@
+import warnings
 from typing import Union, Literal
-from hrenpack.decorators import deprecated
 
 stb = Union[str, bool]
 tdl = Union[tuple, list, dict]
@@ -44,8 +44,8 @@ def bool_list_count(input: tdl) -> dict:
     return TrueFalse
 
 
-@deprecated('This function is deprecated, use all() instead')
 def Fand(*questions: bool):
+    warnings.warn('This function is deprecated, use all() instead', DeprecationWarning, 2)
     output = True
     for b in questions:
         if not b:
@@ -54,8 +54,8 @@ def Fand(*questions: bool):
     return output
 
 
-@deprecated('This function is deprecated, use any() instead')
 def For(*questions: bool):
+    warnings.warn('This function is deprecated, use any() instead', DeprecationWarning, 2)
     output = False
     for b in questions:
         if b:
@@ -64,8 +64,8 @@ def For(*questions: bool):
     return output
 
 
-@deprecated('This function is deprecated')
 def switch_For(variable, *values):
+    warnings.warn('This function is deprecated', DeprecationWarning, 2)
     return variable in values
 
 
@@ -77,23 +77,19 @@ def str_to_bool_soft(input: stb, return_false: bool = False):
 
 
 def for_in(variable, mode: Literal['in', '==', 'is'], *values) -> bool:
-    output = False
     if mode == 'in':
         for value in values:
             if value in variable:
-                output = True
-                break
+                return True
     elif mode == 'is':
         for value in values:
             if value is variable:
-                output = True
-                break
+                return True
     else:
         for value in values:
             if value == variable:
-                output = True
-                break
-    return output
+                return True
+    return False
 
 
 def equals_all(*args) -> bool:

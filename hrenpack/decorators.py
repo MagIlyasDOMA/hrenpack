@@ -9,6 +9,8 @@ if sys.version_info >= (3, 13):
     from warnings import deprecated
 else:
     class deprecated:
+        warnings.warn('Use warnings.deprecated or DeprecatedWarning instead', DeprecationWarning, stacklevel=2)
+
         def __init__(self, message: LiteralString, /, *,
                      category: type[Warning] = DeprecationWarning,
                      stacklevel: int = 1):

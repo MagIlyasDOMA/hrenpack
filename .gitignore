@@ -181,3 +181,4 @@ pypi_requirements.txt
 requirements.py
 token
 dev_script.py
+test.py

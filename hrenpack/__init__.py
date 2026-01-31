@@ -1,4 +1,4 @@
-﻿import os
+﻿import os, warnings
 from hrenpack.classes import range_plus
 from hrenpack.decorators import deprecated
 from hrenpack.functionwork import empty_function
@@ -13,7 +13,7 @@ def credits():
     print("Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)")
 
 
-__version__ = '2.5.3'
+__version__ = '2.5.4'
 
 
 def print_message_set(value: bool = False):
@@ -47,9 +47,8 @@ def write(path, text):
     file.close()
 
 
-@deprecated
 def null():
-    pass
+    warnings.warn('Use functionwork.empty_function', DeprecationWarning, stacklevel=2)
 
 
 def switch(variable, case: dict, default=empty_function):

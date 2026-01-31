@@ -14,6 +14,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.5.4] - 2026-02-01
+### Deprecated ⚠️
+- The `deprecated` decorator in `decorators.py` has been deprecated
+
+### Fixed 🐛
+- Optimized the `for_in` function in `boolwork.py`
+- Fixed deprecation from the `@deprecated` decorator to `warnings.warn`
+
 ## [2.5.3] - 2026-01-31
 ### Changed 🔧
 - Enhanced setup.py with development workflow improvements
@@ -176,6 +184,14 @@ Use version 2.1.2 or higher for production environments.
 - Удаление устаревших функций `Fand`, `For`, `switch_For`, `get_mime_type`
 
 ---
+
+## [2.5.4] - 2026-02-01
+### Устарело ⚠️
+- Декоратор `deprecated` в `decorators.py` объявлен устаревшим
+
+### Исправлено 🐛
+- Оптимизирована функция `for_in` в `boolwork.py`
+- Исправлено устаревание с декоратора `@deprecated` на `warnings.warn`
 
 ## [2.5.3] - 2026-01-31
 ### Изменено 🔧

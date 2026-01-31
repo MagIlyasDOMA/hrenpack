@@ -1,10 +1,9 @@
-import os, ctypes, shutil, getpass, platform, random, string, subprocess, filetype
+import os, ctypes, shutil, getpass, platform, random, string, subprocess, filetype, warnings
 from datetime import datetime
 from hrenpack.listwork import split_list
 from typing import Union, List, Type
 from dataclasses import dataclass
 from pathlib import Path
-from .decorators import deprecated
 
 PathType = Union[str, Path]
 
@@ -253,8 +252,8 @@ def uninstall_program(program_name):
         print(f'Ошибка при деинсталляции программы: {e}')
 
 
-@deprecated('This function has been moved to the filetype module.')
 def get_mime_type(path: str):
+    warnings.warn('This function has been moved to the filetype module', DeprecationWarning, 2)
     kind = filetype.guess(path)
     if kind is None:
         if get_extension(path) == 'txt':
