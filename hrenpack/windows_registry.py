@@ -1,4 +1,5 @@
 import platform
+from hrenpack import ThemeType
 
 if platform.system() == 'Windows':
     import winreg
@@ -43,5 +44,60 @@ if platform.system() == 'Windows':
         for key in value_names:
             values = value_names[key]
             remove_registry_values(hive, key, *values)
+
+
+    def get_windows_theme() -> ThemeType:
+        """
+        Определяет тему Windows (светлая/темная)
+        Возвращает: 'dark' или 'light'
+        """
+        try:
+            # Путь к настройкам персонализации в реестре
+            key_path = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize"
+            key_name = "AppsUseLightTheme"  # 0 - темная, 1 - светлая
+
+            # Открываем ключ реестра
+            key = winreg.OpenKey(
+                winreg.HKEY_CURRENT_USER,
+                key_path,
+                0,
+                winreg.KEY_READ
+            )
+
+            # Читаем значение
+            value, _ = winreg.QueryValueEx(key, key_name)
+            winreg.CloseKey(key)
+
+            return 'light' if value == 1 else 'dark'
+
+        except Exception as e:
+            print(f"Ошибка при чтении реестра: {e}")
+            return 'light'
+
+
+    def get_system_theme():
+        """
+        Определяет системную тему Windows
+        Возвращает: 'dark' или 'light'
+        """
+        try:
+            key_path = r"SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize"
+            key_name = "SystemUsesLightTheme"  # Системная тема
+
+            key = winreg.OpenKey(
+                winreg.HKEY_CURRENT_USER,
+                key_path,
+                0,
+                winreg.KEY_READ
+            )
+
+            value, _ = winreg.QueryValueEx(key, key_name)
+            winreg.CloseKey(key)
+
+            return 'light' if value == 1 else 'dark'
+
+        except Exception:
+            # Если не нашли системную тему, используем тему приложений
+            return get_windows_theme()
 else:
     raise ImportError('windows_registry is only supported on Windows')

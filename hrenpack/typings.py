@@ -19,3 +19,4 @@ FivePointScale = Literal[*range_plus(5)]
 TenPointScale = Literal[*range_plus(10)]
 ZeroFivePointScale = literal_add(FivePointScale, 0)
 ZeroTenPointScale = literal_add(TenPointScale, 0)
+ThemeType = Literal['light', 'dark']
