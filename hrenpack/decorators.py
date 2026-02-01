@@ -9,7 +9,7 @@ if sys.version_info >= (3, 13):
     from warnings import deprecated
 else:
     class deprecated:
-        warnings.warn('Use warnings.deprecated or DeprecatedWarning instead', DeprecationWarning, stacklevel=2)
+        warnings.warn('This decorator will be removed in version 3.0.0, use warnings.deprecated or DeprecatedWarning instead', DeprecationWarning, stacklevel=2)
 
         def __init__(self, message: LiteralString, /, *,
                      category: type[Warning] = DeprecationWarning,

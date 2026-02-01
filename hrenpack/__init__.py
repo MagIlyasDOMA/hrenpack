@@ -13,7 +13,7 @@ def credits():
     print("Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)")
 
 
-__version__ = '2.5.5'
+__version__ = '2.5.6'
 
 
 def print_message_set(value: bool = False):
@@ -48,7 +48,7 @@ def write(path, text):
 
 
 def null():
-    warnings.warn('Use functionwork.empty_function', DeprecationWarning, stacklevel=2)
+    warnings.warn('This function will be removed in version 3.0.0, use functionwork.empty_function instead', DeprecationWarning, 2)
 
 
 def switch(variable, case: dict, default=empty_function):
@@ -69,6 +69,7 @@ def bincode_generator(length: int, isInt: bool = False):
 
 
 def show_help(path_of_document: str, path: str = ''):
+    warnings.warn('This function will be removed in version 3.0.0', DeprecationWarning, 2)
     def return_text(pod):
         document = of_utf8(path_of_document)
         data = document.read()
@@ -115,6 +116,7 @@ def get_resource(path: str):
     """Вызывает ресурс hrenpack. Работает только, если вызывать внутри пакета hrenpack
     :arg path: Принимаются только пути, относительные \\hrenpack\\resources\\
     """
+    warnings.warn('This function will be removed in version 3.0.0', DeprecationWarning, stacklevel=2)
     python_path = who_called_me()
     python_list = python_path.split('\\')
     if 'hrenpack' not in python_list:

@@ -1,6 +1,5 @@
 import re
 from typing import Union, Literal, Optional, Iterable
-from hrenpack.boolwork import Fand
 
 tuplist = Union[tuple, list]
 tdl = Union[tuple, dict, list]
@@ -240,7 +239,7 @@ def list_tuple_to_str(input) -> str:
     try:
         if input is None:
             output = '()'
-        elif isinstance(input, list) or Fand(isinstance(input, tuple), len(input) > 1):
+        elif isinstance(input, list) or all((isinstance(input, tuple), len(input) > 1)):
             output = str(input)
         elif isinstance(input, tuple) and len(input) == 1:
             output = f'({input[0]})'

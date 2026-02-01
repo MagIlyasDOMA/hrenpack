@@ -1,8 +1,10 @@
-import uuid
+import uuid, warnings
 from datetime import datetime
 from typing import Literal
 from hrenpack.strwork import remove_extra_spaces
 from hrenpack.filework import TextFile
+
+warnings.warn('This module will be removed in version 3.0.0', DeprecationWarning, stacklevel=2)
 
 
 class HostsFile(TextFile):

@@ -45,7 +45,7 @@ def bool_list_count(input: tdl) -> dict:
 
 
 def Fand(*questions: bool):
-    warnings.warn('This function is deprecated, use all() instead', DeprecationWarning, 2)
+    warnings.warn('This function will be removed in version 3.0.0, use all() instead', DeprecationWarning, 2)
     output = True
     for b in questions:
         if not b:
@@ -55,7 +55,7 @@ def Fand(*questions: bool):
 
 
 def For(*questions: bool):
-    warnings.warn('This function is deprecated, use any() instead', DeprecationWarning, 2)
+    warnings.warn('This function will be removed in version 3.0.0, use any() instead', DeprecationWarning, 2)
     output = False
     for b in questions:
         if b:
@@ -65,7 +65,7 @@ def For(*questions: bool):
 
 
 def switch_For(variable, *values):
-    warnings.warn('This function is deprecated', DeprecationWarning, 2)
+    warnings.warn('This function will be removed in version 3.0.0', DeprecationWarning, 2)
     return variable in values
 
 

@@ -1,4 +1,4 @@
-import string, re
+import string, re, warnings
 from typing import Union
 from random import randint, choice as randchoice
 from hrenpack.listwork import split_list, ab_reverse, tuplist, _is_tuple
@@ -49,6 +49,7 @@ def string_add(*args: str) -> str:
 
 
 def list_to_str(input: Union[list, tuple], separator: str = '') -> str:
+    warnings.warn('This function will be removed in version 3.0.0, use str.join instead', DeprecationWarning, stacklevel=2)
     output = ''
     for element in input:
         output = f'{output}{separator}{element}'
@@ -64,6 +65,7 @@ def randstr(a: int, b: int) -> str:
 
 
 def is_first(text: str, fragment: str) -> bool:
+    warnings.warn('This function will be removed in version 3.0.0, use str.startswith instead', DeprecationWarning, stacklevel=2)
     if fragment not in text:
         return False
     else:
@@ -72,6 +74,7 @@ def is_first(text: str, fragment: str) -> bool:
 
 
 def is_last(text: str, fragment: str) -> bool:
+    warnings.warn('This function will be removed in version 3.0.0, use str.endswith instead', DeprecationWarning, stacklevel=2)
     if fragment not in text:
         return False
     else:
@@ -84,17 +87,17 @@ def search_and_edit(text: str, input: str, output: str) -> str:
         frags = text.split(input)
         if frags.__len__() == 1:
             fragment = frags[0]
-            if is_first(text, input):
+            if text.startswith(input):
                 new_text = output + fragment
-            elif is_last(text, input):
+            elif text.endswith(input):
                 new_text = fragment + output
             else:
                 new_text = fragment
         else:
             new_text = split_list(frags, output)
-            if is_first(text, input):
+            if text.startswith(input):
                 new_text = output + new_text
-            elif is_last(text, input):
+            elif text.endswith(input):
                 new_text = new_text + output
         return new_text
     else:

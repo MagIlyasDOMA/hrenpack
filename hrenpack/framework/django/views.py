@@ -10,7 +10,6 @@ from django.views import View as DjangoView, generic
 from django.contrib.auth import views as auth_views, logout, get_user_model, login, update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin
 from hrenpack import NullStr
-from hrenpack.boolwork import For
 from hrenpack.listwork import get_from_dict
 from hrenpack.encapsulation import SafeInheritance, addattr, set_attrs_if_is_none
 from hrenpack.framework.django import view_dict
