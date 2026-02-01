@@ -48,35 +48,12 @@ def string_add(*args: str) -> str:
     return output
 
 
-def list_to_str(input: Union[list, tuple], separator: str = '') -> str:
-    output = ''
-    for element in input:
-        output = f'{output}{separator}{element}'
-    return output
-
-
 def if_empty_str(string: str, empty: str, not_empty: str) -> str:
     return empty if string == '' else not_empty
 
 
 def randstr(a: int, b: int) -> str:
     return str(randint(a, b))
-
-
-def is_first(text: str, fragment: str) -> bool:
-    if fragment not in text:
-        return False
-    else:
-        length = fragment.__len__()
-        return text[:length] == fragment
-
-
-def is_last(text: str, fragment: str) -> bool:
-    if fragment not in text:
-        return False
-    else:
-        length = fragment.__len__()
-        return text[-length:] == fragment
 
 
 def search_and_edit(text: str, input: str, output: str) -> str:

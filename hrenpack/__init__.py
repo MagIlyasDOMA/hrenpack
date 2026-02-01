@@ -47,10 +47,6 @@ def write(path, text):
     file.close()
 
 
-def null():
-    warnings.warn('Use functionwork.empty_function', DeprecationWarning, stacklevel=2)
-
-
 def switch(variable, case: dict, default=empty_function):
     for key in case:
         func = case[key]
@@ -66,27 +62,6 @@ def bincode_generator(length: int, isInt: bool = False):
     for i in range(length):
         bincode = bincode + randstr(0, 1)
     return int(bincode) if isInt else bincode
-
-
-def show_help(path_of_document: str, path: str = ''):
-    def return_text(pod):
-        document = of_utf8(path_of_document)
-        data = document.read()
-        document.close()
-        return data
-
-    text = return_text(path_of_document)
-
-    if path:
-        if not os.path.isfile(path):
-            raise FileExistsError(
-                f'[WinError 183] Невозможно создать новый файл, так как он уже существует: {path}')
-        else:
-            file = of_utf8(path, 'w')
-            file.write(text)
-            file.close()
-    else:
-        print(text)
 
 
 def switch_return(variable, case: dict, default=None):
@@ -109,18 +84,6 @@ def who_called_me():
     current_frame = inspect.currentframe()
     calling_frame = current_frame.f_back
     return inspect.getfile(calling_frame)
-
-
-def get_resource(path: str):
-    """Вызывает ресурс hrenpack. Работает только, если вызывать внутри пакета hrenpack
-    :arg path: Принимаются только пути, относительные \\hrenpack\\resources\\
-    """
-    python_path = who_called_me()
-    python_list = python_path.split('\\')
-    if 'hrenpack' not in python_list:
-        raise NotADirectoryError
-    hrenpack_index = python_list.index('hrenpack')
-    return '\\'.join(python_list[:hrenpack_index + 1]) + '\\resources\\' + path
 
 
 def one_return(count: int, value=None):

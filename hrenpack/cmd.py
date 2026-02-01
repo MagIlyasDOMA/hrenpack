@@ -1,7 +1,7 @@
 import os, ctypes, shutil, getpass, platform, random, string, subprocess, warnings
 from datetime import datetime
 from hrenpack.listwork import split_list
-from typing import Union, List, Type
+from typing import Union, List
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -250,17 +250,6 @@ def uninstall_program(program_name):
         print(f'Программа "{program_name}" успешно деинсталлирована.')
     except subprocess.CalledProcessError as e:
         print(f'Ошибка при деинсталляции программы: {e}')
-
-
-def get_mime_type(path: str):
-    import filetype
-    warnings.warn('This function has been moved to the filetype module', DeprecationWarning, 2)
-    kind = filetype.guess(path)
-    if kind is None:
-        if get_extension(path) == 'txt':
-            return 'text/plain'
-        return 'text/' + get_extension(path)
-    return kind.mime
 
 
 def admin_required(func):

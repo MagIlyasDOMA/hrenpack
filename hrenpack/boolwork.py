@@ -44,31 +44,6 @@ def bool_list_count(input: tdl) -> dict:
     return TrueFalse
 
 
-def Fand(*questions: bool):
-    warnings.warn('This function is deprecated, use all() instead', DeprecationWarning, 2)
-    output = True
-    for b in questions:
-        if not b:
-            output = False
-            break
-    return output
-
-
-def For(*questions: bool):
-    warnings.warn('This function is deprecated, use any() instead', DeprecationWarning, 2)
-    output = False
-    for b in questions:
-        if b:
-            output = True
-            break
-    return output
-
-
-def switch_For(variable, *values):
-    warnings.warn('This function is deprecated', DeprecationWarning, 2)
-    return variable in values
-
-
 def str_to_bool_soft(input: stb, return_false: bool = False):
     try:
         return str_to_bool(input)
