@@ -1,4 +1,4 @@
-import os, ctypes, shutil, getpass, platform, random, string, subprocess, filetype, warnings
+import os, ctypes, shutil, getpass, platform, random, string, subprocess, warnings
 from datetime import datetime
 from hrenpack.listwork import split_list
 from typing import Union, List, Type
@@ -253,6 +253,7 @@ def uninstall_program(program_name):
 
 
 def get_mime_type(path: str):
+    import filetype
     warnings.warn('This function has been moved to the filetype module', DeprecationWarning, 2)
     kind = filetype.guess(path)
     if kind is None:

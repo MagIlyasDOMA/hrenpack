@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.5.5] - 2026-02-01
+### Fixed
+- Fixed imports in `cmd.py`
+
 ## [2.5.4] - 2026-02-01
 ### Deprecated ⚠️
 - The `deprecated` decorator in `decorators.py` has been deprecated
@@ -184,6 +188,10 @@ Use version 2.1.2 or higher for production environments.
 - Удаление устаревших функций `Fand`, `For`, `switch_For`, `get_mime_type`
 
 ---
+
+## [2.5.5] - 2026-02-01
+### Исправлено
+- Исправлены импорты в `cmd.py`
 
 ## [2.5.4] - 2026-02-01
 ### Устарело ⚠️

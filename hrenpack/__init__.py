@@ -13,7 +13,7 @@ def credits():
     print("Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)")
 
 
-__version__ = '2.5.4'
+__version__ = '2.5.5'
 
 
 def print_message_set(value: bool = False):
