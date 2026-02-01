@@ -297,7 +297,6 @@ Use version 2.1.2 or higher for production environments.
 
 
 ## [2.1.2] - 2025-11-28 🎉
-### Добавлено ✨
 Первая стабильная версия `hrenpack`!
 
 ### 📦 Содержание пакета
