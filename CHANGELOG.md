@@ -123,7 +123,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 
 ## [2.1.2] - 2025-11-28 🎉
-### Added ✨
 First stable version of `hrenpack`!
 
 ### 📦 Package Contents
