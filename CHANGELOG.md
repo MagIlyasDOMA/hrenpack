@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.5.7] - 2026-02-02
+### Fixed 🐛
+- Fixed [dev] extras
+
 ## [2.5.6] - 2026-02-02
 ### Deprecated ⚠️
 - The functions `show_help` and `get_resource` in `__init__.py` are deprecated
@@ -205,6 +209,10 @@ Use version 2.1.2 or higher for production environments.
 - Удаление устаревшего модуля `system.py`
 
 ---
+
+## [2.5.7] - 2026-02-02
+### Исправлено 🐛
+- Исправлены экстра [dev]
 
 ## [2.5.6] - 2026-02-02
 ### Устарело ⚠️
