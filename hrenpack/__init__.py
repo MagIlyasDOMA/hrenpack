@@ -1,6 +1,5 @@
 ﻿import os, warnings
 from hrenpack.classes import range_plus
-from hrenpack.decorators import deprecated
 from hrenpack.functionwork import empty_function
 from hrenpack.strwork import randstr
 from hrenpack.listwork import split_list

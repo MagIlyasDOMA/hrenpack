@@ -219,23 +219,18 @@ class SRTSubtitleFile(TextFile):
 class ConfigurationFile(TextFile):
     comment_letter = ';'
 
-    class Converter:
-        def __init__(self, config: ConfigParser, get_value):
-            self.config = config
-            self.get_value = get_value
+    class _Section:
+        def __init__(self, config: ConfigParser, name: str):
+            self.config = dict(config.items(name))
 
-        def __bool__(self, section: str, key: str) -> bool:
-            return self.config.getboolean(section, key)
+        def __getitem__(self, key: str):
+            return self.config[key]
 
-        def __int__(self, section: str, key: str) -> int:
-            return self.config.getint(section, key)
+        def __setitem__(self, key: str, value: str):
+            self.config[key] = value
 
-        def __float__(self, section: str, key: str) -> float:
-            return self.config.getfloat(section, key)
-
-        def convert_enter(self, section: str, key: str) -> str:
-            value = self.get_value(section, key)
-            return search_and_edit(value, '\\n', '\n')
+        def get(self, key: str, default=None):
+            return self.config.get(key, default)
 
     def __init__(self, path: str = 'config.ini', encoding: Union[str, int] = 'utf-8'):
         super().__init__(path, encoding)
@@ -243,7 +238,6 @@ class ConfigurationFile(TextFile):
         self.config = ConfigParser()
         self.read_config = lambda: self.config.read(self.path, encoding=self.encoding)
         self.read_config()
-        self.convert = self.Converter(self.config, self.get_value)
         self.get_bool = self.get_boolean
 
     def get_value(self, section: str, key: str) -> str:
@@ -350,6 +344,9 @@ class ConfigurationFile(TextFile):
     def edit_if_not_none(self, block: dict[str, dict[str, Any]], rewrite: bool = False) -> None:
         for section, options in block.items():
             self.edit_section_if_not_none(section, options, rewrite)
+
+    def __getitem__(self, section):
+        return self._Section(self.config, section)
 
 
 class JavaScriptObjectNotationFile(TextFile):
