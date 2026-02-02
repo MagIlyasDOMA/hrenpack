@@ -10,7 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## [Unreleased] / [In Development]
 ### Planned
 - Migration to Python 3.13+
-- Removal of deprecated functions `Fand`, `For`, `switch_For`, `get_mime_type`
+- Removal of deprecated functions `null`, `show_help`, `get_resource`, `Fand`, `For`, `switch_For`, `get_mime_type`, `list_to_str`, `is_first`, `is_last`
+- Removal of deprecated decorator `deprecated`
+- Removal of deprecated module `system.py`
 
 ---
 
@@ -198,7 +200,9 @@ Use version 2.1.2 or higher for production environments.
 ## [Невыпущенное] / [В разработке]
 ### Планируется
 - Миграция на Python 3.13+
-- Удаление устаревших функций
+- Удаление устаревших функций `null`, `show_help`, `get_resource`, `Fand`, `For`, `switch_For`, `get_mime_type`, `list_to_str`, `is_first`, `is_last`
+- Удаление устаревшего декоратора `deprecated`
+- Удаление устаревшего модуля `system.py`
 
 ---
 
