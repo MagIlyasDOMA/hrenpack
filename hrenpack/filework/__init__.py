@@ -1,4 +1,4 @@
-import os, json, csv
+import os, json, csv, functools
 from typing import Union, Literal, Any, List
 from hrenpack import one_return
 from hrenpack.cmd import get_filename, get_extension, create_file, delete_file, FileNameInfo
@@ -6,7 +6,7 @@ from hrenpack.listwork import (split_list, _is_tuple, list_add, split_list_enter
                                equals_keys)
 from hrenpack.strwork import search_and_edit
 from hrenpack.decorators import confirm
-from configparser import ConfigParser
+from configparser import ConfigParser, NoOptionError, NoSectionError
 
 
 class FileTypeError(Exception):
@@ -40,6 +40,16 @@ def create_file_if_not_exists(path: Union[str, FileNameInfo]) -> None:
     path = path if type(path) is str else path.path
     if not os.path.isfile(path):
         create_file(path)
+
+
+def use_default(func):
+    @functools.wraps(func)
+    def wrapper(self, section: str, key: str, default: Any = None):
+        try:
+            return func(self, section, key, default)
+        except (NoOptionError, NoSectionError):
+            return default
+    return wrapper
 
 
 class TextFile:
@@ -240,16 +250,20 @@ class ConfigurationFile(TextFile):
         self.read_config()
         self.get_bool = self.get_boolean
 
-    def get_value(self, section: str, key: str) -> str:
+    @use_default
+    def get_value(self, section: str, key: str, default: Any = None) -> str:
         return self.config.get(section, key)
 
-    def get_boolean(self, section: str, key: str) -> bool:
+    @use_default
+    def get_boolean(self, section: str, key: str, default: Any = False) -> bool:
         return self.config.getboolean(section, key)
 
-    def get_int(self, section: str, key: str) -> int:
+    @use_default
+    def get_int(self, section: str, key: str, default: Any = 0) -> int:
         return self.config.getint(section, key)
 
-    def get_float(self, section: str, key: str) -> float:
+    @use_default
+    def get_float(self, section: str, key: str, default: Any = 0) -> float:
         return self.config.getfloat(section, key)
 
     def set_value(self, section: str, key: str, value) -> None:
