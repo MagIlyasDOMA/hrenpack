@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [2.5.6] - 2026-02-01
+## [2.5.6] - 2026-02-02
 ### Deprecated ⚠️
 - The functions `show_help` and `get_resource` in `__init__.py` are deprecated
 - The functions `list_to_str`, `is_first`, and `is_last` in `strwork.py` are deprecated
@@ -206,7 +206,7 @@ Use version 2.1.2 or higher for production environments.
 
 ---
 
-## [2.5.6] - 2026-02-01
+## [2.5.6] - 2026-02-02
 ### Устарело ⚠️
 - Функции `show_help`, `get_resource`, в `__init__.py` объявлены устаревшими
 - Функции `list_to_str`, `is_first`, `is_last` в `strwork.py` объявлены устаревшими
