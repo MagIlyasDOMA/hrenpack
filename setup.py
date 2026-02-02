@@ -20,7 +20,7 @@ IMAGE_REQUIREMENTS = requirements('requirements/image_requirements.txt')
 FLASK_REQUIREMENTS = requirements('requirements/flask_requirements.txt')
 FILETYPE_REQUIREMENTS = requirements('requirements/filetype_requirements.txt')
 DEV_REQUIREMENTS = requirements('requirements/dev_requirements.txt')
-BASE_DEV_REQUIREMENTS = BASE_REQUIREMENTS + BASE_REQUIREMENTS
+BASE_DEV_REQUIREMENTS = BASE_REQUIREMENTS + DEV_REQUIREMENTS
 FULL_DEV_REQUIREMENTS = BASE_DEV_REQUIREMENTS + IMAGE_REQUIREMENTS + FLASK_REQUIREMENTS + FILETYPE_REQUIREMENTS
 
 REQUIREMENTS = dict(
@@ -41,7 +41,7 @@ REQUIREMENTS = dict(
 clean()
 setup(
     name='hrenpack',
-    version='2.5.6',
+    version='2.5.7',
     author_email='magilyas.doma.09@list.ru',
     author='Маг Ильяс DOMA (MagIlyasDOMA)',
     description=desc,

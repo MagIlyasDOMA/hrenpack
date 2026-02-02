@@ -1,7 +1,8 @@
 name: Upload hrenpack
 
 on:
-  workflow_dispatch:  # Только ручной запуск из интерфейса GitHub
+  release:
+    types: [published]
 
 permissions:
   contents: read
