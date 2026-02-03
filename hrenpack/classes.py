@@ -275,26 +275,34 @@ def call_method(method_name: str, objects: tuple, *args, **kwargs):
 
 
 if platform.system() == 'Windows':
-    from tkinter import *
+    try:
+        from tkinter import *
 
-    class TkTemplate(Tk):
-        def __init__(self, title: str, width: int, height: int, background: str = 'white', resizable: bool = False, **kwargs):
-            super().__init__()
-            self.title(title)
-            self.resizable(resizable, resizable)
-            self.geometry(f'{width}x{height}')
-            self['bg'] = background
-            if if_dict_key(kwargs, 'icon'):
-                self.iconbitmap(kwargs['icon'])
-            self.stylesheet = dict_keyf(kwargs, 'stylesheet', dict())
-            self.__stylesheet__()
-            self.widgets_init()
+        class TkTemplate(Tk):
+            def __init__(self, title: str, width: int, height: int, background: str = 'white', resizable: bool = False, **kwargs):
+                super().__init__()
+                self.title(title)
+                self.resizable(resizable, resizable)
+                self.geometry(f'{width}x{height}')
+                self['bg'] = background
+                if if_dict_key(kwargs, 'icon'):
+                    self.iconbitmap(kwargs['icon'])
+                self.stylesheet = dict_keyf(kwargs, 'stylesheet', dict())
+                self.__stylesheet__()
+                self.widgets_init()
 
-        def widgets_init(self):
-            pass
+            def widgets_init(self):
+                pass
 
-        def __stylesheet__(self):
-            self.stylesheet_class = DataClass(**self.stylesheet)
+            def __stylesheet__(self):
+                self.stylesheet_class = DataClass(**self.stylesheet)
+    except (ModuleNotFoundError, ImportError):
+        class TkTemplate:
+            def __new__(cls, *args, **kwargs):
+                raise OSError("No module named 'tkinter'")
+
+            def __init__(self, *args, **kwargs):
+                raise OSError("No module named 'tkinter'")
 else:
     class TkTemplate:
         def __new__(cls, *args, **kwargs):

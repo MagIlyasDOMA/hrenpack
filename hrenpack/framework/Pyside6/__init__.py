@@ -1,8 +1,11 @@
+import os
 import sys
+from glob import glob
 from typing import Union, Optional
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
 from PySide6.QtCore import *
+from pathlike_typing import PathLike
 from hrenpack.listwork import split_list
 from hrenpack.framework.Pyside6.variables import file_dialog_templates
 
@@ -66,3 +69,11 @@ def file_dialog_save(parent, *file_types: str, title: str = "Выберите ф
     sf = file_types[selected_filter]
     filename = dialog.getSaveFileName(parent, title, directory, filters, sf, options)[0]
     return filename
+
+
+def add_fonts(directory: PathLike, root_only: bool = False):
+    fonts = glob(f'{directory}/*.otf') + glob(f'{directory}/*.ttf')
+    if not root_only:
+        fonts += glob(f'{directory}/static/*.otf') + glob(f'{directory}/static/*.ttf')
+    for font in fonts:
+        QFontDatabase.addApplicationFont(font)
