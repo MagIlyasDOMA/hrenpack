@@ -11,7 +11,7 @@ def post_json_response(view):
         elif request.method == 'POST':
             return view(request, *args, **kwargs)
         return JsonResponse(dict(
-            status='error',
+            success=False,
             message='Required POST method',
             code=405
         ), status=405)
