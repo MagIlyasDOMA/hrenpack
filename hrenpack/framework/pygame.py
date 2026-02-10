@@ -1,8 +1,6 @@
 import pygame, sys
-from dataclasses import dataclass
 
 
-@dataclass
 class Keyboard:
     A = pygame.K_a
     B = pygame.K_b
