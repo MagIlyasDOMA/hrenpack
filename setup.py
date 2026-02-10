@@ -56,7 +56,7 @@ REQUIREMENTS = dict(
 clean()
 setup(
     name='hrenpack',
-    version='2.5.8',
+    version='2.5.9',
     author_email='magilyas.doma.09@list.ru',
     author='Маг Ильяс DOMA (MagIlyasDOMA)',
     description=desc,

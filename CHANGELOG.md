@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.5.9] - 2026-02-10
+### Fixed 🐛
+- Corrected version in `__init__.py`
+
 ## [2.5.8] - 2026-02-10
 ### Added
 - Added extras [django], [pyside6], [kivy], [pygame], [dev_django], [dev_pyside6], [dev_kivy], [dev_pygame], and [full]
@@ -217,11 +221,15 @@ Use version 2.1.2 or higher for production environments.
 
 ---
 
+## [2.5.9] - 2026-02-10
+### Исправлено 🐛
+- Исправлена версия в `__init__.py`
+
 ## [2.5.8] - 2026-02-10
-### Добавлено
+### Добавлено ✨
 - Добавлены экстра [django], [pyside6], [kivy], [pygame], [dev_django], [dev_pyside6], [dev_kivy], [dev_pygame] и [full]
 
-### Изменено
+### Изменено 🔧
 - Убран декоратор `dataclass` из класса `Keyboard` в `framework/pygame.py` 
 
 ## [2.5.7] - 2026-02-02
