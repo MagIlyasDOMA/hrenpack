@@ -1,7 +1,18 @@
 from datetime import datetime
 from pip_setuptools import setup, clean, find_packages, requirements
+from setuptools.command.develop import develop
 
 desc = '\n'.join(reversed(('Универсальная библиотека python для большинства задач', 'A universal python library for most tasks')))
+
+
+class Develop(develop):
+    def run(self):
+        # Устанавливаем специальную версию для develop
+        self.distribution.metadata.version = self.get_dev_version()
+        super().run()
+
+    def get_dev_version(self):
+        return str(self.distribution.metadata.version) + f'-build-{datetime.now().strftime("%Y-%m-%d-%H-%M-%S")}'
 
 
 BASE_REQUIREMENTS = requirements('requirements/requirements.txt')
@@ -9,20 +20,35 @@ IMAGE_REQUIREMENTS = requirements('requirements/image_requirements.txt')
 FLASK_REQUIREMENTS = requirements('requirements/flask_requirements.txt')
 FILETYPE_REQUIREMENTS = requirements('requirements/filetype_requirements.txt')
 DEV_REQUIREMENTS = requirements('requirements/dev_requirements.txt')
+PYSIDE6_REQUIREMENTS = requirements('requirements/pyside6_requirements.txt')
+DJANGO_REQUIREMENTS = requirements('requirements/django_requirements.txt')
+PYGAME_REQUIREMENTS = requirements('requirements/pygame_requirements.txt')
+KIVY_REQUIREMENTS = requirements('requirements/kivy_requirements.txt')
 BASE_DEV_REQUIREMENTS = BASE_REQUIREMENTS + DEV_REQUIREMENTS
-FULL_DEV_REQUIREMENTS = BASE_DEV_REQUIREMENTS + IMAGE_REQUIREMENTS + FLASK_REQUIREMENTS + FILETYPE_REQUIREMENTS
+EXTRA_REQUIREMENTS = (IMAGE_REQUIREMENTS + FLASK_REQUIREMENTS + FILETYPE_REQUIREMENTS +
+                      PYSIDE6_REQUIREMENTS + DJANGO_REQUIREMENTS + PYGAME_REQUIREMENTS + KIVY_REQUIREMENTS)
+FULL_DEV_REQUIREMENTS = BASE_DEV_REQUIREMENTS + EXTRA_REQUIREMENTS
 
 REQUIREMENTS = dict(
     base=BASE_REQUIREMENTS,
     image=BASE_REQUIREMENTS + IMAGE_REQUIREMENTS,
     flask=BASE_REQUIREMENTS + FLASK_REQUIREMENTS,
     filetype=BASE_REQUIREMENTS + FILETYPE_REQUIREMENTS,
+    pyside6=BASE_REQUIREMENTS + PYSIDE6_REQUIREMENTS,
+    django=BASE_REQUIREMENTS + DJANGO_REQUIREMENTS,
+    pygame=BASE_REQUIREMENTS + PYGAME_REQUIREMENTS,
+    kivy=BASE_REQUIREMENTS + KIVY_REQUIREMENTS,
     dev=BASE_DEV_REQUIREMENTS,
     dev_base=BASE_DEV_REQUIREMENTS,
     dev_image=BASE_DEV_REQUIREMENTS + IMAGE_REQUIREMENTS,
     dev_flask=BASE_DEV_REQUIREMENTS + FLASK_REQUIREMENTS,
     dev_filetype=BASE_DEV_REQUIREMENTS + FILETYPE_REQUIREMENTS,
-    all=BASE_REQUIREMENTS + FLASK_REQUIREMENTS + IMAGE_REQUIREMENTS + FILETYPE_REQUIREMENTS,
+    dev_pyside6=BASE_DEV_REQUIREMENTS + PYSIDE6_REQUIREMENTS,
+    dev_django=BASE_DEV_REQUIREMENTS + DJANGO_REQUIREMENTS,
+    dev_pygame=BASE_DEV_REQUIREMENTS + PYGAME_REQUIREMENTS,
+    dev_kivy=BASE_DEV_REQUIREMENTS + KIVY_REQUIREMENTS,
+    all=BASE_REQUIREMENTS + EXTRA_REQUIREMENTS,
+    full=BASE_REQUIREMENTS + EXTRA_REQUIREMENTS,
     dev_all=FULL_DEV_REQUIREMENTS,
     dev_full=FULL_DEV_REQUIREMENTS,
 )
@@ -30,7 +56,7 @@ REQUIREMENTS = dict(
 clean()
 setup(
     name='hrenpack',
-    version=f'3.0.0.{int(datetime.now().timestamp())}',
+    version='2.5.8',
     author_email='magilyas.doma.09@list.ru',
     author='Маг Ильяс DOMA (MagIlyasDOMA)',
     description=desc,
@@ -79,4 +105,7 @@ setup(
     install_requires=BASE_REQUIREMENTS,
     extras_require=REQUIREMENTS,
     include_package_data=True,
+    cmdclass=dict(
+        develop=Develop,
+    ),
 )

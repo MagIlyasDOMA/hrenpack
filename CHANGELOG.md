@@ -16,6 +16,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [2.5.8] - 2026-02-10
+### Added
+- Added extras [django], [pyside6], [kivy], [pygame], [dev_django], [dev_pyside6], [dev_kivy], [dev_pygame], and [full]
+
+### Changed
+- Removed the `dataclass` decorator from the `Keyboard` class in `framework/pygame.py`
+
 ## [2.5.7] - 2026-02-02
 ### Fixed 🐛
 - Fixed [dev] extras
@@ -209,6 +216,13 @@ Use version 2.1.2 or higher for production environments.
 - Удаление устаревшего модуля `system.py`
 
 ---
+
+## [2.5.8] - 2026-02-10
+### Добавлено
+- Добавлены экстра [django], [pyside6], [kivy], [pygame], [dev_django], [dev_pyside6], [dev_kivy], [dev_pygame] и [full]
+
+### Изменено
+- Убран декоратор `dataclass` из класса `Keyboard` в `framework/pygame.py` 
 
 ## [2.5.7] - 2026-02-02
 ### Исправлено 🐛
