@@ -7,12 +7,18 @@ All changes in this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
-## [Unreleased] / [In Development]
-### Planned
-- Migration to Python 3.13+
-- Removal of deprecated functions `null`, `show_help`, `get_resource`, `Fand`, `For`, `switch_For`, `get_mime_type`, `list_to_str`, `is_first`, `is_last`
-- Removal of deprecated decorator `deprecated`
-- Removal of deprecated module `system.py`
+## [3.0.0-beta.1] - 2026-02-11
+First beta version of hrenpack 3.0.0
+
+### Breaking changes ⚠️
+- Minimum Python version is now 3.13+
+- Removed `null`, `show_help`, and `get_resource` functions in `__init__.py`
+- Removed `Fand`, `For`, and `switch_For` functions in `boolwork.py`
+- Removed `get_mime_type` function in `cmd.py`
+- Removed `list_to_str`, `is_first`, and `is_last` functions in `strwork.py`
+- Removed `deprecated` decorator in `decorators.py`
+- Removed `system.py` module
+- Removed `Converter` subclass in `ConfigurationFile` class `filework/__init__.py`
 
 ---
 
@@ -212,12 +218,18 @@ Use version 2.1.2 or higher for production environments.
 Формат основан на [Keep a Changelog](https://keepachangelog.com/),
 и проект придерживается [Семантического Версионирования](https://semver.org/).
 
-## [Невыпущенное] / [В разработке]
-### Планируется
-- Миграция на Python 3.13+
-- Удаление устаревших функций `null`, `show_help`, `get_resource`, `Fand`, `For`, `switch_For`, `get_mime_type`, `list_to_str`, `is_first`, `is_last`
-- Удаление устаревшего декоратора `deprecated`
-- Удаление устаревшего модуля `system.py`
+## [3.0.0-beta.1] - 2026-02-11
+Первая бета-версия hrenpack 3.0.0
+
+### Критические изменения ⚠️
+- Минимальная версия Python теперь 3.13+
+- Удалены функции `null`, `show_help` и `get_resource` в `__init__.py`
+- Удалены функции `Fand`, `For` и `switch_For` в `boolwork.py`
+- Удалена функция `get_mime_type` в `cmd.py`
+- Удалены функции `list_to_str`, `is_first` и `is_last` в `strwork.py`
+- Удален декоратор `deprecated` в `decorators.py`
+- Удален модуль `system.py`
+- Удален подкласс `Converter` в классе `ConfigurationFile` в `filework/__init__.py`
 
 ---
 

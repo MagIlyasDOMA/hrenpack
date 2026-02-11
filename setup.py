@@ -56,7 +56,7 @@ REQUIREMENTS = dict(
 clean()
 setup(
     name='hrenpack',
-    version='3.0.0b1',
+    version='3.0.0-beta.1',
     author_email='magilyas.doma.09@list.ru',
     author='Маг Ильяс DOMA (MagIlyasDOMA)',
     description=desc,
@@ -72,9 +72,6 @@ setup(
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3.11',
-        'Programming Language :: Python :: 3.12',
         'Programming Language :: Python :: 3.13',
         'Programming Language :: Python :: 3.14',
         'Framework :: Django',
