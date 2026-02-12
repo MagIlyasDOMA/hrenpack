@@ -71,13 +71,11 @@ def issubclass_multi(obj, *classes) -> bool:
     return issubclass(obj, classes)
 
 
-def is_object(arg, return_none: bool = True) -> Optional[bool]:
+def is_object(arg, filter_uneditable: bool = True) -> Optional[bool]:
     if isinstance(arg, type):
+        return False
+    elif filter_uneditable and isinstance_multi(arg, int, str, float, bool, tuple, frozenset, bytes):
         return False
     elif isinstance(arg, object):
         return True
-    else:
-        if return_none:
-            return None
-        else:
-            return True
+    return False
