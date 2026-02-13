@@ -16,7 +16,7 @@ class QScreenManager(QStackedWidget):
         self._ui_loader = QUiLoader()
         self._default_screen_name: NullStr = None
         self._current_screen_name: NullStr = None
-        self._parent = self.parent()
+        self.__parent = self.parent()
 
     def add_screen(self, screen: Union[type, QWidget], name: str, setup_ui: bool = True):
         if isinstance(screen, type):
@@ -62,11 +62,11 @@ class QScreenManager(QStackedWidget):
         return self._current_screen_name
 
     def screen_resize(self):
-        if not self._dont_change_geometry:
+        if self._screens and not self._dont_change_geometry:
             self._parent.resize(self.current_screen.size())
 
     def screen_set_title(self):
-        if not self._dont_change_title:
+        if self._screens and not self._dont_change_title:
             self._parent.setWindowTitle(self.current_screen.windowTitle())
 
     def screen_update(self):
@@ -94,6 +94,15 @@ class QScreenManager(QStackedWidget):
 
     def default(self):
         self.current_screen = self.default_screen_name
+
+    @property
+    def _parent(self) -> QWidget:
+        return self.__parent
+
+    @_parent.setter
+    def _parent(self, parent: QWidget):
+        self.__parent = parent
+        self.screen_update()
 
 
 class ScreenWindowMixin:
