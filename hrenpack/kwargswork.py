@@ -25,3 +25,10 @@ def get_kwarg(kwargs: dict, key: str, default=None, raise_error: bool = True, de
     if delete and key in kwargs:
         del kwargs[key]
     return output
+
+
+def exclude_nones(**kwargs) -> dict:
+    output = dict()
+    for key, value in kwargs.items():
+        if value is not None: output[key] = value
+    return output
