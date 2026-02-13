@@ -1,15 +1,17 @@
 import warnings
 from typing import Optional, Union
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtWidgets import QStackedWidget, QWidget, QMainWindow, QDialog
+from PySide6.QtWidgets import QStackedWidget, QWidget, QMainWindow, QDialog, QVBoxLayout
 from hrenpack.kwargswork import exclude_nones
 from hrenpack.typings import NullStr
 
 
 class QScreenManager(QStackedWidget):
-    def __init__(self, parent=None, *, currentIndex: Optional[int] = None, count: Optional[int] = None):
+    def __init__(self, parent=None, *, currentIndex: Optional[int] = None, count: Optional[int] = None,
+                 dont_change_geometry: bool = False):
         super().__init__(parent, **exclude_nones(currentIndex=currentIndex, count=count))
-        self._screens = dict()
+        self._screens: dict[str, QWidget] = dict()
+        self._dont_change_geometry = dont_change_geometry
         self._ui_loader = QUiLoader()
         self._default_screen_name: NullStr = None
         self._current_screen_name: NullStr = None
@@ -60,7 +62,9 @@ class QScreenManager(QStackedWidget):
     @current_screen.setter
     def current_screen(self, name: str):
         self._current_screen_name = name
-        self.setCurrentWidget(self._screens[name])
+        screen = self._screens[name]
+        self.setCurrentWidget(screen)
+        self.parent().resize(screen.size())
 
     @property
     def default_screen(self) -> QWidget:
@@ -79,8 +83,12 @@ class QScreenManager(QStackedWidget):
 
 
 class ScreenWindowMixin:
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, title: Optional[str] = None, **kwargs):
+        self._central_widget = QVBoxLayout()
         self._screen_manager = QScreenManager(self)
+        self.setLayout(self._central_widget)
+        self._central_widget.addWidget(self._screen_manager)
+        if title: self.setWindowTitle(title)
 
     def add_screen(self, screen: Union[type, QWidget], name: str, setup_ui: bool = True):
         self._screen_manager.add_screen(screen, name, setup_ui)
@@ -121,18 +129,18 @@ class ScreenWindowMixin:
 
 
 class QScreenWindow(ScreenWindowMixin, QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, *, title: Optional[str] = None):
         QWidget.__init__(self, parent)
-        ScreenWindowMixin.__init__(self)
+        ScreenWindowMixin.__init__(self, title=title)
 
 
 class QScreenMainWindow(ScreenWindowMixin, QMainWindow):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, *, title: Optional[str] = None):
         QMainWindow.__init__(self, parent)
-        ScreenWindowMixin.__init__(self)
+        ScreenWindowMixin.__init__(self, title=title)
 
 
 class QScreenDialog(ScreenWindowMixin, QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, *, title: Optional[str] = None):
         QDialog.__init__(self, parent)
-        ScreenWindowMixin.__init__(self)
+        ScreenWindowMixin.__init__(self, title=title)
