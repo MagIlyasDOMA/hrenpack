@@ -171,6 +171,7 @@ class ScreenWindowMixin:
     def show(self):
         if not self.all_screens:
             raise RuntimeError('Screen manager is empty')
+        super().show()
 
 
 class QScreenWindow(ScreenWindowMixin, QWidget):
