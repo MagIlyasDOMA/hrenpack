@@ -211,3 +211,13 @@ class QScreenDialog(ScreenWindowMixin, QDialog):
             dont_change_title=dont_change_title,
             create_additional_container=create_additional_container
         )
+
+
+class BaseScreen(QWidget):
+    @property
+    def _parent(self) -> QWidget:
+        return self.parent()._parent
+
+    @property
+    def parent_(self):
+        return self._parent
