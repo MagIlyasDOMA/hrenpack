@@ -8,7 +8,7 @@ from hrenpack.typings import NullStr
 
 class QScreenManager(QStackedWidget):
     def __init__(self, parent=None, *, currentIndex: Optional[int] = None, count: Optional[int] = None,
-                 dont_change_geometry: bool = False, dont_change_title: bool = False):
+                 dont_change_geometry: bool = False, dont_change_title: bool = False, **kwargs):
         super().__init__(parent, **exclude_nones(currentIndex=currentIndex, count=count))
         self._screens: dict[str, QWidget] = dict()
         self._dont_change_geometry = dont_change_geometry
@@ -16,6 +16,7 @@ class QScreenManager(QStackedWidget):
         self._ui_loader = QUiLoader()
         self._default_screen_name: NullStr = None
         self._current_screen_name: NullStr = None
+        self._is_fixed_size = kwargs.get('fixed_size', False)
         self.__parent = self.parent()
 
     def add_screen(self, screen: Union[type, QWidget], name: str, setup_ui: bool = True):
@@ -63,7 +64,8 @@ class QScreenManager(QStackedWidget):
 
     def screen_resize(self):
         if self._screens and not self._dont_change_geometry:
-            self._parent.resize(self.current_screen.size())
+            resize = self._parent.resize if not self._is_fixed_size else self._parent.setFixedSize
+            resize(self.current_screen.size())
 
     def screen_set_title(self):
         if self._screens and not self._dont_change_title:
@@ -126,7 +128,7 @@ class ScreenWindowMixin:
             container = self
             layout = self._central_widget
 
-        self._screen_manager = QScreenManager(container)
+        self._screen_manager = QScreenManager(container, **kwargs)
         self._screen_manager._parent = self
         self.setLayout(self._central_widget)
         layout.addWidget(self._screen_manager)
@@ -178,12 +180,13 @@ class QScreenWindow(ScreenWindowMixin, QWidget):
     def __init__(self, parent=None, *,
                  dont_change_geometry: bool = False,
                  dont_change_title: bool = False,
-                 create_additional_container: bool = False):
+                 create_additional_container: bool = False, **kwargs):
         QWidget.__init__(self, parent)
         ScreenWindowMixin.__init__(
             self, dont_change_geometry=dont_change_geometry,
             dont_change_title=dont_change_title,
-            create_additional_container=create_additional_container
+            create_additional_container=create_additional_container,
+            **kwargs
         )
 
 
@@ -191,12 +194,13 @@ class QScreenMainWindow(ScreenWindowMixin, QMainWindow):
     def __init__(self, parent=None, *,
                  dont_change_geometry: bool = False,
                  dont_change_title: bool = False,
-                 create_additional_container: bool = False):
+                 create_additional_container: bool = False, **kwargs):
         QMainWindow.__init__(self, parent)
         ScreenWindowMixin.__init__(
             self, dont_change_geometry=dont_change_geometry,
             dont_change_title=dont_change_title,
-            create_additional_container=create_additional_container
+            create_additional_container=create_additional_container,
+            **kwargs
         )
 
 
@@ -204,12 +208,13 @@ class QScreenDialog(ScreenWindowMixin, QDialog):
     def __init__(self, parent=None, *,
                  dont_change_geometry: bool = False,
                  dont_change_title: bool = False,
-                 create_additional_container: bool = False):
+                 create_additional_container: bool = False, **kwargs):
         QDialog.__init__(self, parent)
         ScreenWindowMixin.__init__(
             self, dont_change_geometry=dont_change_geometry,
             dont_change_title=dont_change_title,
-            create_additional_container=create_additional_container
+            create_additional_container=create_additional_container,
+            **kwargs
         )
 
 
