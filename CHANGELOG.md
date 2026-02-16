@@ -10,11 +10,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## [Unreleased] / [In Development]
 ### Planned
 - Migration to Python 3.13+
-- Removal of deprecated functions `null`, `show_help`, `get_resource`, `Fand`, `For`, `switch_For`, `get_mime_type`, `list_to_str`, `is_first`, `is_last`
+- Removal of deprecated functions `null`, `show_help`, `get_resource`, `Fand`, `For`, `switch_For`, `get_mime_type`, `list_to_str`, `is_first`, `is_last`, `dicts_to_dataclasses`, `emptydataclass`, `dec_to_hex`
+- Removal of deprecated classes `stl`, `DictionaryWithExtendedFunctionality`, `MatrixCore`, `DataClass`, `PreEmptyDataClass`, `EmptyDataClass`, `Color`, `NoneType`, `TupleDict`, `Number`
 - Removal of deprecated decorator `deprecated`
 - Removal of deprecated module `system.py`
+- Migration to `pyproject.toml` instead of `setup.py`
 
 ---
+
+## [2.5.10] - 2026-02-16
+### Deprecated ⚠️
+- The classes `stl`, `DictionaryWithExtendedFunctionality`, `MatrixCore`, `DataClass`, `PreEmptyDataClass`, `EmptyDataClass`, `Color`, `NoneType`, and `TupleDict` in `classes.py` are deprecated
+- The functions `dicts_to_dataclasses` and `emptydataclass` in `classes.py` are deprecated
+- The function `dec_to_hex` and the class `Number` in `numwork.py` are deprecated
 
 ## [2.5.9] - 2026-02-10
 ### Fixed 🐛
@@ -215,11 +223,19 @@ Use version 2.1.2 or higher for production environments.
 ## [Невыпущенное] / [В разработке]
 ### Планируется
 - Миграция на Python 3.13+
-- Удаление устаревших функций `null`, `show_help`, `get_resource`, `Fand`, `For`, `switch_For`, `get_mime_type`, `list_to_str`, `is_first`, `is_last`
+- Удаление устаревших функций `null`, `show_help`, `get_resource`, `Fand`, `For`, `switch_For`, `get_mime_type`, `list_to_str`, `is_first`, `is_last`, `dicts_to_dataclasses`, `emptydataclass`, `dec_to_hex` 
+- Удаление устаревших классов `stl`, `DictionaryWithExtendedFunctionality`, `MatrixCore`, `DataClass` `PreEmptyDataClass`, `EmptyDataClass`, `Color`, `NoneType`, `TupleDict`, `Number`
 - Удаление устаревшего декоратора `deprecated`
 - Удаление устаревшего модуля `system.py`
+- Переход на `pyproject.toml` вместо `setup.py`
 
 ---
+
+## [2.5.10] - 2026-02-16
+### Устарело ⚠️
+- Классы `stl`, `DictionaryWithExtendedFunctionality`, `MatrixCore`, `DataClass` `PreEmptyDataClass`, `EmptyDataClass`, `Color`, `NoneType` и `TupleDict` в `classes.py` объявлены устаревшими
+- Функции `dicts_to_dataclasses` и `emptydataclass` в `classes.py` объявлены устаревшими
+- Функция `dec_to_hex` и класс `Number` в `numwork.py` объявлены устаревшими
 
 ## [2.5.9] - 2026-02-10
 ### Исправлено 🐛

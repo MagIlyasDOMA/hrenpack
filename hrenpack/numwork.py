@@ -1,5 +1,4 @@
-import math
-import time
+import math, warnings
 from typing import Union, Optional
 from hrenpack.listwork import intlist
 from random import randint
@@ -58,6 +57,7 @@ def hex_to_dec(hex_string: str) -> int:
 
 
 def dec_to_hex(dec: int) -> str:
+    warnings.warn('This function will be removed in version 3.0.0', DeprecationWarning, 2)
     num = hex(dec)
     return num[2:]
 
@@ -73,6 +73,7 @@ def dec_to_oct(dec: int) -> int:
 
 class Number:
     def __init__(self, dec: float):
+        warnings.warn('This class will be removed in version 3.0.0', DeprecationWarning, 2)
         self.dec = dec
         self.hex = self.__hex__()
         self.oct = self.__oct__()

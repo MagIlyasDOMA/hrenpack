@@ -1,14 +1,13 @@
-import platform
+import platform, warnings
 from typing import Union, Optional, Iterable, Any
-from types import MethodType
 from dataclasses import dataclass
-from hrenpack.decorators import args_kwargs
 from hrenpack.listwork import split_list, intlist, floatlist, merging_dictionaries, if_dict_key, dict_keyf
 from hrenpack.numwork import dec_to_hex, hex_to_dec
 
 
 class stl(list):
     def __init__(self, source: Union[str, int, float, bool], *args, **kwargs) -> None:
+        warnings.warn('This class will be removed in version 3.0.0', DeprecationWarning, 2)
         super().__init__()
         self.vstring = str(source)
         self.vlist = self.vstring.split(', ')
@@ -104,6 +103,7 @@ class stl(list):
 
 class DictionaryWithExtendedFunctionality(dict):
     def __init__(self, **kwargs):
+        warnings.warn('This class will be removed in version 3.0.0', DeprecationWarning, 2)
         super().__init__()
         self.__dict__ = kwargs
 
@@ -113,6 +113,7 @@ class DictionaryWithExtendedFunctionality(dict):
 
 class MatrixCore:
     def __init__(self, path_to_file: str = '</return/>'):
+        warnings.warn('This class will be removed in version 3.0.0', DeprecationWarning, 2)
         self.path_to_file = path_to_file
         self.is_return = self.path_to_file == '</return/>'
 
@@ -159,6 +160,7 @@ class DataClass:
     __default_classname__: str = 'DataClass'
 
     def __init__(self, **kwargs):
+        warnings.warn('This class will be removed in version 3.0.0', DeprecationWarning, 2)
         self.__classname__ = kwargs.get('__classname__', self.__default_classname__)
         if '__classname__' in kwargs.keys():
             del kwargs['__classname__']
@@ -235,6 +237,7 @@ class PreEmptyDataClass(DataClass):
     __default_classname__ = ''
 
     def __init__(self, **kwargs):
+        warnings.warn('This class will be removed in version 3.0.0', DeprecationWarning, 2)
         super().__init__(**kwargs)
         if self.__classname__ != self.__default_classname__:
             self.__update__(__classname__=self.__classname__)
@@ -242,6 +245,7 @@ class PreEmptyDataClass(DataClass):
 
 class EmptyDataClass(DataClass):
     def __init__(self, **kwargs):
+        warnings.warn('This class will be removed in version 3.0.0', DeprecationWarning, 2)
         super().__init__(**kwargs)
         try:
             del self.__classname__, self.__default_classname__
@@ -257,6 +261,7 @@ class EmptyDataClass(DataClass):
 
 
 def dicts_to_dataclasses(cls):
+    warnings.warn('This class will be removed in version 3.0.0', DeprecationWarning, 2)
     if issubclass(cls, DataClass):
         init = cls.__init__
 
@@ -306,6 +311,7 @@ else:
 
 class Color:
     def __init__(self, red: int, green: int, blue: int) -> None:
+        warnings.warn('This class will be removed in version 3.0.0', DeprecationWarning, 2)
         self.red, self.green, self.blue = red, green, blue
         self.hexCode = self.__hex__()
 
@@ -355,6 +361,7 @@ class range_plus:
 
 
 def emptydataclass(cls):
+    warnings.warn('This function will be removed in version 3.0.0', DeprecationWarning, 2)
     def str__(self):
         return super(type(self), self).__str__().replace(self.__class__.__name__, '', 1)
     cls = dataclass(cls)
@@ -379,6 +386,9 @@ class RawString(str):
 
 
 class NoneType:
+    def __init__(self):
+        warnings.warn('This class will be removed in version 3.0.0', DeprecationWarning, 2)
+
     def __bool__(self):
         return False
 
@@ -560,6 +570,7 @@ class TransposedList:
 
 class TupleDict:
     def __init__(self, *args: tuple[Any, Any]):
+        warnings.warn('This class will be removed in version 3.0.0', DeprecationWarning, 2)
         self._data = list(args)
 
     def to_dict(self) -> dict:
