@@ -52,25 +52,6 @@ def number_in(num: float, minimum: float, maximum: float, steel: bool = False) -
         return minimum < num < maximum if steel else minimum <= num <= maximum
 
 
-def hex_to_dec(hex_string: str) -> int:
-    return int(hex_string, 16)
-
-
-def dec_to_hex(dec: int) -> str:
-    warnings.warn('This function will be removed in version 3.0.0', DeprecationWarning, 2)
-    num = hex(dec)
-    return num[2:]
-
-
-def oct_to_dec(oct_int: int) -> int:
-    return int(str(oct_int), 8)
-
-
-def dec_to_oct(dec: int) -> int:
-    num = oct(dec)
-    return int(num[2:])
-
-
 def moreless(num: float, min: float, max: float, is_strict: bool = False) -> bool:
     if min > max:
         raise ValueError("min должен быть меньше max")
