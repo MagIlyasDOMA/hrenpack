@@ -7,6 +7,20 @@ All changes in this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.0.0-beta.2] - 2026-02-16
+### Breaking changes ⚠️
+- Removed `framework/Pyside6/templates.py` module
+- Changed `setup.py` to `pyproject.toml`
+- Completely reworked the `is_object` function in `type_define.py`
+- Reworked `dev_*` extras under `pyproject.toml`
+
+### Added ✨
+- Added `screen.py` and `styles.py` modules to `framework/Pyside6`
+- Added the `exclude_nones` function to `kwargswork.py`
+
+### Fixed 🐛
+- Removed import of non-existent decorator in `__init__.py`
+
 ## [3.0.0-beta.1] - 2026-02-11
 First beta version of hrenpack 3.0.0
 
@@ -217,6 +231,20 @@ Use version 2.1.2 or higher for production environments.
 
 Формат основан на [Keep a Changelog](https://keepachangelog.com/),
 и проект придерживается [Семантического Версионирования](https://semver.org/).
+
+## [3.0.0-beta.2] - 2026-02-16
+### Критические изменения ⚠️
+- Удален модуль `framework/Pyside6/templates.py`
+- `setup.py` изменен на `pyproject.toml`
+- Полностью переработана функция `is_object` в `type_define.py`
+- Переработаны экстра `dev_*` под `pyproject.toml`
+
+### Добавлено ✨
+- Добавлены модули `screen.py` и `styles.py` в `framework/Pyside6`
+- Добавлена функция `exclude_nones` в `kwargswork.py`
+
+### Исправлено 🐛
+- Убран импорт несуществующего декоратора в `__init__.py`
 
 ## [3.0.0-beta.1] - 2026-02-11
 Первая бета-версия hrenpack 3.0.0
