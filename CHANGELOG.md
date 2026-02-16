@@ -36,6 +36,12 @@ First beta version of hrenpack 3.0.0
 
 ---
 
+## [2.5.10] - 2026-02-16
+### Deprecated ⚠️
+- The classes `stl`, `DictionaryWithExtendedFunctionality`, `MatrixCore`, `DataClass`, `PreEmptyDataClass`, `EmptyDataClass`, `Color`, `NoneType`, and `TupleDict` in `classes.py` are deprecated
+- The functions `dicts_to_dataclasses` and `emptydataclass` in `classes.py` are deprecated
+- The function `dec_to_hex` and the class `Number` in `numwork.py` are deprecated
+
 ## [2.5.9] - 2026-02-10
 ### Fixed 🐛
 - Corrected version in `__init__.py`
@@ -260,6 +266,12 @@ Use version 2.1.2 or higher for production environments.
 - Удален подкласс `Converter` в классе `ConfigurationFile` в `filework/__init__.py`
 
 ---
+
+## [2.5.10] - 2026-02-16
+### Устарело ⚠️
+- Классы `stl`, `DictionaryWithExtendedFunctionality`, `MatrixCore`, `DataClass` `PreEmptyDataClass`, `EmptyDataClass`, `Color`, `NoneType` и `TupleDict` в `classes.py` объявлены устаревшими
+- Функции `dicts_to_dataclasses` и `emptydataclass` в `classes.py` объявлены устаревшими
+- Функция `dec_to_hex` и класс `Number` в `numwork.py` объявлены устаревшими
 
 ## [2.5.9] - 2026-02-10
 ### Исправлено 🐛
