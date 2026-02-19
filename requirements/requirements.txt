@@ -10,3 +10,4 @@ psutil
 python-dotenv>=1.2.0
 python-gettext~=5.0
 pathlike-typing
+argparse-typing>=0.2.0

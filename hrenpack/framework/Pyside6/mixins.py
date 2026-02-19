@@ -1,0 +1,1 @@
+from pyqtcli import CLIMixin
