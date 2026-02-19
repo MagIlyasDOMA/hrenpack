@@ -1,5 +1,5 @@
 from typing import Optional
-from PySide6.QtGui import *
+from PySide6.QtGui import QPainter, QColor
 from PySide6.QtWidgets import *
 from pyqtcli import QCLIApplication
 from hrenpack import ColorTyping
