@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from dotenv import load_dotenv, dotenv_values
 from pathlike_typing import PathLike
 
-from hrenpack.listwork import if_dict_key, dict_keyf
+from hrenpack.listwork import if_dict_key, dict_keyf, merging_dictionaries
 
 
 class DictObject:
@@ -334,11 +334,22 @@ class TupleDict:
 
 
 class Environment:
-    def __init__(self):
-        self.local_data = dict()
+    def __init__(self, **local_data):
+        self.local_data = self._format_dict(local_data)
+
+    @staticmethod
+    def _format_dict(*dicts, **kwargs):
+        output = dict()
+        for key, value in merging_dictionaries(*dicts, kwargs).items():
+            if not isinstance(key, str):
+                raise TypeError("Key must be str")
+            output[key.upper()] = value
+        return output
 
     @classmethod
     def load(cls, dotenv_path: PathLike = None, stream: Optional[IO[str]] = None, verbose: bool = False,
              override: bool = False, interpolate: bool = True, encoding: str = 'utf-8', local: bool = False) -> 'Environment':
         dotenv_func = dotenv_values if local else load_dotenv
-        
+        raw_data = dotenv_func(dotenv_path, stream, verbose, override, interpolate, encoding)
+        data = dict(raw_data) if local else dict()
+        return cls(**data)

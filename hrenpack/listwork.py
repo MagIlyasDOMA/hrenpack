@@ -129,11 +129,10 @@ def split_list(input: Union[tuple, list], separator: str = ', '):
     return separator.join(input)
 
 
-def merging_dictionaries(*dicts: dict) -> dict:
-    output = dict()
+def merging_dictionaries(*dicts: dict, **kwargs) -> dict:
     for d in dicts:
-        output = {**output, **d}
-    return output
+        kwargs.update(d)
+    return kwargs
 
 
 # -1 - pseudo dict to dict
