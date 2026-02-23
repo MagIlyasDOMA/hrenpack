@@ -4,6 +4,8 @@ from dataclasses import dataclass
 from dotenv import load_dotenv, dotenv_values
 from pathlike_typing import PathLike
 
+from hrenpack.boolwork import str_to_bool
+from hrenpack.typings import NullStr
 from hrenpack.listwork import if_dict_key, dict_keyf, merging_dictionaries
 
 
@@ -338,7 +340,7 @@ class Environment:
         self.local_data = self._format_dict(local_data)
 
     @staticmethod
-    def _format_dict(*dicts, **kwargs):
+    def _format_dict(*dicts: dict, **kwargs) -> dict:
         output = dict()
         for key, value in merging_dictionaries(*dicts, kwargs).items():
             if not isinstance(key, str):
@@ -353,3 +355,60 @@ class Environment:
         raw_data = dotenv_func(dotenv_path, stream, verbose, override, interpolate, encoding)
         data = dict(raw_data) if local else dict()
         return cls(**data)
+
+    def __getitem__(self, key: str):
+        if key in self.local_data:
+            return self.local_data[key]
+        return os.environ[key]
+
+    def __setitem__(self, key: str, value: Any):
+        os.environ[key.upper()] = str(value)
+
+    def __delitem__(self, key):
+        if key in self.local_data:
+            del self.local_data[key]
+        del os.environ[key]
+
+    def get(self, key: str, default: Any = None) -> Any:
+        try:
+            return self[key]
+        except KeyError:
+            return default
+
+    def get_int(self, key: str, default: Optional[int] = None) -> Optional[int]:
+        return int(self.get(key, default))
+
+    def get_float(self, key: str, default: Optional[float] = None) -> Optional[float]:
+        return float(self.get(key, default))
+
+    def get_bool(self, key: str, default: Optional[bool] = None, strict: bool = True) -> Optional[bool]:
+        try:
+            return str_to_bool(self.get(key, default))
+        except TypeError as error:
+            if strict: raise error
+            return default
+
+    def set(self, key: str, value: Any) -> None:
+        self[key] = value
+
+    def setdefault(self, key: str, value: Any) -> Any:
+        if self.get(key) is None:
+            self.set(key, value)
+
+    def write_local(self, delete: bool = False) -> 'Environment':
+        for key, value in self.local_data.items():
+            os.environ[key] = str(value)
+        if delete: self.local_data = dict()
+        return self
+
+    def update(self, *dicts, **kwargs):
+        for key, value in self._format_dict(*dicts, kwargs):
+            self[key] = value
+        return self
+
+    def update_local(self, *dicts, **kwargs):
+        for key, v
+
+    def delete(self, *keys: str):
+        for key in keys:
+            del self[key]
