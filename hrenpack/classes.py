@@ -407,7 +407,9 @@ class Environment:
         return self
 
     def update_local(self, *dicts, **kwargs):
-        for key, v
+        for key, value in self._format_dict(*dicts, kwargs):
+            self.local_data[key] = value
+        return self
 
     def delete(self, *keys: str):
         for key in keys:
