@@ -3,9 +3,8 @@ from typing import Any, IO, Optional
 from dataclasses import dataclass
 from dotenv import load_dotenv, dotenv_values
 from pathlike_typing import PathLike
-
 from hrenpack.boolwork import str_to_bool
-from hrenpack.typings import NullStr
+from hrenpack.encapsulation import class_and_instance_method
 from hrenpack.listwork import if_dict_key, dict_keyf, merging_dictionaries
 
 
@@ -35,7 +34,7 @@ def call_method(method_name: str, objects: tuple, *args, **kwargs):
 
 if platform.system() == 'Windows':
     try:
-        from tkinter import *
+        from tkinter import Tk
 
         class TkTemplate(Tk):
             def __init__(self, title: str, width: int, height: int, background: str = 'white', resizable: bool = False, **kwargs):
@@ -336,11 +335,30 @@ class TupleDict:
 
 
 class Environment:
+    """Environment variables manager with local data support"""
+
     def __init__(self, **local_data):
+        """Initialize Environment with local data
+
+        Args:
+            **local_data: Key-value pairs for local environment variables
+        """
         self.local_data = self._format_dict(local_data)
 
     @staticmethod
     def _format_dict(*dicts: dict, **kwargs) -> dict:
+        """Format dictionaries by converting keys to uppercase
+
+        Args:
+            *dicts: Dictionaries to merge
+            **kwargs: Additional key-value pairs
+
+        Returns:
+            Dictionary with uppercase keys
+
+        Raises:
+            TypeError: If any key is not a string
+        """
         output = dict()
         for key, value in merging_dictionaries(*dicts, kwargs).items():
             if not isinstance(key, str):
@@ -350,67 +368,262 @@ class Environment:
 
     @classmethod
     def load(cls, dotenv_path: PathLike = None, stream: Optional[IO[str]] = None, verbose: bool = False,
-             override: bool = False, interpolate: bool = True, encoding: str = 'utf-8', local: bool = False) -> 'Environment':
+             override: bool = False, interpolate: bool = True, encoding: str = 'utf-8',
+             local: bool = False) -> 'Environment':
+        """Load environment variables from .env file
+
+        Args:
+            dotenv_path: Path to .env file
+            stream: Alternative to path, file-like object
+            verbose: Enable verbose mode
+            override: Override existing variables
+            interpolate: Interpolate variables
+            encoding: File encoding
+            local: If True, load as local data instead of system environ
+
+        Returns:
+            New Environment instance
+        """
         dotenv_func = dotenv_values if local else load_dotenv
         raw_data = dotenv_func(dotenv_path, stream, verbose, override, interpolate, encoding)
         data = dict(raw_data) if local else dict()
         return cls(**data)
 
     def __getitem__(self, key: str):
+        """Get environment variable by key
+
+        Args:
+            key: Variable name
+
+        Returns:
+            Value from local data or system environ
+
+        Raises:
+            KeyError: If key not found
+        """
         if key in self.local_data:
             return self.local_data[key]
         return os.environ[key]
 
     def __setitem__(self, key: str, value: Any):
+        """Set environment variable
+
+        Args:
+            key: Variable name
+            value: Value to set (will be converted to string)
+        """
         os.environ[key.upper()] = str(value)
 
     def __delitem__(self, key):
+        """Delete environment variable
+
+        Args:
+            key: Variable name
+
+        Raises:
+            KeyError: If key not found
+        """
         if key in self.local_data:
             del self.local_data[key]
         del os.environ[key]
 
-    def get(self, key: str, default: Any = None) -> Any:
+    @class_and_instance_method
+    def get(self_or_cls, key: str, default: Any = None) -> Any:
+        """Get environment variable value
+
+        Can be called from class or instance:
+        - From class: Gets from system environ
+        - From instance: Gets from local data or system environ
+
+        Args:
+            key: Variable name
+            default: Default value if not found
+
+        Returns:
+            Variable value or default
+        """
+        if isinstance(self_or_cls, type):
+            # Called from class
+            return os.environ.get(key.upper(), default)
+        else:
+            # Called from instance
+            try:
+                return self_or_cls[key]
+            except KeyError:
+                return default
+
+    @class_and_instance_method
+    def get_int(self_or_cls, key: str, default: Optional[int] = None) -> Optional[int]:
+        """Get environment variable as integer
+
+        Args:
+            key: Variable name
+            default: Default value if not found or conversion fails
+
+        Returns:
+            Integer value or default
+        """
         try:
-            return self[key]
-        except KeyError:
+            value = (self_or_cls.get(key, default)
+                     if not isinstance(self_or_cls, type)
+                     else os.environ.get(key.upper(), default))
+            return int(value) if value is not None else default
+        except (TypeError, ValueError):
             return default
 
-    def get_int(self, key: str, default: Optional[int] = None) -> Optional[int]:
-        return int(self.get(key, default))
+    @class_and_instance_method
+    def get_float(self_or_cls, key: str, default: Optional[float] = None) -> Optional[float]:
+        """Get environment variable as float
 
-    def get_float(self, key: str, default: Optional[float] = None) -> Optional[float]:
-        return float(self.get(key, default))
+        Args:
+            key: Variable name
+            default: Default value if not found or conversion fails
 
-    def get_bool(self, key: str, default: Optional[bool] = None, strict: bool = True) -> Optional[bool]:
+        Returns:
+            Float value or default
+        """
         try:
-            return str_to_bool(self.get(key, default))
-        except TypeError as error:
-            if strict: raise error
+            value = (self_or_cls.get(key, default)
+                     if not isinstance(self_or_cls, type)
+                     else os.environ.get(key.upper(), default))
+            return float(value) if value is not None else default
+        except (TypeError, ValueError):
             return default
 
-    def set(self, key: str, value: Any) -> None:
-        self[key] = value
+    @class_and_instance_method
+    def get_bool(self_or_cls, key: str, default: Optional[bool] = None, strict: bool = True) -> Optional[bool]:
+        """Get environment variable as boolean
 
-    def setdefault(self, key: str, value: Any) -> Any:
-        if self.get(key) is None:
-            self.set(key, value)
+        Recognizes: 'true', '1', 'yes', 'y', 'on' (case insensitive) as True
+        All other values are evaluated as bool()
+
+        Args:
+            key: Variable name
+            default: Default value if not found
+            strict: If True, raise exceptions on conversion errors
+
+        Returns:
+            Boolean value or default
+
+        Raises:
+            TypeError: If conversion fails and strict=True
+        """
+        try:
+            value = (self_or_cls.get(key, default)
+                     if not isinstance(self_or_cls, type)
+                     else os.environ.get(key.upper(), default))
+            return str_to_bool(value) if value is not None else default
+        except (TypeError, ValueError) as error:
+            if strict:
+                raise error
+            return default
+
+    @class_and_instance_method
+    def set(self_or_cls, key: str, value: Any) -> None:
+        """Set environment variable
+
+        Args:
+            key: Variable name
+            value: Value to set
+        """
+        if isinstance(self_or_cls, type):
+            os.environ[key.upper()] = str(value)
+        else:
+            self_or_cls[key] = value
+
+    @class_and_instance_method
+    def setdefault(self_or_cls, key: str, value: Any) -> Any:
+        """Set value if key doesn't exist and return the value
+
+        Args:
+            key: Variable name
+            value: Value to set if key doesn't exist
+
+        Returns:
+            Current value for the key
+        """
+        if isinstance(self_or_cls, type):
+            if key.upper() not in os.environ:
+                os.environ[key.upper()] = str(value)
+            return os.environ.get(key.upper())
+        else:
+            if self_or_cls.get(key) is None:
+                self_or_cls.set(key, value)
+            return self_or_cls.get(key)
 
     def write_local(self, delete: bool = False) -> 'Environment':
+        """Write local data to system environ
+
+        Args:
+            delete: If True, clear local data after writing
+
+        Returns:
+            Self for method chaining
+        """
         for key, value in self.local_data.items():
             os.environ[key] = str(value)
-        if delete: self.local_data = dict()
+        if delete:
+            self.local_data = dict()
         return self
 
-    def update(self, *dicts, **kwargs):
-        for key, value in self._format_dict(*dicts, kwargs):
-            self[key] = value
-        return self
+    @class_and_instance_method
+    def update(self_or_cls, *dicts, **kwargs) -> 'Environment':
+        """Update multiple environment variables
 
-    def update_local(self, *dicts, **kwargs):
-        for key, value in self._format_dict(*dicts, kwargs):
+        Args:
+            *dicts: Dictionaries with variables to update
+            **kwargs: Key-value pairs to update
+
+        Returns:
+            Self (or new instance if called from class)
+        """
+        formatted = self_or_cls._format_dict(*dicts, **kwargs)
+
+        if isinstance(self_or_cls, type):
+            for key, value in formatted.items():
+                os.environ[key] = str(value)
+            return self_or_cls()
+        else:
+            for key, value in formatted.items():
+                self_or_cls[key] = value
+            return self_or_cls
+
+    def update_local(self, *dicts, **kwargs) -> 'Environment':
+        """Update only local data (not system environ)
+
+        Args:
+            *dicts: Dictionaries with variables to update
+            **kwargs: Key-value pairs to update
+
+        Returns:
+            Self for method chaining
+        """
+        formatted = self._format_dict(*dicts, **kwargs)
+        for key, value in formatted.items():
             self.local_data[key] = value
         return self
 
-    def delete(self, *keys: str):
-        for key in keys:
-            del self[key]
+    @class_and_instance_method
+    def delete(self_or_cls, *keys: str) -> 'Environment':
+        """Delete environment variables
+
+        Args:
+            *keys: Variable names to delete
+
+        Returns:
+            Self (or new instance if called from class)
+        """
+        if isinstance(self_or_cls, type):
+            for key in keys:
+                try:
+                    del os.environ[key.upper()]
+                except KeyError:
+                    pass
+            return self_or_cls()
+        else:
+            for key in keys:
+                try:
+                    del self_or_cls[key]
+                except KeyError:
+                    pass
+            return self_or_cls
