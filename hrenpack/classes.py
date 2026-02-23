@@ -1,6 +1,9 @@
-import platform, warnings
-from typing import Any
+import platform, warnings, os
+from typing import Any, IO, Optional
 from dataclasses import dataclass
+from dotenv import load_dotenv, dotenv_values
+from pathlike_typing import PathLike
+
 from hrenpack.listwork import if_dict_key, dict_keyf
 
 
@@ -328,3 +331,14 @@ class TupleDict:
 
     def __delitem__(self, index):
         del self.to_dict()[index]
+
+
+class Environment:
+    def __init__(self):
+        self.local_data = dict()
+
+    @classmethod
+    def load(cls, dotenv_path: PathLike = None, stream: Optional[IO[str]] = None, verbose: bool = False,
+             override: bool = False, interpolate: bool = True, encoding: str = 'utf-8', local: bool = False) -> 'Environment':
+        dotenv_func = dotenv_values if local else load_dotenv
+        
