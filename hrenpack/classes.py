@@ -4,7 +4,6 @@ from dataclasses import dataclass
 from dotenv import load_dotenv, dotenv_values
 from pathlike_typing import PathLike
 from hrenpack.boolwork import str_to_bool
-from hrenpack.encapsulation import class_and_instance_method
 from hrenpack.listwork import if_dict_key, dict_keyf, merging_dictionaries
 
 
@@ -125,29 +124,6 @@ class RawString(str):
 
     def __eq__(self, other):
         return other == self or str(other) == str(self)
-
-
-class NoneType:
-    def __init__(self):
-        warnings.warn('This class will be removed in version 3.0.0', DeprecationWarning, 2)
-
-    def __bool__(self):
-        return False
-
-    def __int__(self):
-        return 0
-
-    def __float__(self):
-        return 0.0
-
-    def __str__(self):
-        return ''
-
-    def __eq__(self, other):
-        return other is None or other == self
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
 
 
 class frozendict(dict):
@@ -308,30 +284,6 @@ class TransposedList:
         """Строковое представление транспонированных данных."""
         transposed = list(self)
         return str(transposed)
-
-
-class TupleDict:
-    def __init__(self, *args: tuple[Any, Any]):
-        warnings.warn('This class will be removed in version 3.0.0', DeprecationWarning, 2)
-        self._data = list(args)
-
-    def to_dict(self) -> dict:
-        output = dict()
-        for key, value in self._data:
-            output[key] = value
-        return output
-
-    def __iter__(self):
-        return iter(self.to_dict())
-
-    def __getitem__(self, index):
-        return self.to_dict()[index]
-
-    def __setitem__(self, index, value):
-        self.to_dict()[index] = value
-
-    def __delitem__(self, index):
-        del self.to_dict()[index]
 
 
 class Environment:
@@ -585,3 +537,6 @@ class Environment:
             except KeyError:
                 pass
         return self
+
+    def __iter__(self):
+        return
