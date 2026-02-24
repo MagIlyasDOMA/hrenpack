@@ -53,8 +53,6 @@ def use_default(func):
 
 
 class TextFile:
-    comment_letter = ''
-
     def __init__(self, path: Union[str, FileNameInfo], encoding: Union[str, int] = 'utf-8', **kwargs):
         self.path = path if type(path) is str else path.path
         self.get_filename = lambda: get_filename(self.path)
@@ -94,14 +92,8 @@ class TextFile:
         file.write(data)
         file.close()
 
-    @comment_decorator
-    def add_comment(self, comment: str):
-        if '\n' in comment:
-            raise ValueError('\\n in comment')
-        self.add_data('{} {}'.format(self.comment_letter, comment))
-
-    def copy(self, new_path: str):
-        if not os.path.isfile(new_path):
+    def copy(self, new_path: str, force: bool = False):
+        if os.path.isfile(new_path) and not force:
             raise FileExistsError(
                 f'[WinError 183] Невозможно создать новый файл, так как он уже существует: {new_path}'
             )
@@ -227,8 +219,6 @@ class SRTSubtitleFile(TextFile):
 
 
 class ConfigurationFile(TextFile):
-    comment_letter = ';'
-
     class _Section:
         def __init__(self, config: ConfigParser, name: str):
             self.config = dict(config.items(name))

@@ -427,8 +427,7 @@ class Environment:
             del self.local_data[key]
         del os.environ[key]
 
-    @class_and_instance_method
-    def get(self_or_cls, key: str, default: Any = None) -> Any:
+    def get(self, key: str, default: Any = None) -> Any:
         """Get environment variable value
 
         Can be called from class or instance:
@@ -442,59 +441,51 @@ class Environment:
         Returns:
             Variable value or default
         """
-        if isinstance(self_or_cls, type):
-            # Called from class
-            return os.environ.get(key.upper(), default)
-        else:
-            # Called from instance
-            try:
-                return self_or_cls[key]
-            except KeyError:
-                return default
+        try:
+            return self[key]
+        except KeyError:
+            return default
 
-    @class_and_instance_method
-    def get_int(self_or_cls, key: str, default: Optional[int] = None) -> Optional[int]:
+    def get_int(self, key: str, default: Optional[int] = None, strict: bool = True) -> Optional[int]:
         """Get environment variable as integer
 
         Args:
             key: Variable name
             default: Default value if not found or conversion fails
+            strict: If True, raise exceptions on conversion errors
 
         Returns:
             Integer value or default
         """
         try:
-            value = (self_or_cls.get(key, default)
-                     if not isinstance(self_or_cls, type)
-                     else os.environ.get(key.upper(), default))
-            return int(value) if value is not None else default
-        except (TypeError, ValueError):
+            return int(self.get(key, default))
+        except (TypeError, ValueError) as error:
+            if strict:
+                raise error
             return default
 
-    @class_and_instance_method
-    def get_float(self_or_cls, key: str, default: Optional[float] = None) -> Optional[float]:
+    def get_float(self, key: str, default: Optional[float] = None, strict: bool = True) -> Optional[float]:
         """Get environment variable as float
 
         Args:
             key: Variable name
             default: Default value if not found or conversion fails
+            strict: If True, raise exceptions on conversion errors
 
         Returns:
             Float value or default
         """
         try:
-            value = (self_or_cls.get(key, default)
-                     if not isinstance(self_or_cls, type)
-                     else os.environ.get(key.upper(), default))
-            return float(value) if value is not None else default
-        except (TypeError, ValueError):
+            return float(self.get(key, default))
+        except (TypeError, ValueError) as error:
+            if strict:
+                raise error
             return default
 
-    @class_and_instance_method
-    def get_bool(self_or_cls, key: str, default: Optional[bool] = None, strict: bool = True) -> Optional[bool]:
+    def get_bool(self, key: str, default: Optional[bool] = None, strict: bool = True) -> Optional[bool]:
         """Get environment variable as boolean
 
-        Recognizes: 'true', '1', 'yes', 'y', 'on' (case insensitive) as True
+        Recognizes: 'true', '1' (case insensitive) as True
         All other values are evaluated as bool()
 
         Args:
@@ -509,8 +500,8 @@ class Environment:
             TypeError: If conversion fails and strict=True
         """
         try:
-            value = (self_or_cls.get(key, default)
-                     if not isinstance(self_or_cls, type)
+            value = (self.get(key, default)
+                     if not isinstance(self, type)
                      else os.environ.get(key.upper(), default))
             return str_to_bool(value) if value is not None else default
         except (TypeError, ValueError) as error:
@@ -518,38 +509,24 @@ class Environment:
                 raise error
             return default
 
-    @class_and_instance_method
-    def set(self_or_cls, key: str, value: Any) -> None:
+    def set(self, key: str, value: Any) -> None:
         """Set environment variable
 
         Args:
             key: Variable name
             value: Value to set
         """
-        if isinstance(self_or_cls, type):
-            os.environ[key.upper()] = str(value)
-        else:
-            self_or_cls[key] = value
+        self[key] = value
 
-    @class_and_instance_method
-    def setdefault(self_or_cls, key: str, value: Any) -> Any:
+    def setdefault(self, key: str, value: Any) -> None:
         """Set value if key doesn't exist and return the value
 
         Args:
             key: Variable name
             value: Value to set if key doesn't exist
-
-        Returns:
-            Current value for the key
         """
-        if isinstance(self_or_cls, type):
-            if key.upper() not in os.environ:
-                os.environ[key.upper()] = str(value)
-            return os.environ.get(key.upper())
-        else:
-            if self_or_cls.get(key) is None:
-                self_or_cls.set(key, value)
-            return self_or_cls.get(key)
+        if self.get(key) is None:
+            self.set(key, value)
 
     def write_local(self, delete: bool = False) -> 'Environment':
         """Write local data to system environ
@@ -566,8 +543,7 @@ class Environment:
             self.local_data = dict()
         return self
 
-    @class_and_instance_method
-    def update(self_or_cls, *dicts, **kwargs) -> 'Environment':
+    def update(self, *dicts, **kwargs) -> 'Environment':
         """Update multiple environment variables
 
         Args:
@@ -577,16 +553,9 @@ class Environment:
         Returns:
             Self (or new instance if called from class)
         """
-        formatted = self_or_cls._format_dict(*dicts, **kwargs)
-
-        if isinstance(self_or_cls, type):
-            for key, value in formatted.items():
-                os.environ[key] = str(value)
-            return self_or_cls()
-        else:
-            for key, value in formatted.items():
-                self_or_cls[key] = value
-            return self_or_cls
+        for key, value in self._format_dict(*dicts, **kwargs).items():
+            self[key] = value
+        return self
 
     def update_local(self, *dicts, **kwargs) -> 'Environment':
         """Update only local data (not system environ)
@@ -598,13 +567,10 @@ class Environment:
         Returns:
             Self for method chaining
         """
-        formatted = self._format_dict(*dicts, **kwargs)
-        for key, value in formatted.items():
-            self.local_data[key] = value
+        self.local_data.update(self._format_dict(*dicts, **kwargs))
         return self
 
-    @class_and_instance_method
-    def delete(self_or_cls, *keys: str) -> 'Environment':
+    def delete(self, *keys: str) -> 'Environment':
         """Delete environment variables
 
         Args:
@@ -613,17 +579,9 @@ class Environment:
         Returns:
             Self (or new instance if called from class)
         """
-        if isinstance(self_or_cls, type):
-            for key in keys:
-                try:
-                    del os.environ[key.upper()]
-                except KeyError:
-                    pass
-            return self_or_cls()
-        else:
-            for key in keys:
-                try:
-                    del self_or_cls[key]
-                except KeyError:
-                    pass
-            return self_or_cls
+        for key in keys:
+            try:
+                del self[key]
+            except KeyError:
+                pass
+        return self
