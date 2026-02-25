@@ -1,7 +1,8 @@
-import time, datetime
+import time, datetime, pytz
 from datetime import datetime as dt, date as date_object
 from dataclasses import dataclass
 from typing import Union, Optional, Literal
+from tzlocal import get_localzone
 from hrenpack.listwork import intlist, strlist
 
 
@@ -414,3 +415,8 @@ def now_to_str(mode: Literal['date', 'time', 'datetime'] = 'datetime',
 
 def datetime_to_date_object(input: dt) -> date_object:
     return date_object(day=input.day, month=input.month, year=input.year)
+
+
+def current_timezone(to_string: bool = False) -> Union[str]:
+    lz = get_localzone()
+    return lz.key if to_string else lz
