@@ -1,0 +1,2 @@
+class ExtraArgumentsWarning(UserWarning):
+    pass

@@ -539,4 +539,21 @@ class Environment:
         return self
 
     def __iter__(self):
-        return
+        return iter(merging_dictionaries(dict(os.environ), self.local_data))
+
+    def write_file(self, filename: PathLike = '.env', *vars: str, local: bool = False,
+                   global_: bool = True, blacklist_mode: bool = False) -> None:
+        global_env = dict(os.environ)
+        if global_ and local:
+            env = merging_dictionaries(global_env, self.local_data)
+        elif global_:
+            env = self.local_data
+        elif local:
+            env = global_env
+        else:
+            raise ValueError()
+        with open(filename, 'w') as file:
+            for key, value in env.items():
+                if any((all((not blacklist_mode, key in vars)), all((blacklist_mode, key not in vars)))):
+                    file.write(f'{key}="{value}"\n')
+

@@ -271,11 +271,11 @@ class ConfigurationFile(TextFile):
         return self.config.has_option(section, key)
 
     def delete_value(self, section: str, key: str) -> None:
-        self.config.delete(section, key)
+        self.config.remove_option(section, key)
         self.save()
 
     def delete_section(self, section: str) -> None:
-        self.config.delete(section)
+        self.config.remove_section(section)
         self.save()
 
     def create_section(self, section: str) -> None:
@@ -302,7 +302,8 @@ class ConfigurationFile(TextFile):
 
     def edit_section(self, section: str, block: dict, rewrite: bool = False) -> None:
         if rewrite:
-            self.delete_section(section)
+            try: self.delete_section(section)
+            except NoSectionError: pass
             self.create_section(section)
         for key in block:
             self.set_value(section, key, block[key])
@@ -332,22 +333,11 @@ class ConfigurationFile(TextFile):
             config = ConfigParser()
             for section, options in block.items():
                 config[section] = options
-            with open('output.ini', 'w') as configfile:
+            with open(self.path, 'w') as configfile:
                 config.write(configfile)
         else:
             for section, options in block.items():
                 self.edit_section(section, options)
-
-    def edit_section_if_not_none(self, section: str, block: dict, rewrite: bool = False) -> None:
-        output = dict()
-        for key, value in block.items():
-            if value not in (None, 'None'):
-                output[key] = value
-        self.edit_section(section, output, rewrite)
-
-    def edit_if_not_none(self, block: dict[str, dict[str, Any]], rewrite: bool = False) -> None:
-        for section, options in block.items():
-            self.edit_section_if_not_none(section, options, rewrite)
 
     def __getitem__(self, section):
         return self._Section(self.config, section)
