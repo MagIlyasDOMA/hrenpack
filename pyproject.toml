@@ -57,36 +57,8 @@ pyside6 = {file = ["requirements/pyside6_requirements.txt"]}
 django = {file = ["requirements/django_requirements.txt"]}
 pygame = {file = ["requirements/pygame_requirements.txt"]}
 kivy = {file = ["requirements/kivy_requirements.txt"]}
+email = {file = ["requirements/email_requirements.txt"]}
 dev = {file = ["requirements/dev_requirements.txt"]}
-dev_base = {file = ["requirements/dev_requirements.txt"]}
-dev_image = {file = [
-    "requirements/dev_requirements.txt",
-    "requirements/image_requirements.txt"
-]}
-dev_flask = {file = [
-    "requirements/dev_requirements.txt",
-    "requirements/flask_requirements.txt"
-]}
-dev_filetype = {file = [
-    "requirements/dev_requirements.txt",
-    "requirements/filetype_requirements.txt"
-]}
-dev_pyside6 = {file = [
-    "requirements/dev_requirements.txt",
-    "requirements/pyside6_requirements.txt"
-]}
-dev_django = {file = [
-    "requirements/dev_requirements.txt",
-    "requirements/django_requirements.txt"
-]}
-dev_pygame = {file = [
-    "requirements/dev_requirements.txt",
-    "requirements/pygame_requirements.txt"
-]}
-dev_kivy = {file = [
-    "requirements/dev_requirements.txt",
-    "requirements/kivy_requirements.txt"
-]}
 all = {file = [
     "requirements/image_requirements.txt",
     "requirements/flask_requirements.txt",
@@ -94,7 +66,8 @@ all = {file = [
     "requirements/pyside6_requirements.txt",
     "requirements/django_requirements.txt",
     "requirements/pygame_requirements.txt",
-    "requirements/kivy_requirements.txt"
+    "requirements/kivy_requirements.txt",
+    "requirements/email_requirements.txt"
 ]}
 full = {file = [
     "requirements/image_requirements.txt",
@@ -103,7 +76,8 @@ full = {file = [
     "requirements/pyside6_requirements.txt",
     "requirements/django_requirements.txt",
     "requirements/pygame_requirements.txt",
-    "requirements/kivy_requirements.txt"
+    "requirements/kivy_requirements.txt",
+    "requirements/email_requirements.txt"
 ]}
 dev_all = {file = [
     "requirements/dev_requirements.txt",
@@ -113,7 +87,8 @@ dev_all = {file = [
     "requirements/pyside6_requirements.txt",
     "requirements/django_requirements.txt",
     "requirements/pygame_requirements.txt",
-    "requirements/kivy_requirements.txt"
+    "requirements/kivy_requirements.txt",
+    "requirements/email_requirements.txt"
 ]}
 dev_full = {file = [
     "requirements/dev_requirements.txt",
@@ -123,5 +98,6 @@ dev_full = {file = [
     "requirements/pyside6_requirements.txt",
     "requirements/django_requirements.txt",
     "requirements/pygame_requirements.txt",
-    "requirements/kivy_requirements.txt"
+    "requirements/kivy_requirements.txt",
+    "requirements/email_requirements.txt"
 ]}
