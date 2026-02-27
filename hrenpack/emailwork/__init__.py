@@ -4,12 +4,12 @@ from .typings import *
 
 
 class ServerConfig:
-    def __init__(self, host: str, port: int, email: str, password: str, ssl: bool):
-        self.host = host
-        self.port = port
-        self.email = email
-        self.password = password
-        self.ssl = ssl
+    def __init__(self, host: str, port: int, email: str, password: str, encryption: EncryptionType = 'no'):
+        self.host: str = host
+        self.port: int = port
+        self.email: str = email
+        self.password: str = password
+        self.encryption: EncryptionType = encryption
 
 
 class ProtocolNotInitialized(Exception): pass
@@ -23,10 +23,11 @@ class MailClient:
         self._imap_init(imap_config)
         self.smtp_config = smtp_config
 
-    def _imap_init(self, config):
+    def _imap_init(self, config: Optional[ServerConfig]):
         if config:
             self.imap_config = config
-            self._imap_client = IMAPClient(config.host, config.port, True, config.ssl)
+            self._imap_client = IMAPClient(config.host, config.port, True, config.encryption == 'ssl')
+            if config.encryption == 'starttls': self._imap_client.starttls()
             self._imap_client.login(config.email, config.password)
         else:
             self.imap_config = None
@@ -43,7 +44,7 @@ class MailClient:
                          exclude_drafts: bool = True):
         self._imap_required()
         pre_output = list()
-        for dir_type, _, dir_name in self.imap_config.get_folders_list():
+        for dir_type, _, dir_name in self._imap_client.list_folders():
             if any((
                 all((exclude_spam, dir_type == b'\\Spam')),
                 all((exclude_trash, dir_type == b'\\Trash')),
