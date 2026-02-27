@@ -182,35 +182,3 @@ class SafeMeta(type):
         except TypeError:
             print(f"Warning: MRO conflict in {name}. Using fallback inheritance.")
             return super().__new__(mcls, name, (object,), namespace)
-
-
-class FlexibleMethod:
-    def __get__(self, obj, objtype=None):
-        if obj is None:
-            # Вызов от класса
-            def class_method(*args, **kwargs):
-                return self.func(objtype, *args, **kwargs)
-
-            return class_method
-        else:
-            # Вызов от объекта
-            def instance_method(*args, **kwargs):
-                return self.func(obj, *args, **kwargs)
-
-            return instance_method
-
-    def __init__(self, func):
-        self.func = func
-
-
-def class_and_instance_method(func):
-    def wrapper(self_or_cls, *args, **kwargs):
-        if isinstance(self_or_cls, type):
-            # Вызов от класса - создаем временный экземпляр
-            instance = self_or_cls()
-            return func(instance, *args, **kwargs)
-        else:
-            # Вызов от объекта
-            return func(self_or_cls, *args, **kwargs)
-    return wrapper
-
