@@ -1,4 +1,4 @@
-import string, re, base64, binascii
+import string, re
 from typing import Union
 from random import randint, choice as randchoice
 from hrenpack.listwork import split_list, ab_reverse, tuplist, _is_tuple
@@ -165,34 +165,3 @@ def only_this_letters(text: str, *letters: str) -> bool:
 
 def only_pythonname(text: str) -> bool:
     return only_this_letters(text, PYTHONNAME_LETTERS)
-
-
-def decode_imap_utf7(s: str) -> str:
-    """
-    Декодирует строку из IMAP UTF-7 в Unicode (str).
-    На вход принимает строку str (обычно ASCII-представление).
-    """
-    # Если на вход пришла строка, преобразуем в bytes (ASCII символы)
-    if isinstance(s, str):
-        s = s.encode('ascii')
-
-    def _utf7_replace(match):
-        # match.group(0) — вся последовательность вида '&...-'
-        # match.group(1) — часть между '&' и '-'
-        encoded_part = match.group(1).replace(b',', b'/')   # заменяем ',' обратно на '/'
-        try:
-            # Декодируем Base64 и интерпретируем как UTF-16BE
-            decoded = base64.b64decode(encoded_part).decode('utf-16-be')
-            return decoded.encode('utf-8')
-        except (binascii.Error, UnicodeDecodeError):
-            # В случае ошибки возвращаем исходную последовательность (не должно случаться)
-            return match.group(0)
-
-    # Временно заменяем все '&' на '&!', чтобы правильно обработать '&-'
-    s = re.sub(b'&', b'&!', s)
-    # Ищем все вхождения &[что-то без минуса]- и заменяем через функцию
-    s = re.sub(rb'&([^-]+)-', _utf7_replace, s)
-    # Возвращаем исходные амперсанды
-    s = s.replace(b'&!', b'&')
-
-    return s.decode('utf-8')

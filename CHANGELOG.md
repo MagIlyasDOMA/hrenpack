@@ -7,6 +7,35 @@ All changes in this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.0.0-beta.3] - 2026-02-27
+### Breaking Changes ⚠️
+- Removed classes `stl`, `DictionaryWithExtendedFunctionality`, `MatrixCore`, `DataClass`, `PreEmptyDataClass`, `EmptyDataClass`, `Color`, `NoneType`, `TupleDict` in `classes.py`
+- Removed functions `emptydataclass` and `dicta_to_dataclasses` in `classes.py`
+- Removed the `add_comment` method and `comment_letter` attribute in the `filework.TextFile` class
+- Removed methods `edit_section_if_not_none` and `edit_if_not_none` in the `filework.ConfigurationFile` class
+- Removed functions `hex_to_dec`, `dec_to_hex`, `dec_to_oct`, `oct_to_dec` in `numwork.py`
+- Removed the `Number` class in `numwork.py`
+- Removed `dev_*` extras, except `dev`, `dev_all`, `dev_full`
+
+### Added ✨
+- Added classes `DictObject` and `Environment` in `classes.py`
+- Added function `current_timezone` in `date_and_time_work.py`
+- Added modules `exceptions.py`, `framework/Pyside6/mixins.py`, `framework/django/typings.py`
+- Added typing `EnvDict` in `typings.py`
+- Added extra [email]
+- Added dependencies `pyqtcli>=0.1.1` to extra [pyside6]
+- Added dependencies `argparse-typing>=0.2.0`, `pytz`, `tzlocal`
+
+### Changed 🔧
+- Added `force` argument to the `copy` method of the `filework.TextFile` class
+- Optimized constant `file_dialog_templates` in `framework/Pyside6/variables.py`
+- Optimized function `merging_dictionaries` in `listwork.py`
+- Optimized functions `moreless` and `pifs` in `numwork.py`
+- Optimized function `search_and_edit` in `strwork.py`
+
+### Fixed 🐛
+- Fixed bugs in the `ConfigurationFile` class in `filework/__init__.py`
+
 ## [3.0.0-beta.2] - 2026-02-16
 ### Breaking changes ⚠️
 - Removed `framework/Pyside6/templates.py` module
@@ -237,6 +266,36 @@ Use version 2.1.2 or higher for production environments.
 
 Формат основан на [Keep a Changelog](https://keepachangelog.com/),
 и проект придерживается [Семантического Версионирования](https://semver.org/).
+
+## [3.0.0-beta.3] - 2026-02-27
+### Критические изменения ⚠️
+- Удалены классы `stl`, `DictionaryWithExtendedFunctionality`, `MatrixCore`, `DataClass`, `PreEmptyDataClass`, `EmptyDataClass`, `Color`, `NoneType`, `TupleDict` в `classes.py`
+- Удалены функции `emptydataclass` и `dicta_to_dataclasses` в `classes.py`
+- Удалены метод `add_comment` и атрибут `comment_letter` в классе `filework.TextFile`
+- Удалены методы `edit_section_if_not_none` и `edit_if_not_none` в классе `filework.ConfigurationFile`
+- Удалены функции `hex_to_dec`, `dec_to_hex`, `dec_to_oct`, `oct_to_dec` в `numwork.py
+- Удален класс `Number` в `numwork.py
+- Удалены `dev_*` экстра, кроме `dev`, `dev_all`, `dev_full`
+
+### Добавлено ✨
+- Добавлены классы `DictObject` и `Environment` в `classes.py`
+- Добавлена функция `current_timezone` в `date_and_time_work.py`
+- Добавлены модули `exceptions.py`, `framework/Pyside6/mixins.py`, `framework/django/typings.py`
+- Добавлен typing `EnvDict` в `typings.py`
+- Добавлен экстра [email]
+- Добавлены зависимости `pyqtcli>=0.1.1` в экстра [pyside6]
+- Добавлены зависимости `argparse-typing>=0.2.0`, `pytz`, `tzlocal`
+
+### Изменено 🔧
+- Добавлен аргумент `force` в метод `copy` класса `filework.TextFile`
+- Оптимизирована константа `file_dialog_templates` в `framework/Pyside6/variables.py`
+- Оптимизирована функция `merging_dictionaries` в `listwork.py`
+- Оптимизированы функции `moreless` и `pifs` в `numwork.py`
+- Оптимизирована функция `search_and_edit` в `strwork.py`
+
+### Исправлено 🐛
+- Исправлены баги в классе `ConfigurationFile` в `filework/__init__.py`
+
 
 ## [3.0.0-beta.2] - 2026-02-16
 ### Критические изменения ⚠️
