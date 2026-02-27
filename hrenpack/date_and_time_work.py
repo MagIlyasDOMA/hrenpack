@@ -417,6 +417,6 @@ def datetime_to_date_object(input: dt) -> date_object:
     return date_object(day=input.day, month=input.month, year=input.year)
 
 
-def current_timezone(to_string: bool = False) -> Union[str]:
+def current_timezone(to_string: bool = True) -> Union[str]:
     lz = get_localzone()
     return lz.key if to_string else lz
