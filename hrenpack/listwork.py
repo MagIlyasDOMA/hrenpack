@@ -411,4 +411,4 @@ def two_tuples_to_dict(keys: tuple, values: tuple) -> dict:
 
 
 def tuplex2(input: tuple, is_tuple: bool = False) -> tuplist:
-    return _is_tuple(list(two_tuples_to_dict(input, input)), is_tuple)
+    return _is_tuple(list(two_tuples_to_dict(input, input).items()), is_tuple)
