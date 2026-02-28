@@ -41,10 +41,11 @@ class MailClient:
         pass
 
     def get_folders_list(self, tree: bool = False, exclude_spam: bool = True, exclude_trash: bool = True,
-                         exclude_drafts: bool = True):
+                         exclude_drafts: bool = True) -> list:
         self._imap_required()
         pre_output = list()
         for dir_type, _, dir_name in self._imap_client.list_folders():
+            if len(dir_type) > 0: dir_type = dir_type[0]
             if any((
                 all((exclude_spam, dir_type == b'\\Spam')),
                 all((exclude_trash, dir_type == b'\\Trash')),
