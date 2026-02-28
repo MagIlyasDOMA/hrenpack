@@ -1,5 +1,6 @@
 import os, json, csv, functools
 from typing import Union, Literal, Any, List
+from pathlike_typing import PathLike
 from hrenpack import one_return
 from hrenpack.cmd import get_filename, get_extension, create_file, delete_file, FileNameInfo
 from hrenpack.listwork import (split_list, _is_tuple, list_add, split_list_enter, split_list_space, key_in_dict,
@@ -36,8 +37,7 @@ def extension_check(path: str, *extensions: Union[list, tuple, str]) -> None:
                             f"Ваш файл с расширением {extension}")
 
 
-def create_file_if_not_exists(path: Union[str, FileNameInfo]) -> None:
-    path = path if type(path) is str else path.path
+def create_file_if_not_exists(path: PathLike) -> None:
     if not os.path.isfile(path):
         create_file(path)
 
@@ -53,8 +53,8 @@ def use_default(func):
 
 
 class TextFile:
-    def __init__(self, path: Union[str, FileNameInfo], encoding: Union[str, int] = 'utf-8', **kwargs):
-        self.path = path if type(path) is str else path.path
+    def __init__(self, path: PathLike, encoding: Union[str, int] = 'utf-8', **kwargs):
+        self.path = path
         self.get_filename = lambda: get_filename(self.path)
         self.get_extension = lambda: get_extension(self.path)
         self.encoding = str(encoding)

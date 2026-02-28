@@ -1,4 +1,5 @@
 import platform, os
+import warnings
 from typing import Any, IO, Optional
 from dotenv import load_dotenv, dotenv_values
 from pathlike_typing import PathLike
@@ -334,11 +335,15 @@ class Environment:
         if not local: self[key] = value
         else: self.local_data[key.upper()] = value
 
-    def setdefault(self, key: str, value: Any, local: bool = False) -> None:
+    def setdefault(self, key: str, value: Any, local: bool = False, local_global: bool = False) -> None:
         if not local:
+            if local_global:
+                warnings.warn('The local_global argument will not apply because local=False', UserWarning, 2)
             if self.get(key) is None:
                 self.set(key, value)
-        else: self.local_data.setdefault(key.upper(), value)
+        else:
+            if key in self: return
+            self.local_data.setdefault(key.upper(), value)
 
     def write_local(self, delete: bool = False) -> 'Environment':
         for key, value in self.local_data.items():
