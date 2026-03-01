@@ -165,3 +165,13 @@ def only_this_letters(text: str, *letters: str) -> bool:
 
 def only_pythonname(text: str) -> bool:
     return only_this_letters(text, PYTHONNAME_LETTERS)
+
+
+def strip_quotes(text: str) -> str:
+    if len(text) < 2:
+        return text
+    elif text[0] == '"' and text[-1] == '"':
+        return text[1:-1]
+    elif text[0] == "'" and text[-1] == "'":
+        return text[1:-1]
+    return text
