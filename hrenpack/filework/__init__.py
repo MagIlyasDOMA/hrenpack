@@ -59,11 +59,6 @@ class TextFile:
         self.get_extension = lambda: get_extension(self.path)
         self.encoding = str(encoding)
         self.search_and_delete = lambda input: self.search_and_edit(input, '')
-        self._comments = list()
-        if key_in_dict(kwargs, 'extension'):
-            extension_check(path, kwargs['extension'])
-        elif key_in_dict(kwargs, 'extensions'):
-            extension_check(path, *kwargs['extensions'])
         create_file_if_not_exists(self.path)
 
     @staticmethod

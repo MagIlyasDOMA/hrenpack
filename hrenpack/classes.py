@@ -138,11 +138,16 @@ class Environment:
             output[key.upper()] = value
         return output
 
+    @staticmethod
+    def _dotenv_values(dotenv_path: PathLike = None, stream: Optional[IO[str]] = None, verbose: bool = False,
+                        override: bool = False, interpolate: bool = True, encoding: str = 'utf-8'):
+        return dotenv_values(dotenv_path, stream, verbose, interpolate, encoding)
+
     @classmethod
     def load(cls, dotenv_path: PathLike = None, stream: Optional[IO[str]] = None, verbose: bool = False,
              override: bool = False, interpolate: bool = True, encoding: str = 'utf-8',
              local: bool = False) -> 'Environment':
-        dotenv_func = dotenv_values if local else load_dotenv
+        dotenv_func = cls._dotenv_values if local else load_dotenv
         raw_data = dotenv_func(dotenv_path, stream, verbose, override, interpolate, encoding)
         data = dict(raw_data) if local else dict()
         return cls(**data)
