@@ -11,8 +11,10 @@ from django.shortcuts import render, redirect
 from typing import Union, Optional, Any
 from dataclasses import dataclass
 from django.urls import reverse, reverse_lazy
+from django.utils.safestring import mark_safe
 
 from hrenpack import NullStr
+from hrenpack.security import HTMLSanitizer
 
 
 class Category:
@@ -111,3 +113,7 @@ def get_app_inclusion_namespace(app_name: str):
 #         raise ImproperlyConfigured(f"{setting_name} must be of the form 'app_label.model_name'")
 #     except LookupError:
 #         raise ImproperlyConfigured(f"{setting_name} refers to model '%s' that has not been installed" % setting)
+
+
+def sanitize_html_and_mark_safe(html: str):
+    return mark_safe(HTMLSanitizer(html).sanitize())
