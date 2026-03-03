@@ -252,7 +252,7 @@ def datetime_to_date_object(input: dt) -> date_object:
     return date_object(day=input.day, month=input.month, year=input.year)
 
 
-def current_timezone(*, /, raw_data: bool = False) -> Union[str, zoneinfo.ZoneInfo]:
+def current_timezone(*, raw_data: bool = False) -> Union[str, zoneinfo.ZoneInfo]:
     lz = get_localzone()
     return lz.key if not raw_data else lz
 
