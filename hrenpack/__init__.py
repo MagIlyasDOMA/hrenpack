@@ -1,5 +1,5 @@
 ﻿import os, warnings
-from hrenpack.classes import range_plus
+from hrenpack.classes import range_plus, Class, EmptyClass
 from hrenpack.functionwork import empty_function
 from hrenpack.strwork import randstr
 from hrenpack.listwork import split_list
@@ -98,7 +98,3 @@ def module_is_installed(module_name: str):
         return False
     else:
         return True
-
-
-if module_is_installed('django'):
-    from hrenpack.framework.django import apps

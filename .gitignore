@@ -184,3 +184,4 @@ dev_script.py
 test.py
 
 .github
+/hrenpack/framework/django/_undb_compat.py

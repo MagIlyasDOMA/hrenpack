@@ -1,5 +1,3 @@
-from typing import Any
-
 from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.staticfiles.storage import staticfiles_storage
@@ -7,13 +5,11 @@ from django.db.models import Model
 from django.shortcuts import render, redirect
 from django.utils.decorators import classonlymethod
 from django.views import View as DjangoView, generic
-from django.contrib.auth import views as auth_views, logout, get_user_model, login, update_session_auth_hash
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import views as auth_views, logout, get_user_model, login
 from hrenpack import NullStr
 from hrenpack.listwork import get_from_dict
-from hrenpack.encapsulation import SafeInheritance, addattr, set_attrs_if_is_none
+from hrenpack.encapsulation import set_attrs_if_is_none
 from hrenpack.framework.django import view_dict
-from hrenpack.framework.django.forms import PasswordChangeForm, auth_forms
 from hrenpack.framework.django.mixins import (NonAbstractMixin, ModelManagerMixin, UserAuthorizeMixin,
                                               TemplateViewMixin)
 

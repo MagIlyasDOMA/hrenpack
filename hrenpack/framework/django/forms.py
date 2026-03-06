@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth import forms as auth_forms, password_validation, get_user_model
+from django.contrib.auth import forms as auth_forms, password_validation
 
 
 class PasswordChangeForm(auth_forms.PasswordChangeForm):

@@ -1,47 +1,18 @@
 import importlib
 from urllib.parse import urlencode
-from django.apps import apps
 from django.conf import settings
-from django.contrib.auth import logout, login
-from django.core.exceptions import ImproperlyConfigured
-from django.db.models import IntegerChoices, Model
-from django.forms import Form
-from django.http import Http404
-from django.shortcuts import render, redirect
-from typing import Union, Optional, Any
-from dataclasses import dataclass
+from django.db.models import IntegerChoices
 from django.urls import reverse, reverse_lazy
 from django.utils.safestring import mark_safe
-
 from hrenpack import NullStr
 from hrenpack.security import HTMLSanitizer
-
-
-class Category:
-    def __init__(self, name: str, slug: str):
-        self.name = name
-        self.slug = slug
-
-    def __str__(self):
-        return f'name={self.name}, slug={self.slug}'
 
 
 class HrenpackDjangoError(Exception):
     pass
 
 
-class MenuElement:
-    """Элемент меню"""
-    def __init__(self, title: str, href: str = '/'):
-        self.href = href
-        self.title = title
-
-    def __str__(self):
-        return self.title
-
-
 def view_dict(title: str, h1_title: NullStr = None, **kwargs) -> dict:
-    # kwargs['media_url'] = '/media/'
     kwargs['title'] = title
     kwargs['h1_title'] = title if h1_title is None else h1_title
     return kwargs
@@ -72,10 +43,6 @@ def get_view_app(view):
     return view.__module__.split('.')[0]
 
 
-# def get_view_base_template(view):
-#     return getattr(view, 'base_template_name', getattr(settings, 'BASE_TEMPLATE', 'empty.html'))
-
-
 def get_view_base_template(view):
     # Добавьте проверку на None и пустую строку
     base_template = getattr(view, 'base_template_name', None)
@@ -102,17 +69,6 @@ def get_app_inclusion_namespace(app_name: str):
     for pattern in urlpatterns:
         if hasattr(pattern, 'app_name') and pattern.app_name == app_name:
             return pattern.namespace
-
-
-# def get_model(setting_name: str):
-#     setting_name = setting_name.upper()
-#     setting = getattr(settings, setting_name)
-#     try:
-#         return apps.get_model(setting, require_ready=False)
-#     except ValueError:
-#         raise ImproperlyConfigured(f"{setting_name} must be of the form 'app_label.model_name'")
-#     except LookupError:
-#         raise ImproperlyConfigured(f"{setting_name} refers to model '%s' that has not been installed" % setting)
 
 
 def sanitize_html_and_mark_safe(html: str):

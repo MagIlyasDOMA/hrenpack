@@ -1,10 +1,8 @@
-from django.conf import settings
 from django.utils.decorators import classonlymethod
-from django.utils.deprecation import MiddlewareMixin
 from django.views.generic.base import ContextMixin, TemplateResponseMixin
 from hrenpack import NullStr
 from hrenpack.encapsulation import add_attrs_from_dict
-from hrenpack.framework.django import view_dict, get_view_app
+from hrenpack.framework.django import view_dict
 
 
 class DataMixin:

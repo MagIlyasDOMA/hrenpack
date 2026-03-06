@@ -255,3 +255,8 @@ class Environment:
                 if any((all((not blacklist_mode, key in vars)), all((blacklist_mode, key not in vars)))):
                     file.write(f'{key}="{value}"\n')
 
+
+class EmptyClass:
+    def __init__(self, *args, **kwargs) -> None: pass
+
+    def __getattr__(self, key: str) -> Any: return None
