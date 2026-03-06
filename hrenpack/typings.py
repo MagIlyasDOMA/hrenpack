@@ -21,3 +21,4 @@ ZeroFivePointScale = literal_add(FivePointScale, 0)
 ZeroTenPointScale = literal_add(TenPointScale, 0)
 ThemeType = Literal['light', 'dark']
 EnvDict = dict[str, str]
+JsonData = Union[str, int, float, bool, dict, list]
