@@ -78,8 +78,8 @@ class MailClient:
             self._imap_client.select_folder(folder)
             message_data = self._imap_client.fetch([uid], ['RFC822'])
 
-            if uid in message_data:
-                raw_data = message_data[uid][b'RFC822']
+            if int(uid) in message_data:
+                raw_data = message_data[int(uid)][b'RFC822']
                 message = email.message_from_bytes(raw_data, policy=default_policy)
                 filename = ''
                 subject = message.get('Subject', uid)
