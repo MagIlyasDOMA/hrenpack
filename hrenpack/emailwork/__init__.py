@@ -31,7 +31,7 @@ class MailClient:
     def _imap_init(self, config: Optional[ServerConfig]):
         if config:
             self.imap_config = config
-            self._imap_client = IMAPClient(config.host, config.port, True, config.encryption == 'ssl')
+            self._imap_client = IMAPClient(config.host, config.port, ssl=config.encryption == 'ssl')
             if config.encryption == 'starttls': self._imap_client.starttls()
             self._imap_client.login(config.email, config.password)
         else:
