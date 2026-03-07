@@ -8,6 +8,11 @@ def extract_json_response(response: DjangoJsonResponse):
 
 
 class JsonResponse(DjangoJsonResponse):
+    def __init__(self, data, **kwargs):
+        kwargs.setdefault('json_dumps_params', {})
+        kwargs['json_dumps_params'].setdefault('ensure_ascii', False)
+        super().__init__(data, **kwargs)
+
     @property
     def data(self) -> JsonData:
         return extract_json_response(self)
