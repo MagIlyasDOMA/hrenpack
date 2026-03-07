@@ -22,3 +22,6 @@ ZeroTenPointScale = literal_add(TenPointScale, 0)
 ThemeType = Literal['light', 'dark']
 EnvDict = dict[str, str]
 JsonData = Union[str, int, float, bool, dict, list]
+HttpMethodBasic = Literal['GET', 'POST']
+HttpMethodExtended = Union[HttpMethodBasic, Literal['PUT', 'PATCH', 'DELETE']]
+HttpMethod = Union[HttpMethodExtended, Literal['HEAD', 'OPTIONS', 'TRACE', 'CONNECT']]
