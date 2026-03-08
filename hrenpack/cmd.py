@@ -1,5 +1,6 @@
 import os, ctypes, shutil, getpass, platform, random, string, subprocess, warnings
 from datetime import datetime
+from pathlike_typing import PathLike
 from hrenpack.listwork import split_list
 from typing import Union, List
 from dataclasses import dataclass
@@ -245,7 +246,6 @@ def compare_versions(version1, version2):
 
 def uninstall_program(program_name):
     try:
-        # Выполняем команду для деинсталляции программы
         subprocess.run(['wmic', 'product', 'where', f'name="{program_name}"', 'call', 'uninstall'], check=True)
         print(f'Программа "{program_name}" успешно деинсталлирована.')
     except subprocess.CalledProcessError as e:
@@ -291,3 +291,65 @@ class PackageIsDebug:
 
     def chdir(self):
         os.chdir(self.get_directory())
+
+
+def get_max_path_length():
+    system = platform.system()
+
+    # Базовые лимиты для разных ОС
+    limits = {
+        "Windows": 260,
+        "Darwin": 1024,  # macOS
+        "Linux": 4096
+    }
+
+    base_limit = limits.get(system, 255)
+
+    if system == "Windows":
+        try:
+            import winreg
+            key = winreg.OpenKey(
+                winreg.HKEY_LOCAL_MACHINE,
+                r"SYSTEM\CurrentControlSet\Control\FileSystem"
+            )
+            value, _ = winreg.QueryValueEx(key, "LongPathsEnabled")
+            winreg.CloseKey(key)
+
+            if value == 1:
+                return 32767
+        except:
+            pass
+
+    return base_limit
+
+
+def is_path_valid(path: PathLike) -> bool:
+    try:
+        path = Path(path)
+
+        if len(str(path)) > get_max_path_length(): return False
+
+        reserved_names = {'CON', 'PRN', 'AUX', 'NUL',
+                          'COM1', 'COM2', 'COM3', 'COM4', 'COM5',
+                          'COM6', 'COM7', 'COM8', 'COM9',
+                          'LPT1', 'LPT2', 'LPT3', 'LPT4', 'LPT5',
+                          'LPT6', 'LPT7', 'LPT8', 'LPT9'}
+
+        for part in path.parts:
+            name_without_ext = Path(part).stem.upper()
+            if name_without_ext in reserved_names:
+                return False
+
+        invalid_chars = '<>:"/\\|?*'
+        for char in invalid_chars:
+            if char in str(path):
+                return False
+
+        # Проверка на пробелы и точки в конце имени
+        for part in path.parts:
+            if part and (part[-1] in (' ', '.')):
+                return False
+
+        return True
+    except Exception as e:
+        return False
