@@ -9,7 +9,8 @@ from pathlib import Path
 PathType = Union[str, Path]
 
 
-def get_filename(path: str, raise_error: bool = True) -> str:
+def get_filename(path: PathLike, raise_error: bool = True) -> str:
+    path = str(path)
     if '/' in path:
         output = path.split('/')[-1]
     elif '\\' in path:
@@ -23,13 +24,14 @@ def get_filename(path: str, raise_error: bool = True) -> str:
         return output
 
 
-def get_extension(path: str, raise_error: bool = True) -> str:
+def get_extension(path: PathLike, raise_error: bool = True) -> str:
     filename = get_filename(path, raise_error)
     return filename.split('.')[-1] if '.' in filename else ''
 
 
 def get_path_without_filename(path: str, raise_error: bool = True):
     v85 = True
+    path = str(path)
     if '/' in path:
         path_list = path.split('/')
         path_list.pop()
