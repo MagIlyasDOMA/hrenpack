@@ -1,5 +1,5 @@
 import re
-from typing import Union, Literal, Optional, Iterable, Sequence
+from typing import Union, Literal, Optional, Iterable, Sequence, MutableMapping, Mapping
 
 from hrenpack.encapsulation import getattr_plus
 
@@ -420,5 +420,18 @@ def values_keys(input: dict) -> dict:
     return dict(two_tuples_to_dict(input.values(), input.keys()))
 
 
-def getitem_plus(input: dict, tree: Sequence[str], default=None, *, catch_errors: bool = True):
+def getitem_plus(input: Mapping, tree: Sequence[str], default=None, *, catch_errors: bool = True):
     return getattr_plus(input, tree, default, dict_mode=True, catch_errors=catch_errors)
+
+
+def setitem_plus(input: MutableMapping, tree: Sequence[str], value, *, strict: bool = False):
+    if isinstance(tree, str): tree = tree.split('.')
+    last_key = tree.pop()
+    obj = input
+    for level, key in enumerate(tree):
+        if not hasattr(obj, '__setitem__'): raise TypeError(f"Key in level {level} is not MutableMapping")
+        elif key not in obj:
+            if strict: raise KeyError(f"'{key}' in level {level}")
+            obj[key] = dict()
+        obj = obj[key]
+    else: obj[last_key] = value
