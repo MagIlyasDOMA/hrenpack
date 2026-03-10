@@ -406,9 +406,13 @@ def dict_slice(input: dict, *keys, only_values: bool = False, is_tuple: bool = F
     return _is_tuple(output.values(), is_tuple) if only_values else output
 
 
-def two_tuples_to_dict(keys: tuplist, values: tuplist) -> dict:
+def two_tuples_to_dict(keys: Iterable, values: Iterable) -> dict:
     return dict(zip(keys, values))
 
 
 def tuplex2(input: tuplist, is_tuple: bool = False) -> tuplist:
     return _is_tuple(list(two_tuples_to_dict(input, input).items()), is_tuple)
+
+
+def values_keys(input: dict) -> dict:
+    return dict(two_tuples_to_dict(input.values(), input.keys()))
