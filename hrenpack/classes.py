@@ -25,6 +25,19 @@ class DictObject:
     def __repr__(self):
         return f"<DictObject: {self.__dict__}>"
 
+    def __getitem__(self, item):
+        if hasattr(self, item):
+            return getattr(self, item)
+        raise KeyError(item)
+
+    def __setitem__(self, key, value):
+        setattr(self, key, value)
+
+    def __delitem__(self, key):
+        if hasattr(self, key):
+            delattr(self, key)
+        raise KeyError(key)
+
 
 def call_method(method_name: str, objects: tuple, *args, **kwargs):
     for obj in objects:
