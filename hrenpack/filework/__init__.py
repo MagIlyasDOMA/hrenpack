@@ -59,7 +59,8 @@ class TextFile:
         self.get_extension = lambda: get_extension(self.path)
         self.encoding = str(encoding)
         self.search_and_delete = lambda input: self.search_and_edit(input, '')
-        create_file_if_not_exists(self.path)
+        if kwargs.get('create_file_if_not_exists', True):
+            create_file_if_not_exists(self.path)
 
     @staticmethod
     def comment_decorator(func):

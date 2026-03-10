@@ -1,5 +1,6 @@
 import functools, inspect
 from abc import ABC, abstractmethod, abstractproperty, abstractclassmethod, abstractstaticmethod
+from typing import Sequence
 
 from hrenpack.functionwork import empty_function
 from hrenpack.listwork import get_from_dict, _is_tuple
@@ -155,30 +156,41 @@ def getattrs(instance, *attr_names, only_values: bool = False, is_tuple: bool = 
     return get_from_dict(output, *output.keys(), is_tuple=is_tuple, only_values=only_values, default=default)
 
 
-class SafeInheritance:
-    """Базовый класс, который предотвращает ошибки MRO при наследовании."""
-
-    def __new__(cls, name, bases, namespace):
-        try:
-            # Пробуем создать класс с текущими базовыми классами
-            new_class = super().__new__(cls, name, bases, namespace)
-            # Проверяем MRO (если есть конфликт, вызовется TypeError)
-            new_class.mro()
-            return new_class
-        except TypeError:
-            # Если MRO невалиден, наследуем только от object (или другой резервный класс)
-            print(f"Warning: MRO conflict in {name}. Falling back to basic inheritance.")
-            return super().__new__(cls, name, (object,), namespace)
+def getattr_strict(obj, name: str):
+    if hasattr(obj, name):
+        return getattr(obj, name)
+    elif isinstance(obj, type):
+        raise AttributeError(f"type object '{obj.__name__}' has no attribute '{name}'")
+    raise AttributeError(f"{obj.__class__.__name__} object has no attribute '{name}'")
 
 
-class SafeMeta(type):
-    """Метакласс для безопасного наследования."""
-
-    def __new__(mcls, name, bases, namespace):
-        try:
-            new_class = super().__new__(mcls, name, bases, namespace)
-            new_class.mro()  # Проверяем MRO
-            return new_class
-        except TypeError:
-            print(f"Warning: MRO conflict in {name}. Using fallback inheritance.")
-            return super().__new__(mcls, name, (object,), namespace)
+def getattr_plus(obj, tree: Sequence[str], default=None, *, dict_mode: bool = False, catch_errors: bool = True):
+    if isinstance(tree, str): tree = tree.split('.')
+    if len(tree) == 0:
+        return default
+    elif len(tree) == 1:
+        key = tree[0]
+        if dict_mode:
+            try: return obj[key]
+            except KeyError as error:
+                if not catch_errors: raise error
+        else:
+            try: return getattr_strict(obj, key)
+            except AttributeError as error:
+                if not catch_errors: raise error
+    else:
+        output = obj
+        for i, level in enumerate(tree):
+            if dict_mode:
+                try: output = output[level]
+                except KeyError:
+                    if not catch_errors: raise KeyError(f'{level} in level {i}')
+                    break
+            else:
+                try: output = getattr_strict(output, level)
+                except AttributeError:
+                    if not catch_errors: raise AttributeError(f'{level} in level {i}')
+                    break
+                output = getattr(output, level)
+        else: return output
+    return default

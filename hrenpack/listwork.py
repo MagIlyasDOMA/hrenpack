@@ -1,5 +1,7 @@
 import re
-from typing import Union, Literal, Optional, Iterable
+from typing import Union, Literal, Optional, Iterable, Sequence
+
+from hrenpack.encapsulation import getattr_plus
 
 tuplist = Union[tuple, list]
 tdl = Union[tuple, dict, list]
@@ -416,3 +418,7 @@ def tuplex2(input: tuplist, is_tuple: bool = False) -> tuplist:
 
 def values_keys(input: dict) -> dict:
     return dict(two_tuples_to_dict(input.values(), input.keys()))
+
+
+def getitem_plus(input: dict, tree: Sequence[str], default=None, *, catch_errors: bool = True):
+    return getattr_plus(input, tree, default, dict_mode=True, catch_errors=catch_errors)
