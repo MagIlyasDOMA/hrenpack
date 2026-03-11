@@ -1,9 +1,8 @@
 import functools, inspect
 from abc import ABC, abstractmethod, abstractproperty, abstractclassmethod, abstractstaticmethod
 from typing import Sequence
-
 from hrenpack.functionwork import empty_function
-from hrenpack.listwork import get_from_dict, _is_tuple
+from hrenpack.listwork import get_from_dict
 
 
 class EncapsulationError(Exception):

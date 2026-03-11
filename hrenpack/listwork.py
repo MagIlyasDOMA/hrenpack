@@ -1,8 +1,6 @@
 import re
 from typing import Union, Literal, Optional, Iterable, Sequence, MutableMapping, Mapping
 
-from hrenpack.encapsulation import getattr_plus
-
 tuplist = Union[tuple, list]
 tdl = Union[tuple, dict, list]
 
@@ -421,6 +419,7 @@ def values_keys(input: dict) -> dict:
 
 
 def getitem_plus(input: Mapping, tree: Sequence[str], default=None, *, catch_errors: bool = True):
+    from hrenpack.encapsulation import getattr_plus
     return getattr_plus(input, tree, default, dict_mode=True, catch_errors=catch_errors)
 
 
