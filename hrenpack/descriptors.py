@@ -1,8 +1,15 @@
-from typing import Any
+from typing import Any, Union, Self
+from pathlib import Path
+from pathlike_typing import PathLike
 from typeguard import check_type
 from pyundefined import UndefinedType
 
 no_default = UndefinedType()
+
+
+class BaseDescriptor:
+    def __set_name__(self, owner, name):
+        self.name = name
 
 
 class Constant:
@@ -14,13 +21,10 @@ class Constant:
         return self.value
 
 
-class TypedDescriptor:
+class TypedDescriptor(BaseDescriptor):
     def __init__(self, typing: Any = Any, default: Any = no_default):
         self.typing = typing
         self.default = default
-
-    def __set_name__(self, owner, name):
-        self.name = name
 
     def __get__(self, instance, owner=None):
         if instance is None: return self
@@ -30,3 +34,32 @@ class TypedDescriptor:
 
     def __set__(self, instance, value):
         instance.__dict__[self.name] = check_type(value, self.typing)
+
+
+class PathLikeDescriptor(BaseDescriptor):
+    def __init__(self, missing_ok: bool = False):
+        self.missing_ok = missing_ok
+
+    def __get__(self, instance, owner=None) -> Union[Path, Self, None]:
+        if instance is None: return self
+        value = instance.__dict__.get(self.name, None)
+        return Path(value) if value is not None else None
+
+    def __set__(self, instance, value: PathLike):
+        if isinstance(value, PathLike):
+            value = Path(value)
+            if self.missing_ok or value.exists():
+                instance.__dict__[self.name] = value
+            raise FileNotFoundError(f'Path \'{value}\' does not exist')
+        raise TypeError('value must be a Path or str')
+
+
+class Boolean(TypedDescriptor):
+    def __init__(self, default: bool = False):
+        super().__init__(bool, default)
+
+    def __get__(self, instance, owner=None) -> bool:
+        return super().__get__(instance, owner)
+
+    def __set__(self, instance, value: bool):
+        super().__set__(instance, value)

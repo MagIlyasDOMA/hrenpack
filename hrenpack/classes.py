@@ -273,3 +273,13 @@ class EmptyClass:
     def __init__(self, *args, **kwargs) -> None: pass
 
     def __getattr__(self, key: str) -> Any: return None
+
+
+class NonStrictDict(dict):
+    def __init__(self, seq=None, default=None, /, **kwargs):
+        super().__init__(seq, **kwargs)
+        self.default = default
+
+    def __getitem__(self, item):
+        try: return super().__getitem__(item)
+        except KeyError: return self.default

@@ -202,3 +202,15 @@ def check_type(value, typing):
         return True
     except (TypeError, TypeCheckError):
         return False
+
+
+def get_own_attributes(obj):
+    all_attrs = set(dir(obj))
+    parent_attrs = set()
+
+    cls = obj.__class__
+    for parent in cls.__bases__:
+        if parent != object:
+            parent_attrs.update(dir(parent))
+
+    return all_attrs - parent_attrs
