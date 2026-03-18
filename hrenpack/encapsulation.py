@@ -1,6 +1,7 @@
 import functools, inspect
 from abc import ABC, abstractmethod, abstractproperty, abstractclassmethod, abstractstaticmethod
 from typing import Sequence
+from typeguard import check_type as check_type_strict, TypeCheckError
 from hrenpack.functionwork import empty_function
 from hrenpack.listwork import get_from_dict
 
@@ -193,3 +194,11 @@ def getattr_plus(obj, tree: Sequence[str], default=None, *, dict_mode: bool = Fa
                 output = getattr(output, level)
         else: return output
     return default
+
+
+def check_type(value, typing):
+    try:
+        check_type_strict(value, typing)
+        return True
+    except (TypeError, TypeCheckError):
+        return False
