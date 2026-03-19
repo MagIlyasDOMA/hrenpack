@@ -1,4 +1,4 @@
-from typing import Any, Union, Self
+from typing import Any, Union, Self, Callable
 from pathlib import Path
 from pathlike_typing import PathLike
 from typeguard import check_type
@@ -19,6 +19,26 @@ class Constant:
     def __get__(self, instance, owner=None):
         if instance is None: return self
         return self.value
+
+
+class ObjectConstant(BaseDescriptor):
+    def __init__(self, func_or_type: Union[Callable, type], send_instance: bool = False, *args, **kwargs):
+        self.func_or_type = func_or_type
+        self.send_instance = send_instance
+        self.args = args
+        self.kwargs = kwargs
+
+    def _create_object(self, instance):
+        if self.send_instance: args = (instance, *self.args)
+        else: args = self.args
+        return self.func_or_type(*args, **self.kwargs)
+
+    def __get__(self, instance, owner=None):
+        if instance is None: return self
+        if self.name not in instance.__dict__:
+            instance.__dict__[self.name] = self._create_object(instance)
+        return instance.__dict__[self.name]
+
 
 
 class TypedDescriptor(BaseDescriptor):
