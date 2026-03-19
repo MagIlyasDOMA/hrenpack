@@ -1,5 +1,6 @@
 import os, tempfile, uuid, requests
 from urllib.parse import urlencode
+from pathlike_typing import PathLike
 from tqdm import tqdm
 from hrenpack import NullStr
 
@@ -53,9 +54,9 @@ class TestResponse:
         pass
 
 
-def download_file(url, name: str, to: str = '', params=None, use_progressbar: bool = False, **request_kwargs):
+def download_file(url, name: str, to: PathLike = '', params=None, use_progressbar: bool = False, **request_kwargs):
     path = os.path.join(to, name)
-    response = requests.get(url, params, **request_kwargs)
+    response = requests.get(url, params, stream=True, **request_kwargs)
     if use_progressbar:
         total_size = int(response.headers.get('content-length', 0))
         with open(path, 'wb') as file, tqdm(
