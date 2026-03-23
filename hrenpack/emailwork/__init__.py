@@ -1,10 +1,12 @@
-import email, warnings
+import email, warnings, os, mailparser, typing
+from dataclasses import dataclass
 from datetime import datetime
 from email.policy import default as default_policy
 from pathlib import Path
 from typing import Optional, Literal
 from imapclient import IMAPClient
 from pathlike_typing import PathLike
+from ..exceptions import ExtraArgumentsWarning
 from .exceptions import ProtocolNotInitialized, FolderNotFound, DownloadError
 from .typings import *
 
@@ -102,3 +104,36 @@ class MailClient:
             raise DownloadError("Message not found")
         except Exception as error:
             raise DownloadError(error)
+
+
+class LocalFileFinder:
+    @dataclass(frozen=True)
+    class Message:
+        path: PathLike
+        data: mailparser.MailParser
+
+        def __iter__(self):
+            return iter((self.path, self.data))
+
+        def to_dict(self):
+            return {self.path: self.data}
+
+        def __getitem__(self, item: MessageItems):
+            if item in typing.get_args(MessageItems):
+                return getattr(self, item)
+            raise KeyError(item)
+
+        @property
+        def subject(self) -> str:
+            return self.data.subject
+
+    @staticmethod
+    def _search_mode_is(current: EMLSearchMode, needed: EMLSearchMode) -> bool:
+        return current in (needed, 'everywhere')
+
+    def search(self, directory: PathLike, search_line: str, search_mode: EMLSearchMode, **kwargs):
+        if kwargs: warnings.warn('Found extra kwargs', ExtraArgumentsWarning, 2)
+        if not os.path.isdir(directory):
+            raise FileNotFoundError(directory)
+        # for
+
