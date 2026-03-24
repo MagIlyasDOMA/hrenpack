@@ -1,7 +1,8 @@
-from typing import Literal
+from typing import Literal, Protocol, Optional
+from typing_extensions import TypedDict
 
 __all__ = ['InputProtocol', 'OutputProtocol', 'MailProtocol', 'EncryptionType',
-           'EMLSearchMode', 'MessageItems']
+           'EMLSearchMode', 'MessageItems', 'AttachmentData', 'UsersList', 'EMLData']
 
 InputProtocol = Literal['pop', 'imap']
 OutputProtocol = Literal['smtp']
@@ -9,4 +10,39 @@ MailProtocol = Literal['imap', 'pop', 'smtp']
 EncryptionType = Literal['no', 'starttls', 'ssl']
 
 EMLSearchMode = Literal['from', 'to', 'subject', 'everywhere']
-MessageItems = Literal['path', 'data']
+MessageItems = Literal['path', 'data', 'from_', 'to', 'subject', 'text_plain', 'text_html', 'attachments']
+UsersList = list[tuple[str, str]]
+
+
+AttachmentData = TypedDict(
+    'AttachmentData',
+    {
+        'binary': bool,
+        'charset': Optional[str],
+        'content-disposition': str,
+        'content-id': str,
+        'content_transfer_encoding': str,
+        'filename': str,
+        'mail_content_type': str
+    },
+)
+
+
+class EMLData(Protocol):
+    @property
+    def from_(self) -> UsersList: ...
+
+    @property
+    def to(self) -> UsersList: ...
+
+    @property
+    def subject(self) -> str: ...
+
+    @property
+    def text_plain(self) -> list[str]: ...
+
+    @property
+    def text_html(self) -> list[str]: ...
+
+    @property
+    def attachments(self) -> list[AttachmentData]: ...
