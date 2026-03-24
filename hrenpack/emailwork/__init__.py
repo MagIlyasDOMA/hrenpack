@@ -6,6 +6,8 @@ from pathlib import Path
 from typing import Optional, Literal
 from imapclient import IMAPClient
 from pathlike_typing import PathLike
+
+from ..descriptors import SubAttribute
 from ..exceptions import ExtraArgumentsWarning
 from .exceptions import ProtocolNotInitialized, FolderNotFound, DownloadError
 from .typings import *
@@ -111,6 +113,7 @@ class LocalFileFinder:
     class Message:
         path: PathLike
         data: mailparser.MailParser
+        subject: str = SubAttribute('data')
 
         def __iter__(self):
             return iter((self.path, self.data))
@@ -122,10 +125,6 @@ class LocalFileFinder:
             if item in typing.get_args(MessageItems):
                 return getattr(self, item)
             raise KeyError(item)
-
-        @property
-        def subject(self) -> str:
-            return self.data.subject
 
     @staticmethod
     def _search_mode_is(current: EMLSearchMode, needed: EMLSearchMode) -> bool:

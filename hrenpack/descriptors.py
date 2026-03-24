@@ -2,9 +2,8 @@ from typing import Any, Union, Self, Callable
 from pathlib import Path
 from pathlike_typing import PathLike
 from typeguard import check_type
-from pyundefined import UndefinedType
-
-no_default = UndefinedType()
+from hrenpack.encapsulation import getattr_plus, getattr_strict
+from hrenpack.no_default import no_default
 
 
 class BaseDescriptor:
@@ -38,7 +37,6 @@ class ObjectConstant(BaseDescriptor):
         if self.name not in instance.__dict__:
             instance.__dict__[self.name] = self._create_object(instance)
         return instance.__dict__[self.name]
-
 
 
 class TypedDescriptor(BaseDescriptor):
@@ -83,3 +81,18 @@ class Boolean(TypedDescriptor):
 
     def __set__(self, instance, value: bool):
         super().__set__(instance, value)
+
+
+class SubAttribute(BaseDescriptor):
+    def __init__(self, attr_name: str, absolute: bool = False, default: Any = no_default):
+        self.attr_name = attr_name
+        self.absolute = absolute
+        self.default = default
+
+    def __get__(self, instance, owner=None):
+        try:
+            value = getattr_plus(instance, self.attr_name, self.default, catch_errors=False)
+        except AttributeError as error:
+            value = self.default
+            if value is no_default: raise error
+        return value if self.absolute else getattr_strict(value, self.name)
