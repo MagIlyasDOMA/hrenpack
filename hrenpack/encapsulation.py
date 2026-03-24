@@ -157,8 +157,7 @@ def getattrs(instance, *attr_names, only_values: bool = False, is_tuple: bool = 
 
 
 def getattr_strict(obj, name: str):
-    if hasattr(obj, name):
-        return getattr(obj, name)
+    if hasattr(obj, name): return getattr(obj, name)
     elif isinstance(obj, type):
         raise AttributeError(f"type object '{obj.__name__}' has no attribute '{name}'")
     raise AttributeError(f"{obj.__class__.__name__} object has no attribute '{name}'")
