@@ -213,3 +213,19 @@ def get_own_attributes(obj):
             parent_attrs.update(dir(parent))
 
     return all_attrs - parent_attrs
+
+
+class DescriptorsFinder:
+    def __init__(self, cls: type): self.cls = cls
+
+    def _get_attrs(self, attr_name: str) -> set:
+        attrs = set()
+        for name, attr in self.cls.__dict__.items():
+            if hasattr(attr, attr_name): attrs.add(name)
+        return attrs
+
+    def getters(self) -> set: return self._get_attrs('__get__')
+
+    def setters(self) -> set: return self._get_attrs('__set__')
+
+    def deleters(self) -> set: return self._get_attrs('__delete__')

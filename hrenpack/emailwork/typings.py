@@ -9,7 +9,7 @@ OutputProtocol = Literal['smtp']
 MailProtocol = Literal['imap', 'pop', 'smtp']
 EncryptionType = Literal['no', 'starttls', 'ssl']
 
-EMLSearchMode = Literal['from', 'to', 'subject', 'everywhere']
+EMLSearchMode = Literal['from', 'to', 'subject', 'attachments', 'everywhere']
 MessageItems = Literal['path', 'data', 'from_', 'to', 'subject', 'text_plain', 'text_html', 'attachments']
 UsersList = list[tuple[str, str]]
 

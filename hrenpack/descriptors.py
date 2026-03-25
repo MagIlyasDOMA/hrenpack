@@ -84,15 +84,12 @@ class Boolean(TypedDescriptor):
 
 
 class SubAttribute(BaseDescriptor):
-    def __init__(self, attr_name: str, absolute: bool = False, default: Any = no_default):
+    def __init__(self, attr_name: str, default=no_default):
         self.attr_name = attr_name
-        self.absolute = absolute
         self.default = default
 
     def __get__(self, instance, owner=None):
-        try:
-            value = getattr_plus(instance, self.attr_name, self.default, catch_errors=False)
+        try: return getattr_strict(getattr(instance, self.name), self.attr_name)
         except AttributeError as error:
-            value = self.default
-            if value is no_default: raise error
-        return value if self.absolute else getattr_strict(value, self.name)
+            if self.default is no_default: raise error
+            return self.default
