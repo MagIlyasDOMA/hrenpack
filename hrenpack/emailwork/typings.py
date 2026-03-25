@@ -1,8 +1,8 @@
-from typing import Literal, Protocol, Optional
-from typing_extensions import TypedDict
+from typing import Literal, Protocol, Optional, NotRequired, TypedDict
+from pathlike_typing import PathLike
 
 __all__ = ['InputProtocol', 'OutputProtocol', 'MailProtocol', 'EncryptionType',
-           'EMLSearchMode', 'MessageItems', 'AttachmentData', 'UsersList', 'EMLData']
+           'EMLSearchMode', 'MessageItems', 'AttachmentData', 'UsersList', 'EMLData', 'MessageData']
 
 InputProtocol = Literal['pop', 'imap']
 OutputProtocol = Literal['smtp']
@@ -46,3 +46,14 @@ class EMLData(Protocol):
 
     @property
     def attachments(self) -> list[AttachmentData]: ...
+
+
+class MessageData(TypedDict):
+    path: PathLike
+    data: NotRequired[EMLData]
+    from_: UsersList
+    to: UsersList
+    subject: str
+    text_plain: str
+    text_html: str
+    attachments: list[AttachmentData]

@@ -6,6 +6,7 @@ from types import MappingProxyType
 from typing import Optional, Literal
 from imapclient import IMAPClient
 from pathlike_typing import PathLike
+from pyundefined import undefined
 from ..exceptions import ExtraArgumentsWarning
 from .exceptions import ProtocolNotInitialized, FolderNotFound, DownloadError
 from .typings import *
@@ -172,8 +173,7 @@ class LocalFileFinder:
         if not os.path.isdir(directory):
             raise FileNotFoundError(directory)
         directory = Path(directory)
-        for eml_file in directory.rglob('*.eml'):
-            message = self.Message(eml_file)
+        for message in self.all(directory):
             if self._search_mode_is(search_mode, 'from'):
                 senders = dict(zip(message.from_))
                 if search_line in (*senders.keys(), *senders.values()): yield message
@@ -189,5 +189,11 @@ class LocalFileFinder:
                 if search_line in message.text_html or search_line in message.text_plain:
                     yield message
 
-    def search_all(self, directory: PathLike, search_line: str, search_mode: EMLSearchMode, **kwargs):
+    def search_all(self, directory: PathLike, search_line: str, search_mode: EMLSearchMode, **kwargs) -> list[Message]:
         return list(self.search(directory, search_line, search_mode, **kwargs))
+
+    def all(self, directory: PathLike, all: bool = False):
+        directory = Path(directory)
+        if all: return list(self.all(directory))
+        for eml_file in directory.rglob('*.eml'): yield self.Message(eml_file)
+        return undefined
