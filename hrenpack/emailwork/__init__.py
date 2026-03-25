@@ -6,13 +6,12 @@ from pathlib import Path
 from typing import Optional, Literal
 from imapclient import IMAPClient
 from pathlike_typing import PathLike
-
 from ..descriptors import SubAttribute
 from ..exceptions import ExtraArgumentsWarning
 from .exceptions import ProtocolNotInitialized, FolderNotFound, DownloadError
 from .typings import *
 
-__all__ = ['MailClient', 'ServerConfig']
+__all__ = ['MailClient', 'ServerConfig', 'LocalFileFinder']
 
 
 class ServerConfig:
@@ -112,8 +111,11 @@ class LocalFileFinder:
     @dataclass(frozen=True)
     class Message:
         path: PathLike
-        data: mailparser.MailParser
+        data: EMLData
         subject: str = SubAttribute('data')
+        from_: UsersList = SubAttribute('from_')
+        to: UsersList = SubAttribute('to')
+        attachments: list[AttachmentData] = SubAttribute('attachments')
 
         def __iter__(self):
             return iter((self.path, self.data))
@@ -126,6 +128,12 @@ class LocalFileFinder:
                 return getattr(self, item)
             raise KeyError(item)
 
+        @property
+        def text_plain(self) -> str: return '\n'.join(self.data.text_plain)
+
+        @property
+        def text_html(self) -> str: return '\n'.join(self.data.text_html)
+
     @staticmethod
     def _search_mode_is(current: EMLSearchMode, needed: EMLSearchMode) -> bool:
         return current in (needed, 'everywhere')
@@ -134,5 +142,6 @@ class LocalFileFinder:
         if kwargs: warnings.warn('Found extra kwargs', ExtraArgumentsWarning, 2)
         if not os.path.isdir(directory):
             raise FileNotFoundError(directory)
-        # for
-
+        directory = Path(directory)
+        for eml_file in directory.rglob('*.eml'):
+            pass
