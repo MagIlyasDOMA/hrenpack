@@ -54,6 +54,6 @@ class MessageData(TypedDict):
     from_: UsersList
     to: UsersList
     subject: str
-    text_plain: str
-    text_html: str
-    attachments: list[AttachmentData]
+    text_plain: NotRequired[str]
+    text_html: NotRequired[str]
+    attachments: NotRequired[list[AttachmentData]]

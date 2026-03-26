@@ -1,11 +1,11 @@
 import email, warnings, os, mailparser, typing
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from email.policy import default as default_policy
 from pathlib import Path
-from typing import Optional, Literal
+from typing import Optional, Literal, Iterator, List
 from imapclient import IMAPClient
 from pathlike_typing import PathLike
-from pyundefined import undefined
 from ..classes import frozendict
 from ..exceptions import ExtraArgumentsWarning
 from .exceptions import ProtocolNotInitialized, FolderNotFound, DownloadError
@@ -192,8 +192,82 @@ class LocalFileFinder:
     def search_all(self, directory: PathLike, search_line: str, search_mode: EMLSearchMode, **kwargs) -> list[Message]:
         return list(self.search(directory, search_line, search_mode, **kwargs))
 
-    def all(self, directory: PathLike, all: bool = False):
+    def all(self, directory: PathLike):
         directory = Path(directory)
-        if all: return list(self.all(directory))
         for eml_file in directory.rglob('*.eml'): yield self.Message(eml_file)
-        return undefined
+
+    def search_parallel(self, directory: PathLike, search_line: str, search_mode: EMLSearchMode,
+                        max_workers: int = 4, **kwargs) -> Iterator[Message]:
+        if kwargs:
+            warnings.warn('Found extra kwargs', ExtraArgumentsWarning, 2)
+
+        if not os.path.isdir(directory):
+            raise FileNotFoundError(directory)
+
+        directory = Path(directory)
+        eml_files = list(directory.rglob('*.eml'))
+
+        # Используем ThreadPoolExecutor для параллельной обработки
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            # Отправляем задачи на обработку каждого файла
+            future_to_file = {
+                executor.submit(self._process_file, file, search_line, search_mode): file
+                for file in eml_files
+            }
+
+            # По мере завершения задач возвращаем результаты
+            for future in as_completed(future_to_file):
+                result = future.result()
+                if result is not None:
+                    yield result
+
+    def search_all_parallel(self, directory: PathLike, search_line: str, search_mode: EMLSearchMode,
+                            max_workers: int = 4, **kwargs) -> List[Message]:
+        """
+        Параллельная версия search_all.
+
+        Returns:
+            List[Message]: список всех подходящих сообщений
+        """
+        return list(self.search_parallel(directory, search_line, search_mode, max_workers, **kwargs))
+
+    def _process_file(self, file: Path, search_line: str, search_mode: EMLSearchMode):
+        """
+        Обрабатывает один файл и проверяет соответствие критериям поиска.
+
+        Returns:
+            Message или None: если файл подходит под критерии
+        """
+        try:
+            message = self.Message(file)
+
+            if self._search_mode_is(search_mode, 'from'):
+                senders = dict(zip(message.from_))
+                if search_line in (*senders.keys(), *senders.values()):
+                    return message
+
+            elif self._search_mode_is(search_mode, 'to'):
+                receivers = dict(zip(message.to))
+                if search_line in (*receivers.keys(), *receivers.values()):
+                    return message
+
+            elif self._search_mode_is(search_mode, 'subject'):
+                if search_line in message.subject:
+                    return message
+
+            elif self._search_mode_is(search_mode, 'attachments'):
+                for attachment in message.attachments:
+                    if search_line in attachment['filename']:
+                        return message
+
+            else:  # 'everywhere' режим
+                if (search_line in message.text_html or
+                        search_line in message.text_plain):
+                    return message
+
+        except Exception as e:
+            # Логируем ошибку, но продолжаем обработку остальных файлов
+            warnings.warn(f"Error processing {file}: {e}", UserWarning)
+            return None
+
+        return None
