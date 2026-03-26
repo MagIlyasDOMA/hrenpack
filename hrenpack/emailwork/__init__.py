@@ -2,11 +2,11 @@ import email, warnings, os, mailparser, typing
 from datetime import datetime
 from email.policy import default as default_policy
 from pathlib import Path
-from types import MappingProxyType
 from typing import Optional, Literal
 from imapclient import IMAPClient
 from pathlike_typing import PathLike
 from pyundefined import undefined
+from ..classes import frozendict
 from ..exceptions import ExtraArgumentsWarning
 from .exceptions import ProtocolNotInitialized, FolderNotFound, DownloadError
 from .typings import *
@@ -144,25 +144,25 @@ class LocalFileFinder:
 
         def __iter__(self): return iter(self.keys())
 
-        def __len__(self): return len(self.keys())
+        def __len__(self) -> int: return len(self.keys())
 
-        def __eq__(self, other):
-            return (isinstance(other, LocalFileFinder.Message)
-                    and tuple(dict(self).items()) == tuple(dict(other).items()))
+        def __eq__(self, other) -> bool:
+            return isinstance(other, LocalFileFinder.Message) and dict(self) == dict(other)
 
-        def __hash__(self): return hash(MappingProxyType(self))
+        def __hash__(self): return hash(frozendict(self))
 
         @property
         def subject(self) -> str: return self.data.subject
 
         @property
-        def from_(self) -> UsersList: return self.data.from_
+        def from_(self) -> UsersList: return tuple(self.data.from_)
 
         @property
-        def to(self) -> UsersList: return self.data.to
+        def to(self) -> UsersList: return tuple(self.data.to)
 
         @property
-        def attachments(self) -> list[AttachmentData]: return self.data.attachments
+        def attachments(self) -> tuple[AttachmentData]:
+            return tuple(map(frozendict, self.data.attachments)) # type: ignore
 
     @staticmethod
     def _search_mode_is(current: EMLSearchMode, needed: EMLSearchMode) -> bool:

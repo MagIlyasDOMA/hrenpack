@@ -137,6 +137,8 @@ class frozendict(dict):
     def __delitem__(self, key):
         raise TypeError(f"'{self.__class__.__name__}' object does not support item deletion")
 
+    def __hash__(self):
+        return tuple(self.items())
 
 class Environment:
     def __init__(self, **local_data):

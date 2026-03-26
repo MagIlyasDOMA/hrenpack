@@ -11,7 +11,7 @@ EncryptionType = Literal['no', 'starttls', 'ssl']
 
 EMLSearchMode = Literal['from', 'to', 'subject', 'attachments', 'everywhere']
 MessageItems = Literal['path', 'data', 'from_', 'to', 'subject', 'text_plain', 'text_html', 'attachments']
-UsersList = list[tuple[str, str]]
+UsersList = tuple[tuple[str, str]]
 
 
 AttachmentData = TypedDict(
