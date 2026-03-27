@@ -1,5 +1,4 @@
 import email, warnings, os, mailparser, typing
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from email.policy import default as default_policy
 from pathlib import Path
@@ -164,6 +163,10 @@ class LocalFileFinder:
         def attachments(self) -> tuple[AttachmentData]:
             return tuple(map(frozendict, self.data.attachments)) # type: ignore
 
+        def corresponds(self, search_line: str, search_mode: EMLSearchMode) -> bool:
+            return LocalFileFinder.message_check(self, search_line, search_mode)
+
+
     def __init__(self, directory: PathLike):
         self.directory = Path(directory)
 
@@ -198,6 +201,11 @@ class LocalFileFinder:
     def file_check(cls, file: PathLike, search_line: str, search_mode: EMLSearchMode, **kwargs):
         cls._test_kwargs(kwargs)
         return cls._message_check(cls.Message(file), search_line, search_mode)
+
+    @classmethod
+    def message_check(cls, message: LocalFileFinder.Message, search_line: str, search_mode: EMLSearchMode, **kwargs):
+        cls._test_kwargs(kwargs)
+        return cls._message_check(message, search_line, search_mode)
 
     def search(self, search_line: str, search_mode: EMLSearchMode, **kwargs):
         self._test_kwargs(kwargs)
