@@ -1,5 +1,4 @@
 import json
-
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import JsonResponse as DjangoJsonResponse
 from hrenpack.typings import JsonData

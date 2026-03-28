@@ -182,10 +182,10 @@ class LocalFileFinder:
     def _message_check(cls, message: LocalFileFinder.Message,
                        search_line: str, search_mode: EMLSearchMode) -> bool:
         if cls._search_mode_is(search_mode, 'from'):
-            senders = dict(zip(message.from_))
+            senders = dict(message.from_)
             if search_line in (*senders.keys(), *senders.values()): return True
         elif cls._search_mode_is(search_mode, 'to'):
-            receivers = dict(zip(message.to))
+            receivers = dict(message.to)
             if search_line in (*receivers.keys(), *receivers.values()): return True
         elif cls._search_mode_is(search_mode, 'subject'):
             if search_line in message.subject: return True
