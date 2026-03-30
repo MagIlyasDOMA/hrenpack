@@ -1,4 +1,4 @@
-from typing import Literal, Protocol, Optional, NotRequired, TypedDict
+from typing import Literal, Protocol, Optional, NotRequired, TypedDict, Union
 from pathlike_typing import PathLike
 
 __all__ = ['InputProtocol', 'OutputProtocol', 'MailProtocol', 'EncryptionType',
@@ -56,4 +56,4 @@ class MessageData(TypedDict):
     subject: str
     text_plain: NotRequired[str]
     text_html: NotRequired[str]
-    attachments: NotRequired[list[AttachmentData]]
+    attachments: NotRequired[Union[list[AttachmentData], list[str]]]
