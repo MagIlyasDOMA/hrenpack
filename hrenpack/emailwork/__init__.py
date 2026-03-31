@@ -71,7 +71,7 @@ class MailClient:
 
     def download_eml(self, directory: PathLike, folder: str, uid: str, is_root: bool = True,
                      naming: Literal['uid', 'subject', 'date', 'subject-date', 'subject-uid', 'custom'] = 'uid',
-                     custom_filename: Optional[PathLike] = None):
+                     custom_filename: Optional[PathLike] = None) -> str:
         try:
             self._imap_required()
             download_folder = Path(directory)
