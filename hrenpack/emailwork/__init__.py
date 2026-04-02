@@ -181,6 +181,7 @@ class LocalFileFinder:
     @classmethod
     def _message_check(cls, message: LocalFileFinder.Message,
                        search_line: str, search_mode: EMLSearchMode) -> bool:
+        if search_line.strip() == '': return True
         if cls._search_mode_is(search_mode, 'from'):
             senders = dict(message.from_)
             if search_line in (*senders.keys(), *senders.values()): return True
