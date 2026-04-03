@@ -102,3 +102,7 @@ def round_and_delete(number: int, digits: int):
     d = int('1' + '0' * digits)
     number = round(number, -digits)
     return number // d
+
+
+def randcolor():
+    return f'#{randint(0, 16777215):x}'
