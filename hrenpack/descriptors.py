@@ -93,3 +93,41 @@ class SubAttribute(BaseDescriptor):
         except AttributeError as error:
             if self.default is no_default: raise error
             return self.default
+
+
+class CachedProperty(BaseDescriptor):
+    def __init__(self, method: Callable):
+        self.method = method
+
+    def __get__(self, instance, owner):
+        if instance is None: return self
+        if not self.is_cached(instance):
+            self.set_cache(instance, self.method())
+        return self.get_cache(instance)
+
+    @staticmethod
+    def cached_flag_attr_name(name: str): return f'__{name}__cached'
+
+    @staticmethod
+    def cache_attr_name(name: str): return f'__{name}__cache'
+
+    def is_cached(self, instance) -> bool:
+        return instance.__dict__[self.cached_flag_attr_name(self.name)]
+
+    def get_cache(self, instance):
+        return instance.__dict__[self.cache_attr_name(self.name)]
+
+    def set_cache(self, instance, value):
+        instance.__dict__[self.cache_attr_name(self.name)] = value
+
+
+class UncacheProperty(BaseDescriptor):
+    def __init__(self, cached_property_name: str):
+        self.cached_property_name = cached_property_name
+
+    def __get__(self, instance, owner):
+        if instance is None: return self
+        return instance.__dict__[self.name]
+
+    def __set__(self, instance, value):
+        setattr(instance, CachedProperty.cached_flag_attr_name(self.cached_property_name), False)
