@@ -267,6 +267,87 @@ Use version 2.1.2 or higher for production environments.
 Формат основан на [Keep a Changelog](https://keepachangelog.com/),
 и проект придерживается [Семантического Версионирования](https://semver.org/).
 
+## [3.0.0-beta.4]
+### ⚠️ Критические изменения
+
+- **Удален класс `TransposedList`*- из модуля `hrenpack.classes`. Если вы использовали этот класс в своих проектах, код сломается. Необходимо найти альтернативу или отказаться от его использования.
+- **Удалена автоматическая загрузка интеграции с Django*- из `hrenpack/__init__.py`. Ранее, при установленном Django, автоматически импортировался модуль `hrenpack.framework.django.apps`. Теперь этого не происходит, и разработчику нужно явно импортировать необходимые подмодули Django.
+- **Изменено поведение `Environment.setdefault`**: добавлен новый параметр `local_global`, а логика работы с локальными данными изменена. Метод больше не использует `setdefault` для `local_data` в старом виде.
+- **Изменены сигнатуры функций работы с путями*- (`get_filename`, `get_extension` и др.) в `hrenpack/cmd.py`. Теперь они принимают `PathLike` вместо `str`. Это может сломать код, передающий другие типы без явного приведения к строке.
+- **Удалены классы `Category` и `MenuElement`*- из `hrenpack/framework/django/__init__.py`. Экспорты этих классов удалены, что сломает код, который на них полагался.
+
+### ✨ Добавлено (New Features)
+
+- **Новый модуль `hrenpack.emailwork`**: Добавлена полноценная поддержка работы с электронной почтой.
+  - Класс `ServerConfig` для хранения конфигурации сервера.
+  - Класс `MailClient` для подключения по IMAP (POP и SMTP пока заготовлены).
+  - Класс `LocalFileFinder` и вложенный класс `Message` для парсинга и поиска по локальным `.eml` файлам.
+- **Новый модуль `hrenpack.descriptors`**: Добавлен набор полезных дескрипторов для классов:
+  - `Constant`, `ObjectConstant` (создание констант и ленивых объектов).
+  - `TypedDescriptor`, `Boolean`, `PathLikeDescriptor` (типизированные атрибуты).
+  - `CachedProperty`, `UncacheProperty` (кэширование свойств).
+- **Новые классы в `hrenpack.classes`**:
+  - `EmptyClass`: класс, который на любой запрос атрибута возвращает `None`.
+  - `NonStrictDict`: словарь, который возвращает значение по умолчанию (а не ошибку `KeyError`) при обращении к отсутствующему ключу.
+- **Новые функции в `hrenpack.classes.DictObject`**: Теперь объект поддерживает интерфейс словаря (`__getitem__`, `__setitem__`, `__delitem__`).
+- **Новые функции в `hrenpack.cmd`**:
+  - `get_max_path_length()`: получение максимальной длины пути для текущей ОС.
+  - `is_path_valid()`: валидация пути на длину, запрещенные символы и имена.
+- **Новый модуль `hrenpack.security`**: Класс `HTMLSanitizer` для очистки HTML от опасных тегов (скрипты, iframe), событий (onclick) и CSS-свойств.
+- **Новый модуль `hrenpack.python`**: Классы для ленивого импорта (`LazyImporter`, `LazyImportedObject`).
+- **Новые функции в `hrenpack.framework.django`**:
+  - `sanitize_html_and_mark_safe()`: для безопасного вывода HTML в шаблонах.
+  - Класс `JsonResponse` (наследник Django JsonResponse) с корректной работой с кириллицей и свойством `.data`.
+  - Новый `lookup` для Django ORM: `DirnameLookup` (проверка пути к папке).
+- **Новые утилиты**:
+  - `hrenpack.numwork.randcolor()`: генерация случайного HEX-цвета.
+  - `hrenpack.strwork.strip_quotes()`: удаление кавычек по краям строки.
+  - `hrenpack.listwork.two_tuples_to_dict()`, `values_keys()`, `getitem_plus`, `setitem_plus`: расширенные функции работы со словарями и вложенными структурами.
+
+### 🔧 Изменено (Changed)
+
+- **Класс `Environment`**:
+  - Рефакторинг метода `load`: теперь для локальной загрузки используется внутренний метод `_dotenv_values`.
+  - Метод `setdefault` теперь кидает `Warning` при несоответствии аргументов и изменена логика проверки наличия ключа.
+  - Класс перемещен в файле, удалены лишние пустые строки.
+- **Класс `frozendict`**: Добавлена поддержка хэширования (`__hash__`).
+- **Модуль `hrenpack.encapsulation`**:
+  - Удалены классы `SafeInheritance` и `SafeMeta` (вероятно, не использовались или были проблемными).
+  - Добавлены новые функции: `getattr_strict`, `getattr_plus` (доступ к вложенным атрибутам/ключам), `check_type` (валидация типов), `get_own_attributes`, `DescriptorsFinder`.
+- **Класс `TextFile`*- в `hrenpack/filework/__init__.py`:
+  - Сигнатура конструктора упрощена, удалены параметры `extension`/`extensions`.
+  - Добавлен флаг `create_file_if_not_exists` (по умолчанию `True`).
+- **Функция `download_file`*- в `hrenpack/network.py`: добавлена поддержка потоковой загрузки (`stream=True`) для отображения прогресс-бара.
+- **Модуль `hrenpack.windows_registry`**:
+  - Полностью переработан: добавлен класс `RegistryManager`, новые исключения.
+  - Удалены старые функции-обертки (`remove_registry_keys`, `remove_registry_values`).
+- **Типизация*- (`hrenpack/typings.py`): Добавлены новые типы: `JsonData`, `HttpMethod`, `GetterFunc`, `SetterFunc`.
+
+### 🐛 Исправлено (Fixed)
+
+- **Функция `current_timezone`*- (`hrenpack/date_and_time_work.py`): Изменена сигнатура на ключевой аргумент `raw_data` (вместо `to_string`), что делает использование более явным и понятным.
+- **Функция `get_timezone_offset`*- (`hrenpack/date_and_time_work.py`): Добавлена функция для получения смещения временной зоны в часах (раньше ее не было, либо она была сломана).
+- **Модуль `hrenpack/framework/django`**: Удалены "мертвые" и закомментированные импорты, улучшена обработка `base_template_name` (добавлена проверка на `None`).
+
+### 📦 Зависимости (Dependencies)
+
+- **Добавлены новые зависимости*- в `requirements.txt`:
+  - `typeguard` (используется для проверки типов в дескрипторах).
+  - `undefined-python>=1.1.0` (используется для `no_default`).
+  - `zoneinfo` (добавлен импорт в `date_and_time_work`).
+
+### 🗑️ Удалено (Removed)
+
+- Полностью удален закомментированный гигантский класс `DateTime` из `date_and_time_work.py`.
+- Удален файл `hrenpack/framework/django/_undb_compat.py` (добавлен в `.gitignore`).
+- Удалена старая логика проверки расширений файлов из `TextFile`.
+
+### Прочее (Other)
+
+- **Кодировка**: Исправлены или обновлены заголовки файлов (например, `__init__.py`).
+- **Структура**: Модуль `hrenpack/framework/django/db.py` превращен в пакет `hrenpack/framework/django/db/` с подмодулями `fields` и `lookup`.
+- **Исключения**: В `hrenpack/exceptions.py` добавлена функция `convert_exception_to_str` для красивой распечатки ошибок.
+
 ## [3.0.0-beta.3] - 2026-02-27
 ### Критические изменения ⚠️
 - Удалены классы `stl`, `DictionaryWithExtendedFunctionality`, `MatrixCore`, `DataClass`, `PreEmptyDataClass`, `EmptyDataClass`, `Color`, `NoneType`, `TupleDict` в `classes.py`
