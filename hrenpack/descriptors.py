@@ -1,9 +1,10 @@
-from typing import Any, Union, Self, Callable
+from typing import Any, Union, Self, Callable, Optional
 from pathlib import Path
 from pathlike_typing import PathLike
 from typeguard import check_type
 from hrenpack.encapsulation import getattr_plus, getattr_strict
 from hrenpack.no_default import no_default
+from hrenpack.typings import GetterFunc, SetterFunc
 
 
 class BaseDescriptor:
@@ -102,7 +103,7 @@ class CachedProperty(BaseDescriptor):
     def __get__(self, instance, owner):
         if instance is None: return self
         if not self.is_cached(instance):
-            self.set_cache(instance, self.method())
+            self.set_cache(instance, self.method(instance))
         return self.get_cache(instance)
 
     @staticmethod
@@ -115,19 +116,43 @@ class CachedProperty(BaseDescriptor):
         return instance.__dict__[self.cached_flag_attr_name(self.name)]
 
     def get_cache(self, instance):
-        return instance.__dict__[self.cache_attr_name(self.name)]
+        return getattr(instance, self.cache_attr_name(self.name))
 
     def set_cache(self, instance, value):
-        instance.__dict__[self.cache_attr_name(self.name)] = value
+        setattr(instance, self.cache_attr_name(self.name), value)
+        setattr(self, self.cached_flag_attr_name(self.name), True)
 
 
 class UncacheProperty(BaseDescriptor):
-    def __init__(self, cached_property_name: str):
-        self.cached_property_name = cached_property_name
+    def __init__(self, *cached_properties: str,
+                 fget: Optional[GetterFunc] = None,
+                 fset: Optional[SetterFunc] = None,
+                 setable: bool = True):
+        self.cached_properties = cached_properties
+        if fget is None and fset is not None: setable = False
+        self.fget = fget
+        self.fset = fset
+        self.setable = setable
 
     def __get__(self, instance, owner):
         if instance is None: return self
+        if self.fget is not None: return self.fget()
         return instance.__dict__[self.name]
 
     def __set__(self, instance, value):
-        setattr(instance, CachedProperty.cached_flag_attr_name(self.cached_property_name), False)
+        if not self.setable: raise AttributeError(f'Cannot set attribute \'{self.name}\'')
+        for name in self.cached_properties:
+            setattr(instance, CachedProperty.cached_flag_attr_name(name), False)
+        if self.fset is not None: self.fset(value)
+        instance.__dict__[self.name] = value
+
+    def __call__(self, fget: GetterFunc):
+        if self.fset is not None: self.setable = False
+        self.fget = fget
+        return self
+
+    def setter(self, fset: SetterFunc):
+        self.setable = True
+        self.fset = fset
+        return self
+

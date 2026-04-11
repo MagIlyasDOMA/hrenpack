@@ -1,4 +1,4 @@
-from typing import Union, Optional, Literal
+from typing import Union, Optional, Literal, Callable, Any
 from pathlib import Path
 from pathlike_typing import PathLike
 from hrenpack.classes import range_plus
@@ -25,3 +25,5 @@ JsonData = Union[str, int, float, bool, dict, list]
 HttpMethodBasic = Literal['GET', 'POST']
 HttpMethodExtended = Union[HttpMethodBasic, Literal['PUT', 'PATCH', 'DELETE']]
 HttpMethod = Union[HttpMethodExtended, Literal['HEAD', 'OPTIONS', 'TRACE', 'CONNECT']]
+GetterFunc = Callable[[], Any]
+SetterFunc = Callable[[Any], None]
