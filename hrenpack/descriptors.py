@@ -113,7 +113,7 @@ class CachedProperty(BaseDescriptor):
     def cache_attr_name(name: str): return f'__{name}__cache'
 
     def is_cached(self, instance) -> bool:
-        return instance.__dict__[self.cached_flag_attr_name(self.name)]
+        return getattr(instance, self.cached_flag_attr_name(self.name), False)
 
     def get_cache(self, instance):
         return getattr(instance, self.cache_attr_name(self.name))

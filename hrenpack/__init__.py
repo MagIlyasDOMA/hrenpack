@@ -12,7 +12,7 @@ def credits():
     print("Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)")
 
 
-__version__ = '3.0.0-beta.4'
+__version__ = '3.0.0-beta.5'
 
 
 def sts(word):

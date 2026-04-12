@@ -7,6 +7,10 @@ All changes in this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.0.0-beta.5] - 2026-04-12
+### 🐛 Fixed
+- Fixed a bug in `CachedProperty.is_cached` (`hrenpack/descriptors.py`) that was causing a `KeyError`.
+
 ## [3.0.0-beta.4] - 2026-04-12
 ### ⚠️ Breaking Changes
 - **Removed `TransposedList` class** from `hrenpack.classes` module. If you used this class in your projects, your code will break. You need to find an alternative or stop using it.
@@ -342,6 +346,10 @@ Use version 2.1.2 or higher for production environments.
 Формат основан на [Keep a Changelog](https://keepachangelog.com/),
 и проект придерживается [Семантического Версионирования](https://semver.org/).
 
+## [3.0.0-beta.5] - 2026-04-12
+### 🐛 Исправлено
+- Исправлен баг в `CachedProperty.is_cached` (`hrenpack/descriptors.py`), вызывавший `KeyError`.  
+
 ## [3.0.0-beta.4] - 2026-04-12
 ### ⚠️ Критические изменения
 - **Удален класс `TransposedList`** из модуля `hrenpack.classes`. Если вы использовали этот класс в своих проектах, код сломается. Необходимо найти альтернативу или отказаться от его использования.
@@ -350,7 +358,7 @@ Use version 2.1.2 or higher for production environments.
 - **Изменены сигнатуры функций работы с путями** (`get_filename`, `get_extension` и др.) в `hrenpack/cmd.py`. Теперь они принимают `PathLike` вместо `str`. Это может сломать код, передающий другие типы без явного приведения к строке.
 - **Удалены классы `Category` и `MenuElement`** из `hrenpack/framework/django/__init__.py`. Экспорты этих классов удалены, что сломает код, который на них полагался.
 
-### ✨ Добавлено (New Features)
+### ✨ Добавлено
 - **Новый модуль `hrenpack.emailwork`**: Добавлена полноценная поддержка работы с электронной почтой.
   - Класс `ServerConfig` для хранения конфигурации сервера.
   - Класс `MailClient` для подключения по IMAP (POP и SMTP пока заготовлены).
@@ -377,7 +385,7 @@ Use version 2.1.2 or higher for production environments.
   - `hrenpack.strwork.strip_quotes()`: удаление кавычек по краям строки.
   - `hrenpack.listwork.two_tuples_to_dict()`, `values_keys()`, `getitem_plus`, `setitem_plus`: расширенные функции работы со словарями и вложенными структурами.
 
-### 🔧 Изменено (Changed)
+### 🔧 Изменено
 - **Класс `Environment`**:
   - Рефакторинг метода `load`: теперь для локальной загрузки используется внутренний метод `_dotenv_values`.
   - Метод `setdefault` теперь кидает `Warning` при несоответствии аргументов и изменена логика проверки наличия ключа.
@@ -395,24 +403,24 @@ Use version 2.1.2 or higher for production environments.
   - Удалены старые функции-обертки (`remove_registry_keys`, `remove_registry_values`).
 - **Типизация** (`hrenpack/typings.py`): Добавлены новые типы: `JsonData`, `HttpMethod`, `GetterFunc`, `SetterFunc`.
 
-### 🐛 Исправлено (Fixed)
+### 🐛 Исправлено
 - **Функция `current_timezone`** (`hrenpack/date_and_time_work.py`): Изменена сигнатура на ключевой аргумент `raw_data` (вместо `to_string`), что делает использование более явным и понятным.
 - **Функция `get_timezone_offset`** (`hrenpack/date_and_time_work.py`): Добавлена функция для получения смещения временной зоны в часах (раньше ее не было, либо она была сломана).
 - **Модуль `hrenpack/framework/django`**: Удалены "мертвые" и закомментированные импорты, улучшена обработка `base_template_name` (добавлена проверка на `None`).
 
-### 📦 Зависимости (Dependencies)
+### 📦 Зависимости
 - **Добавлены новые зависимости** в `requirements.txt`:
   - `typeguard` (используется для проверки типов в дескрипторах).
   - `undefined-python>=1.1.0` (используется для `no_default`).
   - `zoneinfo` (добавлен импорт в `date_and_time_work`).
 
-### 🗑️ Удалено (Removed)
+### 🗑️ Удалено
 - Полностью удален закомментированный гигантский класс `DateTime` из `date_and_time_work.py`.
 - Удален файл `hrenpack/framework/django/_undb_compat.py` (добавлен в `.gitignore`).
 - Удалена старая логика проверки расширений файлов из `TextFile`.
 - Удалена папка `fb2` из ресурсов.
 
-### Прочее (Other)
+### Прочее
 - **Кодировка**: Исправлены или обновлены заголовки файлов (например, `__init__.py`).
 - **Структура**: Модуль `hrenpack/framework/django/db.py` превращен в пакет `hrenpack/framework/django/db/` с подмодулями `fields` и `lookup`.
 - **Исключения**: В `hrenpack/exceptions.py` добавлена функция `convert_exception_to_str` для красивой распечатки ошибок.
