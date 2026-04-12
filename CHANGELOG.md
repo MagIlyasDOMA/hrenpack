@@ -75,6 +75,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Completely removed the commented-out giant `DateTime` class from `date_and_time_work.py`.
 - Removed `hrenpack/framework/django/_undb_compat.py` file (added to `.gitignore`).
 - Removed old file extension checking logic from `TextFile`.
+- Removed `fb2` folder from resources.
 
 ### Other
 - **Encoding**: Fixed or updated file headers (e.g., `__init__.py`).
@@ -395,8 +396,8 @@ Use version 2.1.2 or higher for production environments.
 - **Типизация** (`hrenpack/typings.py`): Добавлены новые типы: `JsonData`, `HttpMethod`, `GetterFunc`, `SetterFunc`.
 
 ### 🐛 Исправлено (Fixed)
-- **Функция `current_timezone`*- (`hrenpack/date_and_time_work.py`): Изменена сигнатура на ключевой аргумент `raw_data` (вместо `to_string`), что делает использование более явным и понятным.
-- **Функция `get_timezone_offset`*- (`hrenpack/date_and_time_work.py`): Добавлена функция для получения смещения временной зоны в часах (раньше ее не было, либо она была сломана).
+- **Функция `current_timezone`** (`hrenpack/date_and_time_work.py`): Изменена сигнатура на ключевой аргумент `raw_data` (вместо `to_string`), что делает использование более явным и понятным.
+- **Функция `get_timezone_offset`** (`hrenpack/date_and_time_work.py`): Добавлена функция для получения смещения временной зоны в часах (раньше ее не было, либо она была сломана).
 - **Модуль `hrenpack/framework/django`**: Удалены "мертвые" и закомментированные импорты, улучшена обработка `base_template_name` (добавлена проверка на `None`).
 
 ### 📦 Зависимости (Dependencies)
@@ -409,6 +410,7 @@ Use version 2.1.2 or higher for production environments.
 - Полностью удален закомментированный гигантский класс `DateTime` из `date_and_time_work.py`.
 - Удален файл `hrenpack/framework/django/_undb_compat.py` (добавлен в `.gitignore`).
 - Удалена старая логика проверки расширений файлов из `TextFile`.
+- Удалена папка `fb2` из ресурсов.
 
 ### Прочее (Other)
 - **Кодировка**: Исправлены или обновлены заголовки файлов (например, `__init__.py`).
