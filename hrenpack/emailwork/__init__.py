@@ -179,7 +179,7 @@ class LocalFileFinder:
         if kwargs: warnings.warn('Found extra kwargs', ExtraArgumentsWarning, 2)
 
     @classmethod
-    def _message_check(cls, message: LocalFileFinder.Message,
+    def _message_check(cls, message: 'LocalFileFinder.Message',
                        search_line: str, search_mode: EMLSearchMode) -> bool:
         if search_line.strip() == '': return True
         if cls._search_mode_is(search_mode, 'from'):
@@ -204,7 +204,7 @@ class LocalFileFinder:
         return cls._message_check(cls.Message(file), search_line, search_mode)
 
     @classmethod
-    def message_check(cls, message: LocalFileFinder.Message, search_line: str, search_mode: EMLSearchMode, **kwargs):
+    def message_check(cls, message: 'LocalFileFinder.Message', search_line: str, search_mode: EMLSearchMode, **kwargs):
         cls._test_kwargs(kwargs)
         return cls._message_check(message, search_line, search_mode)
 
