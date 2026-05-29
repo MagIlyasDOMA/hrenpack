@@ -1,9 +1,9 @@
 from typing import Any, Union, Self, Callable, Optional
 from pathlib import Path
 from pathlike_typing import PathLike
+from pyundefined import undefined
 from typeguard import check_type
-from hrenpack.encapsulation import getattr_plus, getattr_strict
-from hrenpack.no_default import no_default
+from hrenpack.encapsulation import getattr_strict
 from hrenpack.typings import GetterFunc, SetterFunc
 
 
@@ -41,14 +41,14 @@ class ObjectConstant(BaseDescriptor):
 
 
 class TypedDescriptor(BaseDescriptor):
-    def __init__(self, typing: Any = Any, default: Any = no_default):
+    def __init__(self, typing: Any = Any, default: Any = undefined):
         self.typing = typing
         self.default = default
 
     def __get__(self, instance, owner=None):
         if instance is None: return self
         value = instance.__dict__.get(self.name, self.default)
-        if value is no_default: raise AttributeError('Attribute \'{}\' does not exist'.format(self.name))
+        if value is undefined: raise AttributeError('Attribute \'{}\' does not exist'.format(self.name))
         return value
 
     def __set__(self, instance, value):
@@ -85,14 +85,14 @@ class Boolean(TypedDescriptor):
 
 
 class SubAttribute(BaseDescriptor):
-    def __init__(self, attr_name: str, default=no_default):
+    def __init__(self, attr_name: str, default=undefined):
         self.attr_name = attr_name
         self.default = default
 
     def __get__(self, instance, owner=None):
         try: return getattr_strict(getattr(instance, self.name), self.attr_name)
         except AttributeError as error:
-            if self.default is no_default: raise error
+            if self.default is undefined: raise error
             return self.default
 
 

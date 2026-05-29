@@ -3,8 +3,8 @@ import warnings
 from typing import Any, IO, Optional
 from dotenv import load_dotenv, dotenv_values
 from pathlike_typing import PathLike
-from hrenpack.boolwork import str_to_bool
-from hrenpack.listwork import if_dict_key, dict_keyf, merging_dictionaries
+from .listwork import merging_dictionaries
+from .type_define import convert_to_boolean
 
 
 class DictObject:
@@ -55,9 +55,9 @@ if platform.system() == 'Windows':
                 self.resizable(resizable, resizable)
                 self.geometry(f'{width}x{height}')
                 self['bg'] = background
-                if if_dict_key(kwargs, 'icon'):
+                if 'icon' in kwargs:
                     self.iconbitmap(kwargs['icon'])
-                self.stylesheet = dict_keyf(kwargs, 'stylesheet', dict())
+                self.stylesheet = kwargs.get('stylesheet', dict())
                 self.__stylesheet__()
                 self.widgets_init()
 
@@ -207,7 +207,7 @@ class Environment:
             value = (self.get(key, default)
                      if not isinstance(self, type)
                      else os.environ.get(key.upper(), default))
-            return str_to_bool(value) if value is not None else default
+            return convert_to_boolean(value) if value is not None else default
         except (TypeError, ValueError) as error:
             if strict:
                 raise error

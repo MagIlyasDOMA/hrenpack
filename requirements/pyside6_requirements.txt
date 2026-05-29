@@ -1,2 +1,0 @@
-Pyside6>=6.8.2
-pyqtcli>=0.1.1

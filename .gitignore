@@ -185,3 +185,4 @@ test.py
 
 .github
 /hrenpack/framework/django/_undb_compat.py
+/uv.lock

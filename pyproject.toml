@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hrenpack"
-version = "3.0.0-beta.5"
+version = "3.0.0"
 description = "Универсальная библиотека python для большинства задач | A universal python library for most tasks"
 readme = "README.md"
 authors = [
@@ -35,7 +35,135 @@ classifiers = [
     "Topic :: Text Processing :: Markup :: HTML",
 ]
 requires-python = ">=3.13"
-dynamic = ["dependencies", "optional-dependencies"]
+dependencies = [
+    "bs4>=0.0.2",
+    "chardet>=5.2.0",
+    "charset-normalizer>=3.4.4",
+    "requests>=2.32.5",
+    "tqdm>=4.67.1, <=5.0.0",
+    "bcrypt==5.0.0",
+    "screeninfo>=0.8.1",
+    "clipboard>=0.0.4",
+    "psutil",
+    "python-dotenv>=1.2.0",
+    "python-gettext~=5.0",
+    "pathlike-typing",
+    "argparse-typing>=0.2.0",
+    "tzlocal",
+    "pytz",
+    "typeguard",
+    "undefined-python>=1.1.0",
+]
+
+[project.optional-dependencies]
+image = [
+    "Pillow>=3.3.0",
+]
+flask = [
+    "flask>=3.1.2",
+    "flask-sqlalchemy>=3.1.1",
+    "flask-wtf>=1.2.2",
+    "jinja2>=3.1.6",
+    "markupsafe>=3.0.3",
+]
+filetype = [
+    "filetype>=1.2.0",
+    "puremagic~=1.30",
+]
+pyside6 = [
+    "Pyside6>=6.8.2",
+    "pyqtcli>=0.1.1",
+]
+django = [
+    "Django>=5.2.9",
+]
+pygame = [
+    "pygame>=2.6.1",
+]
+kivy = [
+    "kivy>=2.3.1",
+]
+email = [
+    "imapclient",
+]
+dev = [
+    "setuptools>=61.0.0",
+    "wheel>=0.46.3",
+    "twine>=6.2.0",
+    "build>=1.4.0",
+]
+all = [
+    "Pillow>=3.3.0",
+    "flask>=3.1.2",
+    "flask-sqlalchemy>=3.1.1",
+    "flask-wtf>=1.2.2",
+    "jinja2>=3.1.6",
+    "markupsafe>=3.0.3",
+    "filetype>=1.2.0",
+    "puremagic~=1.30",
+    "Pyside6>=6.8.2",
+    "pyqtcli>=0.1.1",
+    "Django>=5.2.9",
+    "pygame>=2.6.1",
+    "kivy>=2.3.1",
+    "imapclient",
+]
+full = [
+    "Pillow>=3.3.0",
+    "flask>=3.1.2",
+    "flask-sqlalchemy>=3.1.1",
+    "flask-wtf>=1.2.2",
+    "jinja2>=3.1.6",
+    "markupsafe>=3.0.3",
+    "filetype>=1.2.0",
+    "puremagic~=1.30",
+    "Pyside6>=6.8.2",
+    "pyqtcli>=0.1.1",
+    "Django>=5.2.9",
+    "pygame>=2.6.1",
+    "kivy>=2.3.1",
+    "imapclient",
+]
+dev_all = [
+    "setuptools>=61.0.0",
+    "wheel>=0.46.3",
+    "twine>=6.2.0",
+    "build>=1.4.0",
+    "Pillow>=3.3.0",
+    "flask>=3.1.2",
+    "flask-sqlalchemy>=3.1.1",
+    "flask-wtf>=1.2.2",
+    "jinja2>=3.1.6",
+    "markupsafe>=3.0.3",
+    "filetype>=1.2.0",
+    "puremagic~=1.30",
+    "Pyside6>=6.8.2",
+    "pyqtcli>=0.1.1",
+    "Django>=5.2.9",
+    "pygame>=2.6.1",
+    "kivy>=2.3.1",
+    "imapclient",
+]
+dev_full = [
+    "setuptools>=61.0.0",
+    "wheel>=0.46.3",
+    "twine>=6.2.0",
+    "build>=1.4.0",
+    "Pillow>=3.3.0",
+    "flask>=3.1.2",
+    "flask-sqlalchemy>=3.1.1",
+    "flask-wtf>=1.2.2",
+    "jinja2>=3.1.6",
+    "markupsafe>=3.0.3",
+    "filetype>=1.2.0",
+    "puremagic~=1.30",
+    "Pyside6>=6.8.2",
+    "pyqtcli>=0.1.1",
+    "Django>=5.2.9",
+    "pygame>=2.6.1",
+    "kivy>=2.3.1",
+    "imapclient",
+]
 
 [project.urls]
 Source = "https://github.com/MagIlyasDOMA/hrenpack"
@@ -45,59 +173,3 @@ Changelog = "https://github.com/MagIlyasDOMA/hrenpack/blob/main/CHANGELOG.md"
 [tool.setuptools]
 packages = {find = {}}
 include-package-data = true
-
-[tool.setuptools.dynamic]
-dependencies = {file = ["requirements/requirements.txt"]}
-
-[tool.setuptools.dynamic.optional-dependencies]
-image = {file = ["requirements/image_requirements.txt"]}
-flask = {file = ["requirements/flask_requirements.txt"]}
-filetype = {file = ["requirements/filetype_requirements.txt"]}
-pyside6 = {file = ["requirements/pyside6_requirements.txt"]}
-django = {file = ["requirements/django_requirements.txt"]}
-pygame = {file = ["requirements/pygame_requirements.txt"]}
-kivy = {file = ["requirements/kivy_requirements.txt"]}
-email = {file = ["requirements/email_requirements.txt"]}
-dev = {file = ["requirements/dev_requirements.txt"]}
-all = {file = [
-    "requirements/image_requirements.txt",
-    "requirements/flask_requirements.txt",
-    "requirements/filetype_requirements.txt",
-    "requirements/pyside6_requirements.txt",
-    "requirements/django_requirements.txt",
-    "requirements/pygame_requirements.txt",
-    "requirements/kivy_requirements.txt",
-    "requirements/email_requirements.txt"
-]}
-full = {file = [
-    "requirements/image_requirements.txt",
-    "requirements/flask_requirements.txt",
-    "requirements/filetype_requirements.txt",
-    "requirements/pyside6_requirements.txt",
-    "requirements/django_requirements.txt",
-    "requirements/pygame_requirements.txt",
-    "requirements/kivy_requirements.txt",
-    "requirements/email_requirements.txt"
-]}
-dev_all = {file = [
-    "requirements/dev_requirements.txt",
-    "requirements/image_requirements.txt",
-    "requirements/flask_requirements.txt",
-    "requirements/filetype_requirements.txt",
-    "requirements/pyside6_requirements.txt",
-    "requirements/django_requirements.txt",
-    "requirements/pygame_requirements.txt",
-    "requirements/kivy_requirements.txt",
-    "requirements/email_requirements.txt"
-]}
-dev_full = {file = [
-    "requirements/dev_requirements.txt",
-    "requirements/image_requirements.txt",
-    "requirements/flask_requirements.txt",
-    "requirements/filetype_requirements.txt",
-    "requirements/pyside6_requirements.txt",
-    "requirements/django_requirements.txt",
-    "requirements/pygame_requirements.txt",
-    "requirements/kivy_requirements.txt",
-    "requirements/email_requirements.txt"
-]}

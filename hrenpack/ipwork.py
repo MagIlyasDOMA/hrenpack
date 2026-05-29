@@ -1,14 +1,4 @@
 import socket
-from dataclasses import dataclass
-
-
-# class NetworkInterfaces:
-#     @dataclass
-#     class NetworkInterface:
-#         pass
-#
-#     def __init__(self):
-#         pass
 
 
 def get_ipv4_addresses(exclude_localhost: bool = False) -> list:

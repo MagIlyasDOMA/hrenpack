@@ -1,24 +1,6 @@
 import logging
 from contextlib import redirect_stdout, nullcontext
 from functools import wraps
-from hrenpack.listwork import key_in_dict
-
-
-def confirm(inp_text: str = "Вы уверены, что хотите выполнить эту программу?"):
-    def decorator(func):
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            result = input(inp_text + "\nВведите y, д или 1, если да, или n, н или 0, если нет\n")
-            while True:
-                if result in ('y', 'Y', "д", "Д", "1"):
-                    return func(*args, **kwargs)
-                elif result in ('n', 'N', "н", "Н", "0"):
-                    break
-                else:
-                    result = input(inp_text + "\nВведите y, д или 1, если да, или n, н или 0, если нет\n")
-
-        return wrapper
-    return decorator
 
 
 def non_print(func):
@@ -39,11 +21,11 @@ def args_kwargs(**kwargs):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **key_args):
-            if key_in_dict(key_args, args_name) and copy_args:
+            if args_name in key_args and copy_args:
                 args = [*args, *key_args[args_name]]
                 if del_kwargs:
                     del key_args[args_name]
-            if key_in_dict(key_args, kwargs_name) and copy_kwargs:
+            if kwargs_name in key_args and copy_kwargs:
                 key_args = {**key_args, **key_args[kwargs_name]}
                 if del_kwargs:
                     del key_args[kwargs_name]
@@ -66,8 +48,7 @@ def debug_logging(start_message: str = '', end_message: str = ''):
     return decorator
 
 
-def method(func):
-    return func
+def method(func): return func
 
 
 def multi_decorator(*decorators):

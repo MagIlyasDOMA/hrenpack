@@ -1,5 +1,3 @@
-from hrenpack.listwork import split_list as join
-
 translit_db = {
 	"latin": {
 		"а": "a",
@@ -86,7 +84,7 @@ def translit(data: str, lat_to_cyr: bool = False, translit_no_letters: bool = Tr
                     data[i] = 'H'
                 elif letter == "х":
                     data[i] = 'h'
-    return join(data, '')
+    return ''.join(data)
 
 
 def slugify(data: str, translit_no_letters: bool = False) -> str:

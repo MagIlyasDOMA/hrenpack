@@ -1,9 +1,6 @@
-﻿import os, warnings
-from hrenpack.classes import range_plus, Class, EmptyClass
-from hrenpack.functionwork import empty_function
-from hrenpack.strwork import randstr
-from hrenpack.listwork import split_list
-from hrenpack.typings import *
+﻿from .functionwork import empty_function
+from .strwork import randstr
+from .typings import *
 
 
 def credits():
@@ -47,26 +44,11 @@ def switch(variable, case: dict, default=empty_function):
         default()
 
 
-def bincode_generator(length: int, isInt: bool = False):
+def bincode_generator(length: int, is_int: bool = False):
     bincode = ''
     for i in range(length):
         bincode = bincode + randstr(0, 1)
-    return int(bincode) if isInt else bincode
-
-
-def switch_return(variable, case: dict, default=None):
-    for key in case:
-        value = case[key]
-        if variable == value:
-            output = value
-            break
-    else:
-        output = default
-    return output
-
-
-def string_error(error: Exception):
-    return str(error)
+    return int(bincode) if is_int else bincode
 
 
 def who_called_me():
@@ -74,21 +56,6 @@ def who_called_me():
     current_frame = inspect.currentframe()
     calling_frame = current_frame.f_back
     return inspect.getfile(calling_frame)
-
-
-def one_return(count: int, value=None):
-    if count == 1:
-        return value
-    else:
-        output = list()
-        for i in range(count):
-            output.append(value)
-        return tuple(output)
-
-
-none_tuple = lambda count: one_return(count)
-tuple0 = lambda count: one_return(count, 0)
-str_tuple = lambda count: one_return(count, '')
 
 
 def module_is_installed(module_name: str):

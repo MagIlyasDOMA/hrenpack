@@ -1,12 +1,9 @@
 import os, json, csv, functools
 from typing import Union, Literal, Any, List
 from pathlike_typing import PathLike
-from hrenpack import one_return
-from hrenpack.cmd import get_filename, get_extension, create_file, delete_file, FileNameInfo
-from hrenpack.listwork import (split_list, _is_tuple, list_add, split_list_enter, split_list_space, key_in_dict,
-                               equals_keys)
-from hrenpack.strwork import search_and_edit
-from hrenpack.decorators import confirm
+from ..cmd import get_filename, get_extension, create_file, delete_file, FileNameInfo
+from ..listwork import list_add
+from ..strwork import search_and_edit
 from configparser import ConfigParser, NoOptionError, NoSectionError
 
 

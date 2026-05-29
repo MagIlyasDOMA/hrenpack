@@ -1,14 +1,14 @@
 import argparse, sys, functools
 from argparse import Namespace
-from hrenpack.functionwork import empty_function
-from hrenpack.iterwork import multi_in
+from .functionwork import empty_function
+from .iterwork import multi_in
 
 
-def naih(method):
+def no_args_is_help(method):
     @functools.wraps(method)
     def wrapper(self, args=None, namespace=None):
         if self._no_args_is_help:
-            self.no_args_is_help()
+            self.noargs_is_help()
         return getattr(super(type(self), self), method.__name__, empty_function)(args, namespace)
     return wrapper
 
@@ -24,21 +24,21 @@ class ArgumentParser(argparse.ArgumentParser):
         if self._add_quiet:
             self.add_argument('--quiet', '-q', action='store_true')
 
-    def no_args_is_help(self):
+    def noargs_is_help(self):
         if len(sys.argv) <= 1:
             self.print_help()
             sys.exit(0)
 
-    @naih
+    @no_args_is_help
     def parse_args(self, args = None, namespace = None) -> Namespace: pass
 
-    @naih
+    @no_args_is_help
     def parse_known_args(self, args = None, namespace = None) -> tuple[Namespace, list[str]]: pass
 
-    @naih
+    @no_args_is_help
     def parse_intermixed_args(self, args = None, namespace = None) -> Namespace: pass
 
-    @naih
+    @no_args_is_help
     def parse_known_intermixed_args(self, args = None, namespace = None) -> tuple[Namespace, list[str]]: pass
 
     @property

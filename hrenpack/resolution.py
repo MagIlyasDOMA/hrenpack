@@ -1,5 +1,4 @@
-import platform, ctypes
-from ctypes import wintypes
+import platform
 from typing import Union
 from screeninfo import get_monitors
 

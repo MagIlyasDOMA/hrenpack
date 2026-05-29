@@ -1,7 +1,6 @@
-import os, ctypes, shutil, getpass, platform, random, string, subprocess, warnings
+import os, ctypes, shutil, getpass, platform, random, string, subprocess
 from datetime import datetime
 from pathlike_typing import PathLike
-from hrenpack.listwork import split_list
 from typing import Union, List
 from dataclasses import dataclass
 from pathlib import Path
@@ -40,7 +39,7 @@ def get_path_without_filename(path: str, raise_error: bool = True):
         path_list.pop()
     else:
         v85 = False
-    output = split_list(path_list, '/') if v85 else ''
+    output = os.path.join(*path_list) if v85 else ''
     if not os.path.isfile(path) and raise_error:
         raise FileNotFoundError('No such file: ' + path)
     else:
@@ -73,7 +72,7 @@ def get_filename_without_extension(path: str, raise_error: bool = True) -> str:
     filename = get_filename(path, raise_error)
     fl = filename.split('.')
     fl.pop()
-    return split_list(fl, '.')
+    return '.'.join(fl)
 
 
 def get_path_without_extension(path: str, raise_error: bool = True) -> str:

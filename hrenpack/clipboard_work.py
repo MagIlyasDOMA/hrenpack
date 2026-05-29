@@ -6,13 +6,16 @@ class ClipBoardError(Exception):
 
 
 def get_clipboard_image():
-    from PIL import ImageGrab
+    try:
+        from PIL import ImageGrab
 
-    im = ImageGrab.grabclipboard()
-    if im is not None:
-        return im
-    else:
-        raise ClipBoardError("Буфер обмена пуст или не является изображением")
+        im = ImageGrab.grabclipboard()
+        if im is not None:
+            return im
+        else:
+            raise ClipBoardError("Буфер обмена пуст или не является изображением")
+    except (ImportError, ModuleNotFoundError):
+        raise ModuleNotFoundError("PIL is required")
 
 
 def copy_text(text: str) -> None:
@@ -24,9 +27,12 @@ def insert_text() -> str:
 
 
 def clipboard_is_image() -> bool:
-    from PIL import ImageGrab
-    im = ImageGrab.grabclipboard()
-    return im is not None
+    try:
+        from PIL import ImageGrab
+        im = ImageGrab.grabclipboard()
+        return im is not None
+    except (ImportError, ModuleNotFoundError):
+        raise ModuleNotFoundError("PIL is required")
 
 
 def clipboard_image_error() -> None:

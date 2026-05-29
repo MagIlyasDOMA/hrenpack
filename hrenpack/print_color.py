@@ -1,7 +1,4 @@
-from hrenpack.classes import DataClass
-
-
-class ColorsANSI(DataClass):
+class ColorsANSI:
     BLACK = '\033[30m'
     RED = '\033[31m'
     GREEN = '\033[32m'

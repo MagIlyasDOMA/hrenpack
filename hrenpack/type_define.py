@@ -1,66 +1,37 @@
-from typing import Optional
+from typing import Optional, Any
 
 
 def is_int(data) -> bool:
-    try:
-        int(data)
-    except ValueError:
-        return False
-    else:
-        return True
+    try: int(data)
+    except ValueError: return False
+    else: return True
 
 
 def is_float(data) -> bool:
-    try:
-        float(data)
-    except ValueError:
-        return False
-    else:
-        return True
+    try: float(data)
+    except ValueError: return False
+    else: return True
 
 
 def is_bool(data) -> bool:
-    try:
-        bool(data)
-    except ValueError:
-        return False
-    else:
-        return True
+    try: bool(data)
+    except ValueError: return False
+    else: return True
 
 
-class TypeEdit:
-    @staticmethod
-    def string(input) -> str:
-        return str(input)
+def convert_to_boolean(input: Any) -> bool:
+    if isinstance(input, bool): return input
+    elif isinstance(input, str):
+        if input.lower() in ('true', 'yes', 'on', '1', 't', 'y'): return True
+        elif input.lower() in ('false', 'no', 'off', '0', 'f', 'n'): return False
+        else: raise ValueError('Invalid boolean value')
+    else: return bool(input)
 
-    @staticmethod
-    def integer(input) -> int:
-        return int(input)
 
-    @staticmethod
-    def float(input) -> float:
-        return float(input)
-
-    @staticmethod
-    def boolean(input):
-        if input is True or input.lower() == 'true':
-            return True
-        elif input is False or input.lower() == 'False':
-            return False
-        else:
-            raise ValueError
-
-    def isString(self, input, isString):
-        return self.string(input) if isString else input
-
-    def isInt(self, input, isInt):
-        return self.integer(input) if isInt else input
-
-    def isFloat(self, input, isFloat):
-        return self.float(input) if isFloat else input
-
-    def isBool(self, input, isBool):
-        return self.boolean(input) if isBool else input
+def is_boolean(input: Any) -> bool:
+    try: convert_to_boolean(input)
+    except: return False
+    else: return True
 
 
 def isinstance_multi(obj, *types) -> bool:
