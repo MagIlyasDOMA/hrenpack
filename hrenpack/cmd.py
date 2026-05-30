@@ -463,32 +463,6 @@ def admin_required(func):
     return wrapper
 
 
-def package_is_debug(file: Path, tree_level: int = 1):
-    """
-    Check if package is in debug mode (not installed in site-packages).
-
-    Проверяет, находится ли пакет в режиме отладки (не установлен в site-packages).
-
-    Args:
-        file (Path): Python file path / Путь к Python файлу
-        tree_level (int): Number of parent levels to go up, default 1 / Количество уровней вверх
-
-    Returns:
-        bool: True if debug mode / True если режим отладки
-
-    Raises:
-        FileNotFoundError: If file doesn't exist or not a .py file / Если файл не существует или не .py
-        NotADirectoryError: If parent is not a directory / Если родительская директория не существует
-    """
-    if not file.is_file() or not file.exists() or get_extension(str(file)) != 'py':
-        raise FileNotFoundError("File must be a valid .py file")
-    for level in range(tree_level + 1):
-        file = file.parent
-    if not file.is_dir():
-        raise NotADirectoryError("Parent directory does not exist")
-    return file.name != 'site-packages'
-
-
 def get_max_path_length():
     """
     Get maximum path length limit for the operating system.
