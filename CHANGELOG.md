@@ -346,6 +346,51 @@ Use version 2.1.2 or higher for production environments.
 Формат основан на [Keep a Changelog](https://keepachangelog.com/),
 и проект придерживается [Семантического Версионирования](https://semver.org/).
 
+## [Unreached / 3.0.0] - 2026-05-30
+
+### ⚠️ Критические изменения
+- **Удалены модули и классы**:
+  - Удален модуль `hrenpack/boolwork.py` и все его функции (`booltest`, `str_to_bool`, `bool_list_count`, `for_in`, `equals_all`).
+  - Удален модуль `hrenpack/no_default.py`. Вместо `no_default` теперь используется `undefined` из пакета `undefined-python`.
+  - Удален класс `PackageIsDebug` и функция `package_is_debug` в `hrenpack/cmd.py`
+  - Удален класс `AndroidPath` и функция `android_path` в `hrenpack/cmd.py`.
+  - Удален класс `FileNameInfo` dataclass в `hrenpack/cmd.py`.
+  - Удалены классы `AbstractClass` и функция `protectedmethod`/`privatemethod` в `hrenpack/encapsulation.py`.
+  - Удален модуль `hrenpack/framework/kivy` .
+  - Удален модуль `hrenpack/framework/tkinter.py`.
+  - Удален модуль `hrenpack/custom_methods` (целиком).
+  - Удален модуль `hrenapck/filework/source_code.py`
+- **Изменения в API**:
+  - `hrenpack/__init__.py`: Удалены импорты `range_plus`, `Class`, `split_list`. Функция `bincode_generator` переименовала параметр `isInt` в `is_int`.
+  - `hrenpack.cmd.create_file_exist`: Удалены параметры `return_filename_and_path` и `FileNameInfo`. Функция теперь возвращает только `str` (новый путь).
+  - `hrenpack.encapsulation`: Функция `getattrs` потеряла параметр `is_tuple`.
+  - `hrenpack.filework.TextFile`: Удален декоратор `comment_decorator` и метод `delete`.
+  - `hrenpack.filework.SRTSubtitleFile`: Удалена функция `extension_check`.
+  - `hrenpack.listwork`: Удалены функции `_is_tuple`, `listsearch`, `antienter`, `antienter_plus`, `keys_dict_equals`, `str_to_list_one`, `in_number_series`, `in_numbers`, `dict_to_list`, `multi_pop`, `if_dict_key`, `split_list_enter/space/tab`, `ab_reverse`, `multi_reverse`, `dict_keys_values`, `remove_all`, `list_to_list` и другие. Многие функции теперь возвращают только `list` (без опции `is_tuple`).
+  - `hrenpack.listwork.get_from_dict`: Удален параметр `is_tuple`.
+  - `hrenpack.strwork`: Удалены функции `tuple_to_str`, `zap_list`, `if_empty_str`, `search_and_edit`, `enter_fix`, `unspace_multi`.
+  - `hrenpack.strwork.words_to_letters`: Удален параметр `is_tuple`.
+  - `hrenpack.type_define`: Удален класс `TypeEdit`.
+
+### ✨ Добавлено
+- **Документация и комментарии**:
+  - Добавлена обширная документация (docstring) на русском и английском практически для всех функций и классов во всех модулях (algebra, argparse_plus, charset, classes, cmd, date_and_time_work, decorators, descriptors, emailwork, encapsulation, filework, flask, mixins, network, numwork, print_color, python, resolution, security, strwork, typings и др.).
+
+### 🔧 Изменено
+- **Общее улучшение кода**: Массовый рефакторинг с целью унификации стиля и удаления устаревших конструкций.
+- **Модуль `hrenpack.cmd`**: Улучшена обработка путей на Windows.
+
+### 🐛 Исправлено
+- **`hrenpack.cmd.get_filename`**: Исправлена обработка путей с обратными слешами.
+- **`hrenpack.cmd.get_path_without_filename`**: Исправлена логика сборки пути.
+- **`hrenpack.listwork.merging_dictionaries`**: Исправлена логика слияния (теперь корректно объединяет *dicts).
+- **`hrenpack.listwork.dict_enumerate`**: Переписан как генератор вместо создания списка в памяти.
+
+### 🗑️ Удалено
+- Удалены закомментированные блоки кода в `hrenpack/__init__.py`, `classes.py`, `cmd.py`.
+- Удалена папка `hrenpack/resources/`.
+- Удалены неиспользуемые импорты во многих модулях.
+
 ## [3.0.0-beta.5] - 2026-04-12
 ### 🐛 Исправлено
 - Исправлен баг в `CachedProperty.is_cached` (`hrenpack/descriptors.py`), вызывавший `KeyError`.  
