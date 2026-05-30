@@ -4,23 +4,16 @@ from typing import Union, Literal, Optional, Iterable, Sequence, MutableMapping,
 tdl = Union[tuple, dict, list]
 
 
-def antizero(wnull):
+def antizero(wnull, /):
     if wnull < 10: output = '0' + str(wnull)
     else: output = str(wnull)
     return output
 
 
-def intlist(input: list) -> list:
-    for i in range(len(input)):
-        input[i] = int(input[i])
-    return input
+def intlist(input: list) -> list: return list(map(int, input))
 
 
-def floatlist(input: list) -> list:
-    input = list(input)
-    for i in range(len(input)):
-        input[i] = float(input[i])
-    return input
+def floatlist(input: list) -> list: return list(map(float, input))
 
 
 def list_add(input: list, index: int, data) -> list:
@@ -38,7 +31,6 @@ def list_add(input: list, index: int, data) -> list:
 
 
 def merging_dictionaries(*dicts: dict, **kwargs) -> dict:
-    for d in dicts: kwargs.update(d)
     return {**(dct for dct in dicts), **kwargs}
 
 
