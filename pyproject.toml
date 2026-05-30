@@ -80,11 +80,9 @@ django = [
 pygame = [
     "pygame>=2.6.1",
 ]
-kivy = [
-    "kivy>=2.3.1",
-]
 email = [
     "imapclient",
+    "mail-parser==4.1.4"
 ]
 dev = [
     "setuptools>=61.0.0",
@@ -105,7 +103,6 @@ all = [
     "pyqtcli>=0.1.1",
     "Django>=5.2.9",
     "pygame>=2.6.1",
-    "kivy>=2.3.1",
     "imapclient",
 ]
 full = [
@@ -121,7 +118,6 @@ full = [
     "pyqtcli>=0.1.1",
     "Django>=5.2.9",
     "pygame>=2.6.1",
-    "kivy>=2.3.1",
     "imapclient",
 ]
 dev_all = [
@@ -141,7 +137,6 @@ dev_all = [
     "pyqtcli>=0.1.1",
     "Django>=5.2.9",
     "pygame>=2.6.1",
-    "kivy>=2.3.1",
     "imapclient",
 ]
 dev_full = [
@@ -161,7 +156,6 @@ dev_full = [
     "pyqtcli>=0.1.1",
     "Django>=5.2.9",
     "pygame>=2.6.1",
-    "kivy>=2.3.1",
     "imapclient",
 ]
 
