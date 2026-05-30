@@ -1,3 +1,15 @@
+"""
+File system and system command utilities.
+
+Provides functions for file operations, path manipulation, system information,
+and admin privilege handling.
+
+Утилиты файловой системы и системных команд.
+
+Предоставляет функции для операций с файлами, манипуляции путями,
+информации о системе и обработки прав администратора.
+"""
+
 import os, ctypes, shutil, getpass, platform, random, string, subprocess
 from datetime import datetime
 from pathlike_typing import PathLike
@@ -9,6 +21,21 @@ PathType = Union[str, Path]
 
 
 def get_filename(path: PathLike, raise_error: bool = True) -> str:
+    """
+    Extract filename from a path.
+
+    Извлекает имя файла из пути.
+
+    Args:
+        path (PathLike): Path to file / Путь к файлу
+        raise_error (bool): Raise exception if file doesn't exist, default True / Выбросить исключение, если файл не существует
+
+    Returns:
+        str: Filename / Имя файла
+
+    Raises:
+        FileNotFoundError: If file doesn't exist and raise_error is True / Если файл не существует и raise_error=True
+    """
     path = str(path)
     if '/' in path:
         output = path.split('/')[-1]
@@ -24,11 +51,35 @@ def get_filename(path: PathLike, raise_error: bool = True) -> str:
 
 
 def get_extension(path: PathLike, raise_error: bool = True) -> str:
+    """
+    Get file extension from path.
+
+    Получает расширение файла из пути.
+
+    Args:
+        path (PathLike): Path to file / Путь к файлу
+        raise_error (bool): Raise exception if file doesn't exist, default True / Выбросить исключение, если файл не существует
+
+    Returns:
+        str: File extension (without dot) / Расширение файла (без точки)
+    """
     filename = get_filename(path, raise_error)
     return filename.split('.')[-1] if '.' in filename else ''
 
 
 def get_path_without_filename(path: str, raise_error: bool = True):
+    """
+    Get directory path without filename.
+
+    Получает путь к директории без имени файла.
+
+    Args:
+        path (str): Full file path / Полный путь к файлу
+        raise_error (bool): Raise exception if file doesn't exist, default True / Выбросить исключение, если файл не существует
+
+    Returns:
+        str: Directory path / Путь к директории
+    """
     v85 = True
     path = str(path)
     if '/' in path:
@@ -47,12 +98,33 @@ def get_path_without_filename(path: str, raise_error: bool = True):
 
 
 def get_path_and_filename(path: str, raise_error: bool = True):
+    """
+    Get both directory path and filename.
+
+    Получает путь к директории и имя файла.
+
+    Args:
+        path (str): Full file path / Полный путь к файлу
+        raise_error (bool): Raise exception if file doesn't exist, default True / Выбросить исключение, если файл не существует
+
+    Returns:
+        tuple: (directory_path, filename) / (путь_к_директории, имя_файла)
+    """
     if raise_error and not os.path.isfile(path):
         raise FileNotFoundError('No such file: ' + path)
     return get_path_without_filename(path), get_filename(path)
 
 
 def rename(path: str, new_filename: str):
+    """
+    Rename a file.
+
+    Переименовывает файл.
+
+    Args:
+        path (str): Current file path / Текущий путь к файлу
+        new_filename (str): New filename / Новое имя файла
+    """
     pwfn, filename = get_path_and_filename(path)
     if pwfn:
         new_path = f'{pwfn}/{new_filename}'
@@ -62,13 +134,36 @@ def rename(path: str, new_filename: str):
 
 
 def create_file(path: str):
+    """
+    Create a new empty file.
+
+    Создает новый пустой файл.
+
+    Args:
+        path (str): Path for new file / Путь для нового файла
+
+    Raises:
+        FileExistsError: If file already exists / Если файл уже существует
+    """
     try:
         open(path, 'x').close()
     except FileExistsError:
-        raise FileExistsError(f'[WinError 183] Невозможно создать новый файл, так как он уже существует: {path}')
+        raise FileExistsError(f'Cannot create file because it already exists: {path}')
 
 
 def get_filename_without_extension(path: str, raise_error: bool = True) -> str:
+    """
+    Get filename without extension.
+
+    Получает имя файла без расширения.
+
+    Args:
+        path (str): File path / Путь к файлу
+        raise_error (bool): Raise exception if file doesn't exist, default True / Выбросить исключение, если файл не существует
+
+    Returns:
+        str: Filename without extension / Имя файла без расширения
+    """
     filename = get_filename(path, raise_error)
     fl = filename.split('.')
     fl.pop()
@@ -76,6 +171,18 @@ def get_filename_without_extension(path: str, raise_error: bool = True) -> str:
 
 
 def get_path_without_extension(path: str, raise_error: bool = True) -> str:
+    """
+    Get file path without extension.
+
+    Получает путь к файлу без расширения.
+
+    Args:
+        path (str): File path / Путь к файлу
+        raise_error (bool): Raise exception if file doesn't exist, default True / Выбросить исключение, если файл не существует
+
+    Returns:
+        str: Path without extension / Путь без расширения
+    """
     filename = get_filename_without_extension(path, raise_error)
     pwfl = get_path_without_filename(path, raise_error)
     return f'{pwfl}/{filename}'
@@ -83,6 +190,18 @@ def get_path_without_extension(path: str, raise_error: bool = True) -> str:
 
 @dataclass
 class FileNameInfo:
+    """
+    Container for file name information.
+
+    Контейнер для информации об имени файла.
+
+    Attributes:
+        path (str): Original path / Исходный путь
+        filename (str): Filename with extension / Имя файла с расширением
+        extension (str): File extension / Расширение файла
+        path_without_extension (str): Path without extension / Путь без расширения
+        path_without_filename (str): Directory path / Путь к директории
+    """
     path: str
     filename: str = ''
     extension: str = ''
@@ -97,10 +216,31 @@ class FileNameInfo:
 
 
 def delete_file(path: str):
+    """
+    Delete a file.
+
+    Удаляет файл.
+
+    Args:
+        path (str): Path to file to delete / Путь к файлу для удаления
+    """
     os.remove(path)
 
 
 def create_file_exist(path: str, space: bool = True, return_filename_and_path: bool = False):
+    """
+    Create a file with automatic renaming if exists.
+
+    Создает файл с автоматическим переименованием, если существует.
+
+    Args:
+        path (str): Desired file path / Желаемый путь к файлу
+        space (bool): Add space before number, default True / Добавить пробел перед числом
+        return_filename_and_path (bool): Return FileNameInfo object, default False / Вернуть объект FileNameInfo
+
+    Returns:
+        Optional[FileNameInfo]: File info if return_filename_and_path is True / Информация о файле
+    """
     if not os.path.isfile(path):
         new_path = path
     else:
@@ -124,6 +264,19 @@ def create_file_exist(path: str, space: bool = True, return_filename_and_path: b
 
 def edit_time(year: int = -1, month: int = -1, day: int = -1, hour: int = -1, minute: int = -1,
               second: int = -1) -> None:
+    """
+    Edit system date and time (Windows only).
+
+    Изменяет системную дату и время (только Windows).
+
+    Args:
+        year (int): Year, uses current if -1 / Год
+        month (int): Month, uses current if -1 / Месяц
+        day (int): Day, uses current if -1 / День
+        hour (int): Hour, uses current if -1 / Час
+        minute (int): Minute, uses current if -1 / Минута
+        second (int): Second, uses current if -1 / Секунда
+    """
     now = datetime.now()
     if year < 0:
         year = now.year
@@ -143,61 +296,149 @@ def edit_time(year: int = -1, month: int = -1, day: int = -1, hour: int = -1, mi
 
 
 def is_admin() -> bool:
+    """
+    Check if program is running with administrator privileges (Windows).
+
+    Проверяет, запущена ли программа с правами администратора (Windows).
+
+    Returns:
+        bool: True if admin, False otherwise / True если администратор
+    """
     return bool(ctypes.windll.shell32.IsUserAnAdmin())
 
 
 def admin_error() -> None:
+    """
+    Raise error if not running as administrator.
+
+    Вызывает ошибку, если программа не запущена с правами администратора.
+
+    Raises:
+        OSError: If not admin / Если не администратор
+    """
     if not is_admin():
-        raise OSError("Перезапустите программу с правами администратора")
+        raise OSError("Please restart the program with administrator privileges")
 
 
 def admin_pause() -> None:
+    """
+    Print admin message and wait for input if not admin.
+
+    Выводит сообщение об администраторе и ожидает ввод.
+    """
     if not is_admin():
-        print("Перезапустите программу с правами администратора")
+        print("Please restart the program with administrator privileges")
         input()
 
 
 def admin_pause_exit() -> None:
+    """Print admin message, wait for input, and exit."""
     admin_pause()
     exit(1)
 
 
 def remove_files_and_folders(*paths):
+    """
+    Remove multiple files and folders.
+
+    Удаляет несколько файлов и папок.
+
+    Args:
+        *paths: Paths to remove / Пути для удаления
+
+    Raises:
+        OSError: If deletion fails / Если удаление не удалось
+    """
     for path in paths:
         if os.path.isfile(path):
             try:
                 os.remove(path)
             except Exception as e:
-                raise OSError(f"Не удалось удалить файл {path}: {e}")
+                raise OSError(f"Failed to delete file {path}: {e}")
         elif os.path.isdir(path):
             try:
                 shutil.rmtree(path)
             except Exception as e:
-                raise OSError(f"Не удалось удалить папку {path}: {e}")
+                raise OSError(f"Failed to delete folder {path}: {e}")
 
 
 def get_username() -> str:
+    """
+    Get current system username.
+
+    Получает имя текущего пользователя системы.
+
+    Returns:
+        str: Username / Имя пользователя
+    """
     return getpass.getuser()
 
 
 def android_path(path: str, domain: str, name: str) -> str:
+    """
+    Convert path to Android app data path (Windows compatible).
+
+    Преобразует путь в путь к данным Android приложения (совместимо с Windows).
+
+    Args:
+        path (str): Relative path / Относительный путь
+        domain (str): App domain / Домен приложения
+        name (str): App name / Имя приложения
+
+    Returns:
+        str: Android path on Android, original path on Windows / Путь Android на Android
+    """
     if platform.system() == 'Windows':
         return path
     return f'data/data/{domain}.{name}/files/app/{path}'
 
 
 class AndroidPath:
+    """
+    Class for generating Android app data paths.
+
+    Класс для генерации путей к данным Android приложения.
+
+    Args:
+        domain (str): App domain / Домен приложения
+        name (str): App name / Имя приложения
+    """
+
     def __init__(self, domain: str, name: str):
         self.domain = domain
         self.name = name
 
     def __call__(self, path: str) -> str:
+        """
+        Generate Android path for given relative path.
+
+        Генерирует Android путь для заданного относительного пути.
+
+        Args:
+            path (str): Relative path / Относительный путь
+
+        Returns:
+            str: Full Android path / Полный Android путь
+        """
         if platform.system() == 'Windows':
             return path
         return f'data/data/{self.domain}.{self.name}/files/app/{path}'
 
 
 def get_files_startswith(directory: str, start: str, full_path: bool = True) -> List[str]:
+    """
+    Get files in directory that start with a prefix.
+
+    Получает файлы в директории, начинающиеся с префикса.
+
+    Args:
+        directory (str): Directory path / Путь к директории
+        start (str): Prefix to match / Префикс для поиска
+        full_path (bool): Return full paths, default True / Возвращать полные пути
+
+    Returns:
+        List[str]: List of matching files / Список подходящих файлов
+    """
     files = os.listdir(directory)
     filtered_files = [f for f in files if f.startswith(start)]
     if full_path:
@@ -210,6 +451,17 @@ def get_files_startswith(directory: str, start: str, full_path: bool = True) -> 
 
 
 def all_files_and_dirs(directory):
+    """
+    Get all files and directories recursively.
+
+    Получает все файлы и директории рекурсивно.
+
+    Args:
+        directory: Root directory / Корневая директория
+
+    Returns:
+        list: All paths / Все пути
+    """
     output = []
     for root, dirs, files in os.walk(directory):
         output.extend([os.path.join(root, name) for name in files])
@@ -218,6 +470,18 @@ def all_files_and_dirs(directory):
 
 
 def all_files(directory, full_path: bool = True) -> List[str]:
+    """
+    Get all files recursively.
+
+    Получает все файлы рекурсивно.
+
+    Args:
+        directory: Root directory / Корневая директория
+        full_path (bool): Return full paths, default True / Возвращать полные пути
+
+    Returns:
+        List[str]: List of file paths / Список путей к файлам
+    """
     path = Path(directory)
     if not full_path:
         return [get_filename(str(file)) for file in path.rglob('*') if file.is_file()]
@@ -225,6 +489,18 @@ def all_files(directory, full_path: bool = True) -> List[str]:
 
 
 def generate_random_filename(length: int = 10, extension: str = '') -> str:
+    """
+    Generate random filename.
+
+    Генерирует случайное имя файла.
+
+    Args:
+        length (int): Length of random part, default 10 / Длина случайной части
+        extension (str): File extension without dot, default empty / Расширение файла без точки
+
+    Returns:
+        str: Random filename / Случайное имя файла
+    """
     letters_and_digits = string.ascii_letters + string.digits
     random_name = ''.join(random.choice(letters_and_digits) for _ in range(length))
     if extension:
@@ -233,10 +509,21 @@ def generate_random_filename(length: int = 10, extension: str = '') -> str:
 
 
 def compare_versions(version1, version2):
+    """
+    Compare two version strings.
+
+    Сравнивает две строки версий.
+
+    Args:
+        version1: First version string / Первая версия
+        version2: Second version string / Вторая версия
+
+    Returns:
+        int: 1 if v1 > v2, -1 if v1 < v2, 0 if equal / 1 если v1 > v2, -1 если v1 < v2, 0 если равны
+    """
     version1_parts = list(map(int, version1.split('.')))
     version2_parts = list(map(int, version2.split('.')))
 
-    # Сравниваем по частям
     for v1, v2 in zip(version1_parts, version2_parts):
         if v1 > v2:
             return 1
@@ -246,58 +533,139 @@ def compare_versions(version1, version2):
 
 
 def uninstall_program(program_name):
+    """
+    Uninstall a program using WMIC (Windows only).
+
+    Удаляет программу через WMIC (только Windows).
+
+    Args:
+        program_name (str): Name of program to uninstall / Имя программы для удаления
+    """
     try:
         subprocess.run(['wmic', 'product', 'where', f'name="{program_name}"', 'call', 'uninstall'], check=True)
-        print(f'Программа "{program_name}" успешно деинсталлирована.')
+        print(f'Program "{program_name}" successfully uninstalled.')
     except subprocess.CalledProcessError as e:
-        print(f'Ошибка при деинсталляции программы: {e}')
+        print(f'Error during uninstallation: {e}')
 
 
 def admin_required(func):
+    """
+    Decorator that requires administrator privileges.
+
+    Декоратор, требующий права администратора.
+
+    Args:
+        func: Function to decorate / Функция для декорирования
+
+    Returns:
+        callable: Wrapped function / Обернутая функция
+
+    Raises:
+        OSError: If not admin / Если не администратор
+    """
+
     def wrapper(*args, **kwargs):
         if is_admin():
             return func(*args, **kwargs)
-        raise OSError("Отказано в доступе")
+        raise OSError("Access denied")
+
     return wrapper
 
 
 def package_is_debug(file: Path, tree_level: int = 1):
+    """
+    Check if package is in debug mode (not installed in site-packages).
+
+    Проверяет, находится ли пакет в режиме отладки (не установлен в site-packages).
+
+    Args:
+        file (Path): Python file path / Путь к Python файлу
+        tree_level (int): Number of parent levels to go up, default 1 / Количество уровней вверх
+
+    Returns:
+        bool: True if debug mode / True если режим отладки
+
+    Raises:
+        FileNotFoundError: If file doesn't exist or not a .py file / Если файл не существует или не .py
+        NotADirectoryError: If parent is not a directory / Если родительская директория не существует
+    """
     if not file.is_file() or not file.exists() or get_extension(str(file)) != 'py':
-        raise FileNotFoundError
+        raise FileNotFoundError("File must be a valid .py file")
     for level in range(tree_level + 1):
         file = file.parent
     if not file.is_dir():
-        raise NotADirectoryError
+        raise NotADirectoryError("Parent directory does not exist")
     return file.name != 'site-packages'
 
 
 class PackageIsDebug:
+    """
+    Helper class for checking package debug mode.
+
+    Вспомогательный класс для проверки режима отладки пакета.
+
+    Args:
+        file (Union[Path, str]): Python file path / Путь к Python файлу
+        tree_level (int): Number of parent levels to go up, default 1 / Количество уровней вверх
+
+    Raises:
+        FileNotFoundError: If file doesn't exist or not a .py file / Если файл не существует или не .py
+    """
+
     def __init__(self, file: Union[Path, str], tree_level: int = 1):
         file = file if isinstance(file, Path) else Path(file)
         if not file.is_file() or not file.exists() or get_extension(str(file)) != 'py':
-            raise FileNotFoundError
+            raise FileNotFoundError("File must be a valid .py file")
         self.file = file
         self.tree_level = tree_level
 
     def get_directory(self):
+        """
+        Get the package directory.
+
+        Получает директорию пакета.
+
+        Returns:
+            Path: Package directory / Директория пакета
+
+        Raises:
+            NotADirectoryError: If parent is not a directory / Если родительская директория не существует
+        """
         file = self.file
         for level in range(self.tree_level + 1):
             file = file.parent
         if not file.is_dir():
-            raise NotADirectoryError
+            raise NotADirectoryError("Parent directory does not exist")
         return file
 
     def is_debug(self):
+        """
+        Check if in debug mode.
+
+        Проверяет режим отладки.
+
+        Returns:
+            bool: True if debug mode / True если режим отладки
+        """
         return self.get_directory().name != 'site-packages'
 
     def chdir(self):
+        """Change working directory to package directory."""
         os.chdir(self.get_directory())
 
 
 def get_max_path_length():
+    """
+    Get maximum path length limit for the operating system.
+
+    Получает максимальную длину пути для операционной системы.
+
+    Returns:
+        int: Maximum path length in characters / Максимальная длина пути в символах
+    """
     system = platform.system()
 
-    # Базовые лимиты для разных ОС
+    # Base limits for different OS
     limits = {
         "Windows": 260,
         "Darwin": 1024,  # macOS
@@ -325,10 +693,22 @@ def get_max_path_length():
 
 
 def is_path_valid(path: PathLike) -> bool:
+    """
+    Validate if a path is valid for the current OS.
+
+    Проверяет, является ли путь допустимым для текущей ОС.
+
+    Args:
+        path (PathLike): Path to validate / Путь для проверки
+
+    Returns:
+        bool: True if valid, False otherwise / True если допустим
+    """
     try:
         path = Path(path)
 
-        if len(str(path)) > get_max_path_length(): return False
+        if len(str(path)) > get_max_path_length():
+            return False
 
         reserved_names = {'CON', 'PRN', 'AUX', 'NUL',
                           'COM1', 'COM2', 'COM3', 'COM4', 'COM5',
@@ -346,11 +726,11 @@ def is_path_valid(path: PathLike) -> bool:
             if char in str(path):
                 return False
 
-        # Проверка на пробелы и точки в конце имени
+        # Check for trailing spaces or dots
         for part in path.parts:
             if part and (part[-1] in (' ', '.')):
                 return False
 
         return True
-    except Exception as e:
+    except Exception:
         return False

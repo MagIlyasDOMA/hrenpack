@@ -1,3 +1,13 @@
+"""
+Django class-based views extensions.
+
+Provides extended view classes with title, h1_title, and template support.
+
+Расширения классовых представлений Django.
+
+Предоставляет расширенные классы представлений с поддержкой title, h1_title и шаблонов.
+"""
+
 from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.staticfiles.storage import staticfiles_storage
@@ -15,14 +25,35 @@ from hrenpack.framework.django.mixins import (NonAbstractMixin, ModelManagerMixi
 
 
 class BaseView(DjangoView, NonAbstractMixin):
+    """
+    Base view with title, h1_title, and template support.
+
+    Базовое представление с поддержкой title, h1_title и шаблона.
+
+    Attributes:
+        title (NullStr): Page title / Заголовок страницы
+        h1_title (NullStr): H1 heading / Заголовок H1
+        dont_header (bool): Disable header rendering / Отключить рендеринг заголовка
+    """
     title: NullStr = None
     h1_title: NullStr = None
     dont_header: bool = False
     _base_template_name: str = getattr(settings, 'BASE_TEMPLATE', 'empty.html')
 
     def get_context_data(self, **kwargs):
+        """
+        Get context data with title and h1_title.
+
+        Получает данные контекста с title и h1_title.
+
+        Args:
+            **kwargs: Additional context / Дополнительный контекст
+
+        Returns:
+            dict: Context dictionary / Словарь контекста
+        """
         kwargs = super().get_context_data(**kwargs)
-        kwargs['title'] = self.title if self.title else "Страница"
+        kwargs['title'] = self.title if self.title else "Page"
         kwargs['h1_title'] = self.h1_title
         kwargs['dont_header'] = self.dont_header
         kwargs['base_template_name'] = self.base_template_name
@@ -30,191 +61,212 @@ class BaseView(DjangoView, NonAbstractMixin):
 
     @property
     def base_template_name(self):
+        """
+        Get base template name.
+
+        Получает имя базового шаблона.
+
+        Returns:
+            str: Base template name / Имя базового шаблона
+        """
         return getattr(self, '_base_template_name',
                        getattr(settings, 'BASE_TEMPLATE', 'empty.html'))
 
     @base_template_name.setter
     def base_template_name(self, value):
+        """Set base template name."""
         self._base_template_name = value or getattr(settings, 'BASE_TEMPLATE', 'empty.html')
 
     @classonlymethod
     def as_view(cls, **initkwargs):
-        initkwargs.setdefault('title', "Страница")
+        """
+        Create view with optional title, h1_title, template_name.
+
+        Создает представление с опциональными title, h1_title, template_name.
+        """
+        initkwargs.setdefault('title', "Page")
         set_attrs_if_is_none(cls, **get_from_dict(initkwargs, 'title', 'h1_title', 'template_name',
                                                   'extra_context', pop_mode=True))
         return super().as_view(**initkwargs)
 
 
 class View(BaseView, TemplateViewMixin):
+    """Basic view with template support."""
     pass
 
 
 class TemplateView(BaseView, generic.TemplateView):
+    """Template view with BaseView features."""
     pass
 
 
 class ListView(BaseView):
+    """
+    List view for displaying model objects.
+
+    Представление списка для отображения объектов модели.
+
+    Attributes:
+        model (Model): Django model / Модель Django
+        context_name (str): Context variable name, default 'db' / Имя переменной контекста
+    """
     model: Model
     context_name: str = 'db'
 
     def get_context_data(self, **kwargs):
+        """Add queryset to context."""
         kwargs = super().get_context_data(**kwargs)
         kwargs[self.context_name] = self.get_queryset()
         return kwargs
 
     def get_queryset(self):
+        """Get all objects from model."""
         return self.model.objects.all()
-
-    # def get_model_dk(self, field: str):
-    #     """Возвращает элементы из определенного поля модели"""
-    #     if field in self.model._meta.fields:
-    #         output = list()
-    #         for el in self.get_queryset():
-    #             output.append(el.__dict__[field])
-    #         return output
-    #     else:
-    #         raise AttributeError("Указанного поля модели не существует")
-    #
-    # def get_object_or_404(self, field: str, value) -> Model:
-    #     """Возвращает объект модели. Если нет, то возвращает исключение 404"""
-    #     elements = self.get_queryset()
-    #     values = self.get_model_dk(field)
-    #     if not value in values:
-    #         raise Http404
-    #     return elements.get(**{field: value})
 
 
 class DetailView(ModelManagerMixin, BaseView, generic.DetailView):
+    """Detail view with model manager support."""
     pass
 
 
 class FormView(BaseView, generic.FormView):
+    """Form view with BaseView features."""
     pass
 
 
 class CreateView(BaseView, generic.CreateView):
+    """Create view with BaseView features."""
     pass
 
 
 class UpdateView(ModelManagerMixin, BaseView, generic.UpdateView):
+    """Update view with model manager support."""
     pass
 
 
 class PasswordChangeView(BaseView, auth_views.PasswordChangeView):
+    """Password change view."""
     pass
 
 
 class PasswordChangeDoneView(BaseView, auth_views.PasswordChangeDoneView):
+    """Password change done view."""
     pass
 
 
 class PasswordResetView(BaseView, auth_views.PasswordResetView):
+    """Password reset view."""
     pass
 
 
 class PasswordResetDoneView(BaseView, auth_views.PasswordResetDoneView):
+    """Password reset done view."""
     pass
 
 
 class PasswordResetConfirmView(BaseView, auth_views.PasswordResetConfirmView):
+    """Password reset confirm view."""
     pass
 
 
 class PasswordResetCompleteView(UserAuthorizeMixin, BaseView, auth_views.PasswordResetCompleteView):
+    """Password reset complete view with authorization."""
     pass
 
 
 class LoginView(BaseView, auth_views.LoginView):
-    title = "Авторизация"
+    """Login view."""
+    title = "Login"
 
 
 class LogoutView(BaseView, auth_views.LogoutView):
-    title = "Вы вышли из аккаунта"
+    """Logout view."""
+    title = "You have been logged out"
 
 
-def create_logout_view(template_name: str, title: str = "Вы вышли из аккаунта", h1_title: NullStr = None,
+def create_logout_view(template_name: str, title: str = "You have been logged out", h1_title: NullStr = None,
                        dont_header: bool = False, **kwargs):
+    """
+    Create a logout view function.
+
+    Создает функцию представления для выхода из аккаунта.
+
+    Args:
+        template_name (str): Template name / Имя шаблона
+        title (str): Page title / Заголовок страницы
+        h1_title (NullStr): H1 heading / Заголовок H1
+        dont_header (bool): Disable header / Отключить заголовок
+        **kwargs: Additional context / Дополнительный контекст
+
+    Returns:
+        callable: Logout view function / Функция представления выхода
+    """
+
     def logout_view(request):
         logout(request)
         return render(request, template_name, view_dict(title, h1_title, dont_header=dont_header, **kwargs))
+
     return logout_view
 
 
 def create_logout_view_with_next():
+    """
+    Create a logout view that redirects to 'next' parameter.
+
+    Создает представление выхода, перенаправляющее на параметр 'next'.
+
+    Returns:
+        callable: Logout view with redirect / Представление выхода с перенаправлением
+    """
+
     def logout_view(request):
         if request.user.is_authenticated:
             logout(request)
         return redirect(request.GET.get('next', '/'))
+
     return logout_view
 
 
 class RegistrationView(CreateView):
-    title = "Регистрация"
+    """
+    User registration view.
+
+    Представление регистрации пользователя.
+    """
+    title = "Registration"
     model = get_user_model()
     form_class = UserCreationForm
 
     def form_valid(self, form):
+        """Log in user after successful registration."""
         response = super().form_valid(form)
         login(self.request, self.object)
         return response
 
 
-# class EditProfileView(View, LoginRequiredMixin):
-#     profile_form_class: Any
-#     password_change_form_class: Any = PasswordChangeForm
-#     success_url: Any
-#     title = "Изменить настройки пользователя"
-#
-#     def __new__(cls, *args, **kwargs):
-#         if not issubclass(cls.password_change_form_class, PasswordChangeForm):
-#             raise TypeError
-#         return super().__new__(cls, *args, **kwargs)
-#
-#     def get(self, request, *args, **kwargs):
-#         user_profile_form = self.profile_form_class(instance=request.user)
-#         password_change_form = self.password_change_form_class(user=request.user)
-#         return render(request, self.template_name, view_dict(
-#             self.title, self.h1_title,
-#             user_profile_form=user_profile_form,
-#             password_change_form=password_change_form,
-#             pur=True
-#         ))
-#
-#     def post(self, request, *args, **kwargs):
-#         user_profile_form = self.profile_form_class(request.POST, instance=request.user)
-#         password_change_form = self.password_change_form_class(user=request.user, data=request.POST)
-#         password_form_is_empty = self._password_form_is_empty(password_change_form)
-#
-#         if user_profile_form.is_valid() and any((password_change_form.is_valid(), password_form_is_empty)):
-#             user_profile_form.save()
-#             if password_form_is_empty:
-#                 user = password_change_form.save()
-#                 update_session_auth_hash(request, user)  # Обновляем сессию, чтобы не разлогинивать пользователя
-#             return redirect(self.success_url)  # Замените на нужный вам URL
-#
-#         return render(request, self.template_name, view_dict(
-#             self.title, self.h1_title,
-#             user_profile_form=user_profile_form,
-#             password_change_form=password_change_form,
-#             pur=password_form_is_empty
-#         ))
-#
-#     @staticmethod
-#     def _password_form_is_empty(form):
-#         cd = form.cleaned_data
-#         return not cd['new_password1'] and cd['new_password2']
-#
-#
-# class DirectoryView(View, NonAbstractMixin):
-#     path: str
-#
-#     def get_context_data(self, **kwargs):
-#         pass
-
-
 class StaticFileView(generic.RedirectView):
+    """
+    View for serving static files.
+
+    Представление для обслуживания статических файлов.
+    """
+
     @classonlymethod
     def as_view(cls, **initkwargs):
+        """
+        Create view with required path parameter.
+
+        Создает представление с обязательным параметром path.
+
+        Args:
+            path (str): Path to static file / Путь к статическому файлу
+
+        Returns:
+            StaticFileView: View instance / Экземпляр представления
+
+        Raises:
+            KeyError: If path not provided / Если path не предоставлен
+        """
         path = initkwargs.pop('path')
         if path is None:
             raise KeyError('path')

@@ -1,3 +1,9 @@
+"""
+Various useful constants
+
+Разные полезные константы
+"""
+
 MIME_TYPES = {
     # Текстовые форматы
     "txt": "text/plain",

@@ -169,20 +169,3 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
-
-# Compile scripts
-mit.py
-comment.py
-pypi_requirements.txt
-
-# indev files
-/indev/
-/archive/
-requirements.py
-token
-dev_script.py
-test.py
-
-.github
-/hrenpack/framework/django/_undb_compat.py
-/uv.lock
