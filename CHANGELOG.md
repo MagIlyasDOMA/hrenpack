@@ -7,6 +7,50 @@ All changes in this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.0.0] - 2026-05-30
+### ⚠️ Breaking Changes
+- **Removed modules and classes**:
+  - Removed the `hrenpack/boolwork.py` module and all its functions (`booltest`, `str_to_bool`, `bool_list_count`, `for_in`, `equals_all`).
+  - Removed the `hrenpack/no_default.py` module. `undefined` from the `undefined-python` package is now used instead of `no_default`.
+  - Removed the `PackageIsDebug` class and the `package_is_debug` function from `hrenpack/cmd.py`.
+  - Removed the `AndroidPath` class and the `android_path` function from `hrenpack/cmd.py`.
+  - Removed the `FileNameInfo` dataclass from `hrenpack/cmd.py`.
+  - Removed the `AbstractClass` class and the `protectedmethod`/`privatemethod` functions from `hrenpack/encapsulation.py`.
+  - Removed the `hrenpack/framework/kivy` module.
+  - Removed the `hrenpack/framework/tkinter.py` module.
+  - Removed the entire `hrenpack/custom_methods` module.
+  - Removed the `hrenpack/filework/source_code.py` module.
+- **API Changes**:
+  - `hrenpack/__init__.py`: Removed imports of `range_plus`, `Class`, `split_list`. The `bincode_generator` function renamed its parameter `isInt` to `is_int`.
+  - `hrenpack.cmd.create_file_exist`: Removed the `return_filename_and_path` parameter and `FileNameInfo`. The function now only returns a `str` (the new path).
+  - `hrenpack.encapsulation`: The `getattrs` function lost its `is_tuple` parameter.
+  - `hrenpack.filework.TextFile`: Removed the `comment_decorator` decorator and the `delete` method.
+  - `hrenpack.filework.SRTSubtitleFile`: Removed the `extension_check` function.
+  - `hrenpack.listwork`: Removed functions `_is_tuple`, `listsearch`, `antienter`, `antienter_plus`, `keys_dict_equals`, `str_to_list_one`, `in_number_series`, `in_numbers`, `dict_to_list`, `multi_pop`, `if_dict_key`, `split_list_enter/space/tab`, `ab_reverse`, `multi_reverse`, `dict_keys_values`, `remove_all`, `list_to_list`, and others. Many functions now only return a `list` (without the `is_tuple` option).
+  - `hrenpack.listwork.get_from_dict`: Removed the `is_tuple` parameter.
+  - `hrenpack.strwork`: Removed functions `tuple_to_str`, `zap_list`, `if_empty_str`, `search_and_edit`, `enter_fix`, `unspace_multi`.
+  - `hrenpack.strwork.words_to_letters`: Removed the `is_tuple` parameter.
+  - `hrenpack.type_define`: Removed the `TypeEdit` class.
+
+### ✨ Added
+- **Documentation and Comments**:
+  - Added extensive documentation (docstrings) in both Russian and English for almost all functions and classes across various modules (algebra, argparse_plus, charset, classes, cmd, date_and_time_work, decorators, descriptors, emailwork, encapsulation, filework, flask, mixins, network, numwork, print_color, python, resolution, security, strwork, typings, and others).
+
+### 🔧 Changed
+- **General Code Improvements**: Major refactoring aimed at unifying style and removing deprecated constructs.
+- **`hrenpack.cmd` module**: Improved path handling on Windows.
+
+### 🐛 Fixed
+- **`hrenpack.cmd.get_filename`**: Fixed handling of paths with backslashes.
+- **`hrenpack.cmd.get_path_without_filename`**: Fixed path building logic.
+- **`hrenpack.listwork.merging_dictionaries`**: Fixed merging logic (now correctly merges *dicts).
+- **`hrenpack.listwork.dict_enumerate`**: Rewritten as a generator instead of creating a list in memory.
+
+### 🗑️ Removed
+- Removed commented-out code blocks in `hrenpack/__init__.py`, `classes.py`, `cmd.py`.
+- Removed the `hrenpack/resources/` folder.
+- Removed unused imports in many modules.
+
 ## [3.0.0-beta.5] - 2026-04-12
 ### 🐛 Fixed
 - Fixed a bug in `CachedProperty.is_cached` (`hrenpack/descriptors.py`) that was causing a `KeyError`.
@@ -346,8 +390,7 @@ Use version 2.1.2 or higher for production environments.
 Формат основан на [Keep a Changelog](https://keepachangelog.com/),
 и проект придерживается [Семантического Версионирования](https://semver.org/).
 
-## [Unreached / 3.0.0] - 2026-05-30
-
+## [3.0.0] - 2026-05-30
 ### ⚠️ Критические изменения
 - **Удалены модули и классы**:
   - Удален модуль `hrenpack/boolwork.py` и все его функции (`booltest`, `str_to_bool`, `bool_list_count`, `for_in`, `equals_all`).
