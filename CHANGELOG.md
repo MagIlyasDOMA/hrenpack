@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### 🔧 Changed
 - **General Code Improvements**: Major refactoring aimed at unifying style and removing deprecated constructs.
 - **`hrenpack.cmd` module**: Improved path handling on Windows.
+- The minimum version is now Python 3.10
 
 ### 🐛 Fixed
 - **`hrenpack.cmd.get_filename`**: Fixed handling of paths with backslashes.
@@ -422,6 +423,7 @@ Use version 2.1.2 or higher for production environments.
 ### 🔧 Изменено
 - **Общее улучшение кода**: Массовый рефакторинг с целью унификации стиля и удаления устаревших конструкций.
 - **Модуль `hrenpack.cmd`**: Улучшена обработка путей на Windows.
+- Минимальная версия теперь Python 3.10
 
 ### 🐛 Исправлено
 - **`hrenpack.cmd.get_filename`**: Исправлена обработка путей с обратными слешами.

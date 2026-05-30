@@ -8,7 +8,7 @@ version = "3.0.0"
 description = "Универсальная библиотека python для большинства задач | A universal python library for most tasks"
 readme = "README.md"
 authors = [
-    {name = "Маг Ильяс DOMA (MagIlyasDOMA)", email = "magilyas.doma.09@list.ru"},
+    {name = "MagIlyasDOMA", email = "magilyas.doma.09@list.ru"},
 ]
 license = {text = "MIT"}
 classifiers = [
@@ -19,8 +19,12 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Framework :: Django",
     "Framework :: Django :: 5.2",
     "Framework :: Django :: 6.0",
@@ -34,7 +38,7 @@ classifiers = [
     "Topic :: Text Processing :: Markup",
     "Topic :: Text Processing :: Markup :: HTML",
 ]
-requires-python = ">=3.13"
+requires-python = ">=3.10"
 dependencies = [
     "bs4>=0.0.2",
     "chardet>=5.2.0",
