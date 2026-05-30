@@ -270,7 +270,7 @@ def get_from_dict(input: dict, *keys, only_values: bool = False, default=None, p
     return output
 
 
-def replace_fragment_from_args(old_frag: str, new_frag: str, *args: str, is_tuple: bool = False) -> list:
+def replace_fragment_from_args(old_frag: str, new_frag: str, *args: str) -> list:
     """
     Replace substring in multiple strings.
 
@@ -280,13 +280,11 @@ def replace_fragment_from_args(old_frag: str, new_frag: str, *args: str, is_tupl
         old_frag (str): Substring to replace / Подстрока для замены
         new_frag (str): Replacement substring / Подстрока-замена
         *args: Strings to process / Строки для обработки
-        is_tuple (bool): Return tuple instead of list, default False / Вернуть кортеж вместо списка
 
     Returns:
         Union[list, tuple]: Processed strings / Обработанные строки
     """
-    result = [arg.replace(old_frag, new_frag) for arg in args]
-    return tuple(result) if is_tuple else result
+    return [arg.replace(old_frag, new_frag) for arg in args]
 
 
 class dict_enumerate:

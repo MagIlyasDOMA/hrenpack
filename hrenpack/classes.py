@@ -10,7 +10,7 @@ Provides DictObject, frozendict, Environment, NonStrictDict, and other utility c
 
 import platform, os
 import warnings
-from typing import Any, IO, Optional
+from typing import Any, IO, Optional, Literal
 from dotenv import load_dotenv, dotenv_values
 from pathlike_typing import PathLike
 from .listwork import merging_dictionaries

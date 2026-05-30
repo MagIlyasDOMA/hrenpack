@@ -17,8 +17,6 @@ from typing import Union, List
 from dataclasses import dataclass
 from pathlib import Path
 
-PathType = Union[str, Path]
-
 
 def get_filename(path: PathLike, raise_error: bool = True) -> str:
     """
@@ -80,7 +78,6 @@ def get_path_without_filename(path: str, raise_error: bool = True):
     Returns:
         str: Directory path / Путь к директории
     """
-    v85 = True
     path = str(path)
     if '/' in path:
         path_list = path.split('/')
@@ -89,8 +86,8 @@ def get_path_without_filename(path: str, raise_error: bool = True):
         path_list = path.split('\\')
         path_list.pop()
     else:
-        v85 = False
-    output = os.path.join(*path_list) if v85 else ''
+        path_list = [path]
+    output = os.path.join(*path_list)
     if not os.path.isfile(path) and raise_error:
         raise FileNotFoundError('No such file: ' + path)
     else:
@@ -188,33 +185,6 @@ def get_path_without_extension(path: str, raise_error: bool = True) -> str:
     return f'{pwfl}/{filename}'
 
 
-@dataclass
-class FileNameInfo:
-    """
-    Container for file name information.
-
-    Контейнер для информации об имени файла.
-
-    Attributes:
-        path (str): Original path / Исходный путь
-        filename (str): Filename with extension / Имя файла с расширением
-        extension (str): File extension / Расширение файла
-        path_without_extension (str): Path without extension / Путь без расширения
-        path_without_filename (str): Directory path / Путь к директории
-    """
-    path: str
-    filename: str = ''
-    extension: str = ''
-    path_without_extension: str = ''
-    path_without_filename: str = ''
-
-    def __post_init__(self):
-        self.filename = get_filename(self.path)
-        self.extension = get_extension(self.path)
-        self.path_without_extension = get_path_without_filename(self.path)
-        self.path_without_filename = get_path_without_extension(self.path)
-
-
 def delete_file(path: str):
     """
     Delete a file.
@@ -227,7 +197,7 @@ def delete_file(path: str):
     os.remove(path)
 
 
-def create_file_exist(path: str, space: bool = True, return_filename_and_path: bool = False):
+def create_file_exist(path: str, space: bool = True):
     """
     Create a file with automatic renaming if exists.
 
@@ -236,7 +206,6 @@ def create_file_exist(path: str, space: bool = True, return_filename_and_path: b
     Args:
         path (str): Desired file path / Желаемый путь к файлу
         space (bool): Add space before number, default True / Добавить пробел перед числом
-        return_filename_and_path (bool): Return FileNameInfo object, default False / Вернуть объект FileNameInfo
 
     Returns:
         Optional[FileNameInfo]: File info if return_filename_and_path is True / Информация о файле
@@ -256,10 +225,7 @@ def create_file_exist(path: str, space: bool = True, return_filename_and_path: b
                 break
 
     create_file(new_path)
-
-    if return_filename_and_path:
-        return FileNameInfo(new_path)
-    return None
+    return new_path
 
 
 def edit_time(year: int = -1, month: int = -1, day: int = -1, hour: int = -1, minute: int = -1,
@@ -374,57 +340,6 @@ def get_username() -> str:
     return getpass.getuser()
 
 
-def android_path(path: str, domain: str, name: str) -> str:
-    """
-    Convert path to Android app data path (Windows compatible).
-
-    Преобразует путь в путь к данным Android приложения (совместимо с Windows).
-
-    Args:
-        path (str): Relative path / Относительный путь
-        domain (str): App domain / Домен приложения
-        name (str): App name / Имя приложения
-
-    Returns:
-        str: Android path on Android, original path on Windows / Путь Android на Android
-    """
-    if platform.system() == 'Windows':
-        return path
-    return f'data/data/{domain}.{name}/files/app/{path}'
-
-
-class AndroidPath:
-    """
-    Class for generating Android app data paths.
-
-    Класс для генерации путей к данным Android приложения.
-
-    Args:
-        domain (str): App domain / Домен приложения
-        name (str): App name / Имя приложения
-    """
-
-    def __init__(self, domain: str, name: str):
-        self.domain = domain
-        self.name = name
-
-    def __call__(self, path: str) -> str:
-        """
-        Generate Android path for given relative path.
-
-        Генерирует Android путь для заданного относительного пути.
-
-        Args:
-            path (str): Relative path / Относительный путь
-
-        Returns:
-            str: Full Android path / Полный Android путь
-        """
-        if platform.system() == 'Windows':
-            return path
-        return f'data/data/{self.domain}.{self.name}/files/app/{path}'
-
-
 def get_files_startswith(directory: str, start: str, full_path: bool = True) -> List[str]:
     """
     Get files in directory that start with a prefix.
@@ -508,30 +423,6 @@ def generate_random_filename(length: int = 10, extension: str = '') -> str:
     return random_name + extension
 
 
-def compare_versions(version1, version2):
-    """
-    Compare two version strings.
-
-    Сравнивает две строки версий.
-
-    Args:
-        version1: First version string / Первая версия
-        version2: Second version string / Вторая версия
-
-    Returns:
-        int: 1 if v1 > v2, -1 if v1 < v2, 0 if equal / 1 если v1 > v2, -1 если v1 < v2, 0 если равны
-    """
-    version1_parts = list(map(int, version1.split('.')))
-    version2_parts = list(map(int, version2.split('.')))
-
-    for v1, v2 in zip(version1_parts, version2_parts):
-        if v1 > v2:
-            return 1
-        elif v1 < v2:
-            return -1
-    return 0
-
-
 def uninstall_program(program_name):
     """
     Uninstall a program using WMIC (Windows only).
@@ -598,62 +489,6 @@ def package_is_debug(file: Path, tree_level: int = 1):
     return file.name != 'site-packages'
 
 
-class PackageIsDebug:
-    """
-    Helper class for checking package debug mode.
-
-    Вспомогательный класс для проверки режима отладки пакета.
-
-    Args:
-        file (Union[Path, str]): Python file path / Путь к Python файлу
-        tree_level (int): Number of parent levels to go up, default 1 / Количество уровней вверх
-
-    Raises:
-        FileNotFoundError: If file doesn't exist or not a .py file / Если файл не существует или не .py
-    """
-
-    def __init__(self, file: Union[Path, str], tree_level: int = 1):
-        file = file if isinstance(file, Path) else Path(file)
-        if not file.is_file() or not file.exists() or get_extension(str(file)) != 'py':
-            raise FileNotFoundError("File must be a valid .py file")
-        self.file = file
-        self.tree_level = tree_level
-
-    def get_directory(self):
-        """
-        Get the package directory.
-
-        Получает директорию пакета.
-
-        Returns:
-            Path: Package directory / Директория пакета
-
-        Raises:
-            NotADirectoryError: If parent is not a directory / Если родительская директория не существует
-        """
-        file = self.file
-        for level in range(self.tree_level + 1):
-            file = file.parent
-        if not file.is_dir():
-            raise NotADirectoryError("Parent directory does not exist")
-        return file
-
-    def is_debug(self):
-        """
-        Check if in debug mode.
-
-        Проверяет режим отладки.
-
-        Returns:
-            bool: True if debug mode / True если режим отладки
-        """
-        return self.get_directory().name != 'site-packages'
-
-    def chdir(self):
-        """Change working directory to package directory."""
-        os.chdir(self.get_directory())
-
-
 def get_max_path_length():
     """
     Get maximum path length limit for the operating system.
@@ -686,8 +521,7 @@ def get_max_path_length():
 
             if value == 1:
                 return 32767
-        except:
-            pass
+        except: pass
 
     return base_limit
 

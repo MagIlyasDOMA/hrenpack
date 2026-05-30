@@ -13,57 +13,9 @@ INI конфигурационными файлами, JSON файлами и CS
 import os, json, csv, functools
 from typing import Union, Literal, Any, List
 from pathlike_typing import PathLike
-from ..cmd import get_filename, get_extension, create_file, delete_file, FileNameInfo
-from ..listwork import list_add
+from ..cmd import get_filename, get_extension, create_file
+from ..listwork import list_add, keys_dict_equals
 from configparser import ConfigParser, NoOptionError, NoSectionError
-
-# Import missing helpers that should be defined elsewhere
-# These are placeholders - they should be imported from appropriate modules
-def split_list(lst, separator):
-    """Join list with separator - placeholder."""
-    return separator.join(lst)
-
-def split_list_space(tup):
-    """Join tuple with space - placeholder."""
-    return ' '.join(tup)
-
-def split_list_enter(lst):
-    """Join list with newline - placeholder."""
-    return '\n'.join(lst)
-
-def _is_tuple(obj, is_tuple):
-    """Return tuple if is_tuple else list."""
-    return tuple(obj) if is_tuple else obj
-
-def one_return(num, *args):
-    """Return multiple values as tuple - placeholder."""
-    if num == 2:
-        return args[0], args[1]
-    elif num == 3:
-        return args[0], args[1], args[2]
-    return args
-
-def equals_keys(*dicts):
-    """Get common keys from dictionaries - placeholder."""
-    if not dicts:
-        return None
-    keys = set(dicts[0].keys())
-    for d in dicts[1:]:
-        keys.intersection_update(d.keys())
-    return list(keys) if keys else None
-
-def confirm(message):
-    """Decorator for confirmation - placeholder."""
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(self, *args, **kwargs):
-            print(message)
-            response = input("y/N: ").lower()
-            if response in ('y', 'yes'):
-                return func(self, *args, **kwargs)
-            return None
-        return wrapper
-    return decorator
 
 
 class FileTypeError(Exception):
@@ -79,33 +31,6 @@ class FileIsNotEmptyError(Exception):
 class FileIsEmptyError(Exception):
     """Raised when trying to read empty file when content is expected."""
     pass
-
-
-def extension_check(path: str, *extensions: Union[list, tuple, str]) -> None:
-    """
-    Check if file has one of the allowed extensions.
-
-    Проверяет, имеет ли файл одно из разрешенных расширений.
-
-    Args:
-        path (str): File path / Путь к файлу
-        *extensions: Allowed extensions / Разрешенные расширения
-
-    Raises:
-        FileTypeError: If extension is not allowed / Если расширение не разрешено
-    """
-    extensions_converted = list()
-    for e in extensions:
-        if type(e) is str:
-            extensions_converted.append(e)
-        else:
-            for g in e:
-                extensions_converted.append(g)
-
-    extension = get_extension(path)
-    if extension not in extensions_converted:
-        raise FileTypeError(f"This class is designed for {split_list(extensions)} files. "
-                            f"Your file has extension .{extension}")
 
 
 def create_file_if_not_exists(path: PathLike) -> None:
@@ -157,33 +82,10 @@ class TextFile:
         self.path = path
         self.get_filename = lambda: get_filename(self.path)
         self.get_extension = lambda: get_extension(self.path)
-        self.encoding = str(encoding)
+        self.encoding: str = str(encoding)
         self.search_and_delete = lambda input: self.search_and_edit(input, '')
         if kwargs.get('create_file_if_not_exists', True):
             create_file_if_not_exists(self.path)
-
-    @staticmethod
-    def comment_decorator(func):
-        """
-        Decorator for comment methods requiring comment_letter attribute.
-
-        Декоратор для методов комментариев, требующих атрибут comment_letter.
-
-        Args:
-            func: Method to decorate / Метод для декорирования
-
-        Returns:
-            callable: Wrapped method / Обернутый метод
-
-        Raises:
-            AttributeError: If comment_letter is empty / Если comment_letter пуст
-        """
-        def wrapper(self, *args, **kwargs):
-            if self.comment_letter == '':
-                raise AttributeError(
-                    f"AttributeError: '{self.__class__.__name__}' object has no attribute 'add_comment'")
-            return func(self, *args, **kwargs)
-        return wrapper
 
     def read(self, letters: int = -1) -> str:
         """
@@ -244,9 +146,7 @@ class TextFile:
             FileExistsError: If destination exists and force is False / Если файл существует и force=False
         """
         if os.path.isfile(new_path) and not force:
-            raise FileExistsError(
-                f'Cannot create new file because it already exists: {new_path}'
-            )
+            raise FileExistsError(f'Cannot create new file because it already exists: {new_path}')
         else:
             data = self.read()
             file = open(new_path, 'w', encoding=self.encoding)
@@ -309,7 +209,7 @@ class TextFile:
         """
         lines = self.read().split('\n')
         lines[line - 1] = new_data
-        self.rewrite(split_list(lines, '\n'))
+        self.rewrite('\n'.join(lines))
 
     def is_empty(self) -> bool:
         """
@@ -352,14 +252,13 @@ class TextFile:
         else:
             raise FileIsNotEmptyError("File must be empty to use this function")
 
-    def read_lines(self, is_tuple: bool = False, without_n: bool = True) -> Union[list[str], tuple[str]]:
+    def read_lines(self, without_n: bool = True) -> Union[list[str], tuple[str]]:
         """
         Read file as list of lines.
 
         Читает файл как список строк.
 
         Args:
-            is_tuple (bool): Return tuple instead of list, default False / Вернуть кортеж вместо списка
             without_n (bool): Remove newline characters, default True / Удалить символы новой строки
 
         Returns:
@@ -369,18 +268,7 @@ class TextFile:
         if not without_n:
             for i, el in enumerate(output):
                 output[i] = el + '\n'
-        return _is_tuple(output, is_tuple)
-
-    def __copy__(self, new_path: str):
-        """Copy file and return new TextFile instance."""
-        self.copy(new_path)
-        return TextFile(new_path)
-
-    @confirm("This will delete the file. Are you sure you want to continue?")
-    def delete(self):
-        """Delete the file."""
-        delete_file(self.path)
-        # del self  # Cannot delete self directly
+        return output
 
     def newline(self, line: str):
         """
@@ -447,18 +335,18 @@ class SRTSubtitleFile(TextFile):
         path (str): Path to SRT file / Путь к SRT файлу
         encoding (Union[str, int]): File encoding, default 'utf-8' / Кодировка файла
     """
+
     class SubtitleError(Exception):
         """Raised for invalid subtitle format."""
         pass
 
     def __init__(self, path: str, encoding: Union[str, int] = 'utf-8'):
         super().__init__(path, encoding)
-        extension_check(path, 'srt')
         subtitle_data = self.read_subtitle()
         self.subtitles_timecodes = subtitle_data['timecodes']
         self.subtitles_text = subtitle_data['text']
         self.sections = subtitle_data['number']
-        self.edit, self.elst, self.edit_subtitle = one_return(3, self.edit_line_subtitle_text)
+        self.edit, self.elst, self.edit_subtitle = [self.edit_line_subtitle_text] * 3
 
     def read_subtitle(self) -> dict:
         """
@@ -474,7 +362,7 @@ class SRTSubtitleFile(TextFile):
         """
         try:
             sections = self.read().split('\n\n')
-            timecodes, text_data = one_return(2, list())
+            timecodes, text_data = [[]] * 2
             for section in sections:
                 if not section.strip():
                     continue
@@ -542,7 +430,6 @@ class ConfigurationFile(TextFile):
 
     def __init__(self, path: str = 'config.ini', encoding: Union[str, int] = 'utf-8'):
         super().__init__(path, encoding)
-        extension_check(self.path, 'ini')
         self.config = ConfigParser()
         self.read_config = lambda: self.config.read(self.path, encoding=self.encoding)
         self.read_config()
@@ -618,8 +505,8 @@ class ConfigurationFile(TextFile):
     def add_comment(self, line_index: int, text: str, comment_letter: Literal[';', '#'] = ';'):
         """Add comment line at specified index."""
         lines = self.read_lines()
-        lines = list_add(lines, line_index, split_list_space((comment_letter, text)))
-        self.rewrite(split_list_enter(lines))
+        lines = list_add(lines, line_index, ' '.join((comment_letter, text)))
+        self.rewrite('\n'.join(lines))
 
     def edit_section(self, section: str, block: dict, rewrite: bool = False) -> None:
         """Edit entire section with dictionary."""
@@ -689,7 +576,6 @@ class JavaScriptObjectNotationFile(TextFile):
 
     def __init__(self, path: str, encoding: Union[str, int] = 'utf-8'):
         super().__init__(path, encoding)
-        extension_check(self.path, 'json')
         self.data = json.loads(self.read())
 
     def __dict__(self):
@@ -821,6 +707,11 @@ class CommaSeparatedValuesFile(TextFile):
         with self.open() as file:
             return list(csv.DictReader(file))
 
+    @staticmethod
+    def __equals_keys(dicts: list[dict]) -> tuple:
+        if keys_dict_equals(*dicts):
+            return tuple(dicts[0].keys())
+
     def write_data(self, data: List[dict[str, Any]]):
         """
         Write data to CSV file.
@@ -832,7 +723,7 @@ class CommaSeparatedValuesFile(TextFile):
             ValueError: If dictionaries have different keys / Если словари имеют разные ключи
         """
         with self.open('w', newline='') as file:
-            fields = equals_keys(*data)
+            fields = self.__equals_keys(data)
             if fields is None:
                 raise ValueError("Data dictionaries must have the same keys")
             writer = csv.DictWriter(file, fieldnames=fields)

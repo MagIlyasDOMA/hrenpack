@@ -2,46 +2,15 @@
 Pygame utilities for game development.
 
 Provides convenience classes and functions for Pygame,
-including keyboard constants, image handling, and quit handlers.
+including image handling and quit handlers.
 
 Утилиты Pygame для разработки игр.
 
 Предоставляет удобные классы и функции для Pygame,
-включая константы клавиш, обработку изображений и обработчики выхода.
+включая обработку изображений и обработчики выхода.
 """
 
 import pygame, sys
-
-
-class Keyboard:
-    """Keyboard key constants for Pygame."""
-    A = pygame.K_a
-    B = pygame.K_b
-    C = pygame.K_c
-    D = pygame.K_d
-    E = pygame.K_e
-    F = pygame.K_f
-    G = pygame.K_g
-    H = pygame.K_h
-    I = pygame.K_i
-    J = pygame.K_j
-    K = pygame.K_k
-    L = pygame.K_l
-    M = pygame.K_m
-    N = pygame.K_n
-    O = pygame.K_o
-    P = pygame.K_p
-    Q = pygame.K_q
-    R = pygame.K_r
-    S = pygame.K_s
-    T = pygame.K_t
-    U = pygame.K_u
-    V = pygame.K_v
-    W = pygame.K_w
-    X = pygame.K_x
-    Y = pygame.K_y
-    Z = pygame.K_z
-    SPACE = pygame.K_SPACE
 
 
 class Image:
@@ -154,5 +123,4 @@ def quit_if_quit(event):
     Args:
         event: Pygame event / Событие Pygame
     """
-    if event.type == pygame.QUIT:
-        quit()
+    if event.type == pygame.QUIT: quit()

@@ -187,7 +187,7 @@ class ExtensibleMarkupLanguageFile(ParserMixin, TextFile):
 
         Сохраняет изменения в файл.
         """
-        self.rewrite(self.prettify())
+        self.rewrite(self.parser.prettify())
 
 
 class HyperTextMarkupLanguageFile(ExtensibleMarkupLanguageFile):

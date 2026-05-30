@@ -203,7 +203,7 @@ def set_attrs_if_is_none(instance, **attrs):
         setattr_if_is_none(instance, attr_name, value)
 
 
-def getattrs(instance, *attr_names, only_values: bool = False, is_tuple: bool = False, default=None):
+def getattrs(instance, *attr_names, only_values: bool = False, default=None):
     """
     Get multiple attributes as dictionary or tuple.
 
@@ -213,7 +213,6 @@ def getattrs(instance, *attr_names, only_values: bool = False, is_tuple: bool = 
         instance: Object instance / Экземпляр объекта
         *attr_names: Attribute names to get / Имена атрибутов для получения
         only_values (bool): Return only values, default False / Возвращать только значения
-        is_tuple (bool): Return tuple instead of list, default False / Возвращать кортеж вместо списка
         default: Default value for missing attributes / Значение по умолчанию
 
     Returns:
@@ -222,7 +221,7 @@ def getattrs(instance, *attr_names, only_values: bool = False, is_tuple: bool = 
     output = dict()
     for attr_name in attr_names:
         output[attr_name] = getattr(instance, attr_name, default)
-    return get_from_dict(output, *output.keys(), is_tuple=is_tuple, only_values=only_values, default=default)
+    return get_from_dict(output, *output.keys(), only_values=only_values, default=default)
 
 
 def getattr_strict(obj, name: str):

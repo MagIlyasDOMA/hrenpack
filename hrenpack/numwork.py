@@ -21,26 +21,8 @@ class HexagonalError(ValueError):
     pass
 
 
-def int_float_separate(input: float, is_tuple: bool = False, is_int: bool = False):
-    """
-    Separate integer and fractional parts of a float.
-
-    Разделяет целую и дробную части числа с плавающей точкой.
-
-    Args:
-        input (float): Float number to separate / Число для разделения
-        is_tuple (bool): Return as tuple, default False / Вернуть как кортеж
-        is_int (bool): Convert parts to integers, default False / Преобразовать части в целые числа
-
-    Returns:
-        Union[list, tuple]: Integer and fractional parts / Целая и дробная части
-    """
-    int_and_float = str(input).split('.')
-    if is_int:
-        int_and_float = intlist(int_and_float)
-    if is_tuple:
-        int_and_float = tuple(int_and_float)
-    return int_and_float
+def is_int(input: float, /) -> bool:
+    return str(abs(input)).isdigit()
 
 
 def is_square_int(integer: int):
@@ -55,9 +37,7 @@ def is_square_int(integer: int):
     Returns:
         bool: True if perfect square / True если полный квадрат
     """
-    sq = math.sqrt(integer)
-    ls = int_float_separate(sq, True)
-    return ls[1] == '0'
+    return is_int(math.sqrt(integer))
 
 
 def division_with_rounding(dividend: float, divisor: float, round_in_any_case: bool = False,

@@ -84,12 +84,6 @@ email = [
     "imapclient",
     "mail-parser==4.1.4"
 ]
-dev = [
-    "setuptools>=61.0.0",
-    "wheel>=0.46.3",
-    "twine>=6.2.0",
-    "build>=1.4.0",
-]
 all = [
     "Pillow>=3.3.0",
     "flask>=3.1.2",
@@ -121,10 +115,6 @@ full = [
     "imapclient",
 ]
 dev_all = [
-    "setuptools>=61.0.0",
-    "wheel>=0.46.3",
-    "twine>=6.2.0",
-    "build>=1.4.0",
     "Pillow>=3.3.0",
     "flask>=3.1.2",
     "flask-sqlalchemy>=3.1.1",
@@ -140,10 +130,6 @@ dev_all = [
     "imapclient",
 ]
 dev_full = [
-    "setuptools>=61.0.0",
-    "wheel>=0.46.3",
-    "twine>=6.2.0",
-    "build>=1.4.0",
     "Pillow>=3.3.0",
     "flask>=3.1.2",
     "flask-sqlalchemy>=3.1.1",
@@ -167,3 +153,8 @@ Changelog = "https://github.com/MagIlyasDOMA/hrenpack/blob/main/CHANGELOG.md"
 [tool.setuptools]
 packages = {find = {}}
 include-package-data = true
+
+[dependency-groups]
+dev = [
+    "pylint>=4.0.5",
+]
