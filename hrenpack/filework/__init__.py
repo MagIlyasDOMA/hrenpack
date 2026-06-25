@@ -67,6 +67,30 @@ def use_default(func):
     return wrapper
 
 
+def update_config_before(func):
+    """
+    Decorator that calls read_config() before method execution if hot_mode is enabled.
+
+    Декоратор, вызывающий read_config() перед выполнением метода, если включен hot_mode.
+
+    Used in ConfigurationFile to ensure fresh config data when hot_mode=True.
+
+    Используется в ConfigurationFile для обеспечения свежих данных конфига при hot_mode=True.
+
+    Args:
+        func: Method to decorate / Метод для декорирования
+
+    Returns:
+        callable: Wrapped method / Обернутый метод
+    """
+    @functools.wraps(func)
+    def wrapper(self, section: str, key: str, default: Any = None):
+        if self.hot_mode:
+            self.read_config()
+        return func(self, section, key, default)
+    return wrapper
+
+
 class TextFile:
     """
     Base class for text file operations.
@@ -413,43 +437,35 @@ class ConfigurationFile(TextFile):
     Args:
         path (str): Path to INI file, default 'config.ini' / Путь к INI файлу
         encoding (Union[str, int]): File encoding, default 'utf-8' / Кодировка файла
+        hot_mode (bool): If True, reload config before each read operation, default True / Если True, перезагружать конфиг перед каждым чтением
     """
-    class _Section:
-        """Dictionary-like section wrapper."""
-        def __init__(self, config: ConfigParser, name: str):
-            self.config = dict(config.items(name))
-
-        def __getitem__(self, key: str):
-            return self.config[key]
-
-        def __setitem__(self, key: str, value: str):
-            self.config[key] = value
-
-        def get(self, key: str, default=None):
-            return self.config.get(key, default)
-
-    def __init__(self, path: str = 'config.ini', encoding: Union[str, int] = 'utf-8'):
+    def __init__(self, path: str = 'config.ini', encoding: Union[str, int] = 'utf-8', hot_mode: bool = True):
         super().__init__(path, encoding)
         self.config = ConfigParser()
         self.read_config = lambda: self.config.read(self.path, encoding=self.encoding)
         self.read_config()
+        self.hot_mode = hot_mode
         self.get_bool = self.get_boolean
 
+    @update_config_before
     @use_default
     def get_value(self, section: str, key: str, default: Any = None) -> str:
         """Get string value from config."""
         return self.config.get(section, key)
 
+    @update_config_before
     @use_default
     def get_boolean(self, section: str, key: str, default: Any = False) -> bool:
         """Get boolean value from config."""
         return self.config.getboolean(section, key)
 
+    @update_config_before
     @use_default
     def get_int(self, section: str, key: str, default: Any = 0) -> int:
         """Get integer value from config."""
         return self.config.getint(section, key)
 
+    @update_config_before
     @use_default
     def get_float(self, section: str, key: str, default: Any = 0) -> float:
         """Get float value from config."""
@@ -457,6 +473,7 @@ class ConfigurationFile(TextFile):
 
     def set_value(self, section: str, key: str, value) -> None:
         """Set value in config and save."""
+        if self.hot_mode: self.read_config()
         self.config.set(section, key, str(value))
         self.save()
 

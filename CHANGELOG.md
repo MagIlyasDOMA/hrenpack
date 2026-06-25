@@ -7,6 +7,13 @@ All changes in this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.1.0] - 2026-06-25
+### ✨ Added
+- Added the `hot_mode` parameter to the `hrenpack.filework.ConfigurationFile` class
+
+### 🗑️ Removed
+- Removed deprecated private API
+
 ## [3.0.0] - 2026-05-30
 ### ⚠️ Breaking Changes
 - **Removed modules and classes**:
@@ -390,6 +397,13 @@ Use version 2.1.2 or higher for production environments.
 
 Формат основан на [Keep a Changelog](https://keepachangelog.com/),
 и проект придерживается [Семантического Версионирования](https://semver.org/).
+
+## [3.1.0] - 2026-06-25
+### ✨ Добавлено
+- Добавлен параметр `hot_mode` в класс `hrenpack.filework.ConfigurationFile`
+
+### 🗑️ Удалено
+- Удален устаревший приватный API
 
 ## [3.0.0] - 2026-05-30
 ### ⚠️ Критические изменения
