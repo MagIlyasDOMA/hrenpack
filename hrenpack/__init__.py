@@ -22,11 +22,11 @@ def credits():
     Печатает информацию о кредитах пакета.
     """
     print("Hrenpack")
-    print("(c) Mag Ilyas DOMA, 2024-2026.")
+    print("(c) MagIlyasDOMA, 2024-2026.")
     print("Licensed under MIT (https://github.com/MagIlyasDOMA/hrenpack/blob/main/LICENSE)")
 
 
-__version__ = '3.1.0'
+__version__ = '3.1.1'
 
 
 def sts(word):

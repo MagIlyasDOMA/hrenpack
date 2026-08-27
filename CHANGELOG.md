@@ -7,6 +7,10 @@ All changes in this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.1.1] - 2026-08-27
+### ⚠️ Breaking changes
+- Changed the minimum Python version to 3.11, as Python 3.10 does not support certain features.
+
 ## [3.1.0] - 2026-06-25
 ### ✨ Added
 - Added the `hot_mode` parameter to the `hrenpack.filework.ConfigurationFile` class
@@ -397,6 +401,10 @@ Use version 2.1.2 or higher for production environments.
 
 Формат основан на [Keep a Changelog](https://keepachangelog.com/),
 и проект придерживается [Семантического Версионирования](https://semver.org/).
+
+## [3.1.1] - 2026-08-27
+### ⚠️ Критические изменения
+- Изменена минимальная версия Python на 3.11, так как Python 3.10 не поддерживает некоторые функции
 
 ## [3.1.0] - 2026-06-25
 ### ✨ Добавлено
