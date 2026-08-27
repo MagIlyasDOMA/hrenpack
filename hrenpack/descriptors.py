@@ -230,7 +230,7 @@ class CachedProperty(BaseDescriptor):
     def set_cache(self, instance, value):
         """Set cached value."""
         setattr(instance, self.cache_attr_name(self.name), value)
-        setattr(self, self.cached_flag_attr_name(self.name), True)
+        setattr(instance, self.cached_flag_attr_name(self.name), True)
 
 
 class UncacheProperty(BaseDescriptor):

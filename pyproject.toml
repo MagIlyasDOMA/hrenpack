@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hrenpack"
-version = "3.1.1"
+version = "3.1.2"
 description = "Универсальная библиотека python для большинства задач | A universal python library for most tasks"
 readme = "README.md"
 authors = [

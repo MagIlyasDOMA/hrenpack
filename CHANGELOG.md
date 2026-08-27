@@ -7,6 +7,10 @@ All changes in this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.1.2] - 2026-08-27
+### 🐛 Fixed
+- Fixed a caching issue in the `CachedProperty` descriptor in `hrenpack/descriptors.py`
+
 ## [3.1.1] - 2026-08-27
 ### ⚠️ Breaking changes
 - Changed the minimum Python version to 3.11, as Python 3.10 does not support certain features.
@@ -401,6 +405,10 @@ Use version 2.1.2 or higher for production environments.
 
 Формат основан на [Keep a Changelog](https://keepachangelog.com/),
 и проект придерживается [Семантического Версионирования](https://semver.org/).
+
+## [3.1.2] - 2026-08-27
+### 🐛 Исправлено
+- Исправлен баг с некешированием в дескрипторе `CachedProperty` в `hrenpack/descriptors.py` 
 
 ## [3.1.1] - 2026-08-27
 ### ⚠️ Критические изменения
