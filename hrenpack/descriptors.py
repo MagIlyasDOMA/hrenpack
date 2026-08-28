@@ -10,13 +10,15 @@ CachedProperty, and other descriptor classes.
 PathLikeDescriptor, CachedProperty и другие.
 """
 
-from typing import Any, Union, Self, Callable, Optional
+from typing import Any, Union, Self, Callable, Optional, Generic, TypeVar
 from pathlib import Path
 from pathlike_typing import PathLike
 from pyundefined import undefined
 from typeguard import check_type
 from hrenpack.encapsulation import getattr_strict
 from hrenpack.typings import GetterFunc, SetterFunc
+
+T = TypeVar('T')
 
 
 class BaseDescriptor:
@@ -189,7 +191,7 @@ class SubAttribute(BaseDescriptor):
             return self.default
 
 
-class CachedProperty(BaseDescriptor):
+class CachedProperty(BaseDescriptor, Generic[T]):
     """
     Property that caches its value after first computation.
 
@@ -199,10 +201,10 @@ class CachedProperty(BaseDescriptor):
         method (Callable): Method that computes the value / Метод, вычисляющий значение
     """
 
-    def __init__(self, method: Callable):
+    def __init__(self, method: GetterFunc):
         self.method = method
 
-    def __get__(self, instance, owner):
+    def __get__(self, instance, owner) -> T:
         if instance is None:
             return self
         if not self.is_cached(instance):
@@ -257,14 +259,14 @@ class UncacheProperty(BaseDescriptor):
         self.fset = fset
         self.setable = setable
 
-    def __get__(self, instance, owner):
+    def __get__(self, instance, owner) -> T:
         if instance is None:
             return self
         if self.fget is not None:
             return self.fget()
         return instance.__dict__[self.name]
 
-    def __set__(self, instance, value):
+    def __set__(self, instance, value: T):
         if not self.setable:
             raise AttributeError(f'Cannot set attribute \'{self.name}\'')
         for name in self.cached_properties:
