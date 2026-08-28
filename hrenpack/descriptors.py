@@ -201,7 +201,7 @@ class CachedProperty(BaseDescriptor, Generic[T]):
         method (Callable): Method that computes the value / Метод, вычисляющий значение
     """
 
-    def __init__(self, method: GetterFunc):
+    def __init__(self, method: Callable[..., T]):
         self.method = method
 
     def __get__(self, instance, owner) -> T:
@@ -235,7 +235,7 @@ class CachedProperty(BaseDescriptor, Generic[T]):
         setattr(instance, self.cached_flag_attr_name(self.name), True)
 
 
-class UncacheProperty(BaseDescriptor):
+class UncacheProperty(BaseDescriptor, Generic[T]):
     """
     Property that invalidates cached properties when set.
 
@@ -249,8 +249,8 @@ class UncacheProperty(BaseDescriptor):
     """
 
     def __init__(self, *cached_properties: str,
-                 fget: Optional[GetterFunc] = None,
-                 fset: Optional[SetterFunc] = None,
+                 fget: Optional[Callable[..., T]] = None,
+                 fset: Optional[Callable[[T], None]] = None,
                  setable: bool = True):
         self.cached_properties = cached_properties
         if fget is None and fset is not None:
