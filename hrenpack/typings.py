@@ -87,8 +87,8 @@ HttpMethodExtended = Union[HttpMethodBasic, Literal['PUT', 'PATCH', 'DELETE']]
 HttpMethod = Union[HttpMethodExtended, Literal['HEAD', 'OPTIONS', 'TRACE', 'CONNECT']]
 """All standard HTTP method literals."""
 
-GetterFunc = Callable[[], Any]
-"""Type for getter function with no arguments."""
+GetterFunc = Callable[..., Any]
+"""Type for getter function"""
 
-SetterFunc = Callable[[Any], None]
-"""Type for setter function with one argument."""
+SetterFunc = Callable[..., None]
+"""Type for setter function"""

@@ -7,6 +7,10 @@ All changes in this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.1.4] - 2026-08-28
+### 🐛 Fixed
+- Fixed typing for `CachedProperty` and `UncacheProperty` descriptors in `hrenpack/descriptors.py` (similar to `property`)
+
 ## [3.1.3] - 2026-08-28
 ### ✨ Added
 - Added proper typing for `CachedProperty` and `UncacheProperty` descriptors in `hrenpack/descriptors.py` (similar to `property`)
@@ -409,6 +413,10 @@ Use version 2.1.2 or higher for production environments.
 
 Формат основан на [Keep a Changelog](https://keepachangelog.com/),
 и проект придерживается [Семантического Версионирования](https://semver.org/).
+
+## [3.1.4] - 2026-08-28
+### 🐛 Исправлено
+- Исправлена типизация для дескрипторов `CachedProperty` и `UncacheProperty` в `hrenpack/descriptors.py` (как в `property`)
 
 ## [3.1.3] - 2026-08-28
 ### ✨ Добавлено
